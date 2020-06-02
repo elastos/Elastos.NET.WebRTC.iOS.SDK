@@ -1,0 +1,20 @@
+PODS:
+  - ElastosCarrierSDK (5.5.1)
+  - GoogleWebRTC (1.1.29400)
+
+DEPENDENCIES:
+  - ElastosCarrierSDK (= 5.5.1)
+  - GoogleWebRTC (= 1.1.29400)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - ElastosCarrierSDK
+    - GoogleWebRTC
+
+SPEC CHECKSUMS:
+  ElastosCarrierSDK: 9a9620c297b75f50f02671d6caeb2df9953e774b
+  GoogleWebRTC: cfb83bc346435a17fe06bb05f04ad826b858a7fb
+
+PODFILE CHECKSUM: 641aeef5b9202477c6057348c716ed7cc3309243
+
+COCOAPODS: 1.9.3
