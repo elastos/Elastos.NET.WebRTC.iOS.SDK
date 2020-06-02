@@ -113,11 +113,11 @@
 			isa = PBXGroup;
 			children = (
 				F9A8D0A92486A9C100FFDFD2 /* ElastosRTC */,
-				F9A8D0B42486A9C100FFDFD2 /* ElastosRTCTests */,
 				F9A8D0C62486AA1C00FFDFD2 /* ElastosRTCDemo */,
-				F9A8D0A82486A9C100FFDFD2 /* Products */,
-				1080FBEDED7512ABF91355BC /* Pods */,
+				F9A8D0B42486A9C100FFDFD2 /* ElastosRTCTests */,
 				195004598616434BB9B055D8 /* Frameworks */,
+				1080FBEDED7512ABF91355BC /* Pods */,
+				F9A8D0A82486A9C100FFDFD2 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -125,8 +125,8 @@
 			isa = PBXGroup;
 			children = (
 				F9A8D0A72486A9C100FFDFD2 /* ElastosRTC.framework */,
-				F9A8D0B02486A9C100FFDFD2 /* ElastosRTCTests.xctest */,
 				F9A8D0C52486AA1C00FFDFD2 /* ElastosRTCDemo.app */,
+				F9A8D0B02486A9C100FFDFD2 /* ElastosRTCTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -153,12 +153,12 @@
 			isa = PBXGroup;
 			children = (
 				F9A8D0C72486AA1C00FFDFD2 /* AppDelegate.swift */,
+				F9A8D0D02486AA2100FFDFD2 /* Assets.xcassets */,
+				F9A8D0D52486AA2100FFDFD2 /* Info.plist */,
+				F9A8D0D22486AA2100FFDFD2 /* LaunchScreen.storyboard */,
+				F9A8D0CD2486AA1C00FFDFD2 /* Main.storyboard */,
 				F9A8D0C92486AA1C00FFDFD2 /* SceneDelegate.swift */,
 				F9A8D0CB2486AA1C00FFDFD2 /* ViewController.swift */,
-				F9A8D0CD2486AA1C00FFDFD2 /* Main.storyboard */,
-				F9A8D0D02486AA2100FFDFD2 /* Assets.xcassets */,
-				F9A8D0D22486AA2100FFDFD2 /* LaunchScreen.storyboard */,
-				F9A8D0D52486AA2100FFDFD2 /* Info.plist */,
 			);
 			path = ElastosRTCDemo;
 			sourceTree = "<group>";
@@ -268,8 +268,8 @@
 			projectRoot = "";
 			targets = (
 				F9A8D0A62486A9C100FFDFD2 /* ElastosRTC */,
-				F9A8D0AF2486A9C100FFDFD2 /* ElastosRTCTests */,
 				F9A8D0C42486AA1C00FFDFD2 /* ElastosRTCDemo */,
+				F9A8D0AF2486A9C100FFDFD2 /* ElastosRTCTests */,
 			);
 		};
 /* End PBXProject section */
@@ -293,8 +293,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F9A8D0D42486AA2100FFDFD2 /* LaunchScreen.storyboard in Resources */,
 				F9A8D0D12486AA2100FFDFD2 /* Assets.xcassets in Resources */,
+				F9A8D0D42486AA2100FFDFD2 /* LaunchScreen.storyboard in Resources */,
 				F9A8D0CF2486AA1C00FFDFD2 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -378,9 +378,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F9A8D0CC2486AA1C00FFDFD2 /* ViewController.swift in Sources */,
 				F9A8D0C82486AA1C00FFDFD2 /* AppDelegate.swift in Sources */,
 				F9A8D0CA2486AA1C00FFDFD2 /* SceneDelegate.swift in Sources */,
+				F9A8D0CC2486AA1C00FFDFD2 /* ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
