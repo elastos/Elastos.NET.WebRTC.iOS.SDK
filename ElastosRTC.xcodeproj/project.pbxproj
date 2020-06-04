@@ -15,6 +15,8 @@
 		F9A281812487F5230032A2C0 /* WebRtcClient+Carrier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A281802487F5230032A2C0 /* WebRtcClient+Carrier.swift */; };
 		F9A281832487F5600032A2C0 /* WebRtcClient+DataChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A281822487F5600032A2C0 /* WebRtcClient+DataChannel.swift */; };
 		F9A281852487F6830032A2C0 /* WebRtcClient+PeerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A281842487F6830032A2C0 /* WebRtcClient+PeerConnection.swift */; };
+		F9A2818B24892A9A0032A2C0 /* RTCFrameCapturer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A2818A24892A9A0032A2C0 /* RTCFrameCapturer.swift */; };
+		F9A2818D248952990032A2C0 /* WebRtcSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A2818C248952990032A2C0 /* WebRtcSignal.swift */; };
 		F9A8D0B12486A9C100FFDFD2 /* ElastosRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A8D0A72486A9C100FFDFD2 /* ElastosRTC.framework */; };
 		F9A8D0B62486A9C100FFDFD2 /* ElastosRTCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A8D0B52486A9C100FFDFD2 /* ElastosRTCTests.swift */; };
 		F9A8D0B82486A9C100FFDFD2 /* ElastosRTC.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A8D0AA2486A9C100FFDFD2 /* ElastosRTC.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -58,6 +60,8 @@
 		F9A281802487F5230032A2C0 /* WebRtcClient+Carrier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebRtcClient+Carrier.swift"; sourceTree = "<group>"; };
 		F9A281822487F5600032A2C0 /* WebRtcClient+DataChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebRtcClient+DataChannel.swift"; sourceTree = "<group>"; };
 		F9A281842487F6830032A2C0 /* WebRtcClient+PeerConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebRtcClient+PeerConnection.swift"; sourceTree = "<group>"; };
+		F9A2818A24892A9A0032A2C0 /* RTCFrameCapturer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTCFrameCapturer.swift; sourceTree = "<group>"; };
+		F9A2818C248952990032A2C0 /* WebRtcSignal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRtcSignal.swift; sourceTree = "<group>"; };
 		F9A8D0A72486A9C100FFDFD2 /* ElastosRTC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ElastosRTC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9A8D0AA2486A9C100FFDFD2 /* ElastosRTC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ElastosRTC.h; sourceTree = "<group>"; };
 		F9A8D0AB2486A9C100FFDFD2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -154,10 +158,12 @@
 				F9A8D0AA2486A9C100FFDFD2 /* ElastosRTC.h */,
 				F9A8D0AB2486A9C100FFDFD2 /* Info.plist */,
 				F9A2817E2487F05A0032A2C0 /* WebRtcClient.swift */,
+				F9A2818A24892A9A0032A2C0 /* RTCFrameCapturer.swift */,
 				F9A281802487F5230032A2C0 /* WebRtcClient+Carrier.swift */,
 				F9A281822487F5600032A2C0 /* WebRtcClient+DataChannel.swift */,
 				F9A281842487F6830032A2C0 /* WebRtcClient+PeerConnection.swift */,
 				807706C8248908390066D477 /* WebRtcClient+VideoRender.swift */,
+				F9A2818C248952990032A2C0 /* WebRtcSignal.swift */,
 			);
 			path = ElastosRTC;
 			sourceTree = "<group>";
@@ -388,6 +394,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				807706C9248908390066D477 /* WebRtcClient+VideoRender.swift in Sources */,
+				F9A2818B24892A9A0032A2C0 /* RTCFrameCapturer.swift in Sources */,
+				F9A2818D248952990032A2C0 /* WebRtcSignal.swift in Sources */,
 				F9A281812487F5230032A2C0 /* WebRtcClient+Carrier.swift in Sources */,
 				F9A281832487F5600032A2C0 /* WebRtcClient+DataChannel.swift in Sources */,
 				F9A281852487F6830032A2C0 /* WebRtcClient+PeerConnection.swift in Sources */,
