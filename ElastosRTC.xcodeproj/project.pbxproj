@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -125,6 +125,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		74EA215E248A93B800240BD9 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F9A8D0AA2486A9C100FFDFD2 /* ElastosRTC.h */,
+				F9A8D0AB2486A9C100FFDFD2 /* Info.plist */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		F9A8D09D2486A9C100FFDFD2 = {
 			isa = PBXGroup;
 			children = (
@@ -150,11 +159,10 @@
 		F9A8D0A92486A9C100FFDFD2 /* ElastosRTC */ = {
 			isa = PBXGroup;
 			children = (
-				F9A8D0AA2486A9C100FFDFD2 /* ElastosRTC.h */,
-				F9A8D0AB2486A9C100FFDFD2 /* Info.plist */,
-				F9A2817E2487F05A0032A2C0 /* WebRtcClient.swift */,
-				F9A2818A24892A9A0032A2C0 /* RTCFrameCapturer.swift */,
 				807706CA248A21DE0066D477 /* CameraSession.swift */,
+				F9A2818A24892A9A0032A2C0 /* RTCFrameCapturer.swift */,
+				74EA215E248A93B800240BD9 /* Supporting Files */,
+				F9A2817E2487F05A0032A2C0 /* WebRtcClient.swift */,
 				F9A281802487F5230032A2C0 /* WebRtcClient+Carrier.swift */,
 				F9A281822487F5600032A2C0 /* WebRtcClient+DataChannel.swift */,
 				F9A281842487F6830032A2C0 /* WebRtcClient+PeerConnection.swift */,
@@ -247,6 +255,7 @@
 				F9A8D0C12486AA1C00FFDFD2 /* Sources */,
 				F9A8D0C22486AA1C00FFDFD2 /* Frameworks */,
 				F9A8D0C32486AA1C00FFDFD2 /* Resources */,
+				8625274CC810CAD74A90BC46 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -345,6 +354,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		8625274CC810CAD74A90BC46 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ElastosRTCDemo/Pods-ElastosRTCDemo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ElastosRTCDemo/Pods-ElastosRTCDemo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ElastosRTCDemo/Pods-ElastosRTCDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		99CD138A5BAB69DB83E655B5 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -388,14 +414,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				807706C9248908390066D477 /* WebRtcClient+VideoRender.swift in Sources */,
-				F9A2818B24892A9A0032A2C0 /* RTCFrameCapturer.swift in Sources */,
-				F9A2818D248952990032A2C0 /* WebRtcSignal.swift in Sources */,
 				807706CB248A21DE0066D477 /* CameraSession.swift in Sources */,
+				F9A2818B24892A9A0032A2C0 /* RTCFrameCapturer.swift in Sources */,
 				F9A281812487F5230032A2C0 /* WebRtcClient+Carrier.swift in Sources */,
 				F9A281832487F5600032A2C0 /* WebRtcClient+DataChannel.swift in Sources */,
 				F9A281852487F6830032A2C0 /* WebRtcClient+PeerConnection.swift in Sources */,
+				807706C9248908390066D477 /* WebRtcClient+VideoRender.swift in Sources */,
 				F9A2817F2487F05A0032A2C0 /* WebRtcClient.swift in Sources */,
+				F9A2818D248952990032A2C0 /* WebRtcSignal.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -577,7 +603,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = ElastosRTC/Info.plist;
+				INFOPLIST_FILE = "ElastosRTC/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -603,7 +629,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = ElastosRTC/Info.plist;
+				INFOPLIST_FILE = "ElastosRTC/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

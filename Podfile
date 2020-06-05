@@ -12,6 +12,7 @@ target 'ElastosRTC' do
   end
 
   target 'ElastosRTCDemo' do
+    pod 'ElastosWebRtc', :path => './'
     inherit! :search_paths
   end
 end

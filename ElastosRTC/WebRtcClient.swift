@@ -52,7 +52,7 @@ public class WebRtcClient: NSObject {
 	
 	public var mediaType: SupportMediaType = .audioAndVideo {
 		didSet {
-			//todo
+            setupMediaType()
 		}
 	}
 
@@ -149,8 +149,9 @@ public class WebRtcClient: NSObject {
 
     public func inviteCall(friendId: String) {
         setupMediaType()
-		createOffer { sdp in
-			//todo, send sdp to friend
+		createOffer { [weak self] sdp in
+            guard let self = self else { return }
+            self.send(desc: sdp)
 		}
     }
 

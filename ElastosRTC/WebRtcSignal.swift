@@ -9,8 +9,15 @@
 import Foundation
 import WebRTC
 
+enum SdpType: String, Codable {
+    case answer = "answer"
+    case offer = "offer"
+    case candidate = "candidate"
+    case prAnswer = "prAnswer"
+}
+
 struct SignalingMessage: Codable {
-	let type: String
+	let type: SdpType
 	let sessionDescription: SDP?
 	let candidate: Candidate?
 	let destination: String?
@@ -24,7 +31,7 @@ struct SDP: Codable {
 struct Candidate: Codable {
 	let sdp: String
 	let sdpMLineIndex: Int32
-	let sdpMid: String
+	let sdpMid: String?
 }
 
 extension RTCSdpType {

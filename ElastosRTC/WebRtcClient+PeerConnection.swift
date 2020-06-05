@@ -116,6 +116,7 @@ extension WebRtcClient: RTCPeerConnectionDelegate {
 	
 	public func peerConnection(_ peerConnection: RTCPeerConnection, didGenerate candidate: RTCIceCandidate) {
 		print("\(#function)")
+        self.send(candidate: candidate)
 	}
 	
 	public func peerConnection(_ peerConnection: RTCPeerConnection, didRemove candidates: [RTCIceCandidate]) {
