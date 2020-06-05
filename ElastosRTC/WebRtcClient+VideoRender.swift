@@ -14,7 +14,7 @@ extension WebRtcClient {
 	func setupVideo() {
 		peerConnection.add(localVideoTrack, streamIds: ["stream0"])
 		startCaptureLocalVideo(cameraPositon: .front, videoWidth: 640, videoHeight: 640*16/9, videoFps: 30)
-		self.localVideoTrack.add(localRenderView)
+		localVideoTrack.add(localRenderView)
 	}
 
 	func setupAudio() {
@@ -29,7 +29,7 @@ extension WebRtcClient {
 			var targetFormat: AVCaptureDevice.Format?
 			// find target format
 			let formats = RTCCameraVideoCapturer.supportedFormats(for: targetDevice)
-			formats.forEach { (format) in
+			formats.forEach { format in
 				let description = format.formatDescription as CMFormatDescription
 				let dimensions = CMVideoFormatDescriptionGetDimensions(description)
 
@@ -41,7 +41,7 @@ extension WebRtcClient {
 			}
 			guard let format = targetFormat else { fatalError("could not found target format" ) }
 			capturer.startCapture(with: targetDevice, format: format, fps: videoFps)
-		} else if let capturer = videoCapturer as? RTCFileVideoCapturer{
+		} else if let capturer = videoCapturer as? RTCFileVideoCapturer {
 			if Bundle.main.path( forResource: "sample.mp4", ofType: nil ) != nil {
 				capturer.startCapturing(fromFileNamed: "sample.mp4") { err in print(err) }
 			} else {
