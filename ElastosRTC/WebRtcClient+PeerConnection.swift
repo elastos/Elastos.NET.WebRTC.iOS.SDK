@@ -60,7 +60,7 @@ extension WebRtcClient {
             if let error = error {
                 return assertionFailure("failed to set remote offer sdp, due to \(error)")
             }
-            createAnswer(closure: closure)
+            self.createAnswer(closure: closure)
         }
     }
 

@@ -30,13 +30,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		F9A281862487F82D0032A2C0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F9A8D09E2486A9C100FFDFD2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = F9A8D0A62486A9C100FFDFD2;
-			remoteInfo = ElastosRTC;
-		};
 		F9A8D0B22486A9C100FFDFD2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F9A8D09E2486A9C100FFDFD2 /* Project object */;
@@ -258,7 +251,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				F9A281872487F82D0032A2C0 /* PBXTargetDependency */,
 			);
 			name = ElastosRTCDemo;
 			productName = ElastosRTCDemo;
@@ -428,11 +420,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		F9A281872487F82D0032A2C0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = F9A8D0A62486A9C100FFDFD2 /* ElastosRTC */;
-			targetProxy = F9A281862487F82D0032A2C0 /* PBXContainerItemProxy */;
-		};
 		F9A8D0B32486A9C100FFDFD2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F9A8D0A62486A9C100FFDFD2 /* ElastosRTC */;

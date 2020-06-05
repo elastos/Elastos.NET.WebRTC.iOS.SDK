@@ -17,27 +17,21 @@ class CameraSession: NSObject {
         return session
     }()
 
-    private var output: AVCaptureVideoDataOutput = {
+    private lazy var output: AVCaptureVideoDataOutput = {
         let output = AVCaptureVideoDataOutput()
-        let queue: DispatchQueue = DispatchQueue(label: "videodata", attributes: .concurrent)
-        output.setSampleBufferDelegate(self, queue: queue)
+        output.setSampleBufferDelegate(self, queue: DispatchQueue(label: "elastos.video.data.output", attributes: .concurrent))
         output.alwaysDiscardsLateVideoFrames = false
         output.videoSettings = [kCVPixelBufferPixelFormatTypeKey: kCVPixelFormatType_420YpCbCr8BiPlanarFullRange] as [String : Any]
         return output
     }()
 
-    private var device: AVCaptureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front)
-
-    override init() {
-        super.init()
-    }
-
-    func setupSession() {
-        guard let input = try? AVCaptureDeviceInput(device: device) else {
+    func start() {
+        guard let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front),
+            let input = try? AVCaptureDeviceInput(device: device) else {
             return assertionFailure("could not found input device")
         }
         session.addInput(input)
-        session.addOutput(self.output)
+        session.addOutput(output)
         session.sessionPreset = .inputPriority
         session.usesApplicationAudioSession = false
         session.startRunning()
@@ -46,4 +40,7 @@ class CameraSession: NSObject {
 
 extension CameraSession: AVCaptureVideoDataOutputSampleBufferDelegate {
 
+    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        
+    }
 }
