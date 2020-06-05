@@ -57,6 +57,7 @@ public class WebRtcClient: NSObject {
 	}
 
 	var videoCapturer: RTCVideoCapturer?
+    var remoteStream: RTCMediaStream?
 
 	lazy var peerConnection: RTCPeerConnection = {
         let config = RTCConfiguration()
@@ -77,13 +78,15 @@ public class WebRtcClient: NSObject {
 		return peerConnection.dataChannel(forLabel: "dataChannel", configuration: config)!
 	}()
 
-    private lazy var localView: UIView = {
+    // todo: move to demo
+    lazy var localView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
-    private lazy var remoteView: UIView = {
+    // todo: move to demo 
+    lazy var remoteView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -130,24 +133,28 @@ public class WebRtcClient: NSObject {
         remoteView.addSubview(remoteRenderView)
     }
 
+    func setupMediaType() {
+        switch mediaType {
+        case .audio:
+            setupAudio()
+        case .video:
+            setupVideo()
+        case .audioAndVideo:
+            setupAudio()
+            setupVideo()
+        case .none:
+            break
+        }
+    }
+
     public func inviteCall(friendId: String) {
-		switch mediaType {
-		case .audio:
-			setupAudio()
-		case .video:
-			setupVideo()
-		case .audioAndVideo:
-			setupAudio()
-			setupVideo()
-		case .none:
-			break
-		}
+        setupMediaType()
 		createOffer { sdp in
 			//todo, send sdp to friend
 		}
     }
-    
+
     public func endCall(friendId: String) {
-        
+        peerConnection.close()
     }
 }

@@ -49,6 +49,34 @@ extension WebRtcClient {
 			}
 		}
 	}
+
+    /// Receive offer sdp from message channel
+    /// - Parameters:
+    ///   - sdp: SDP Desc
+    ///   - closure: called when set offer sdp success and create a answer sdp and set local success
+    func receive(sdp: RTCSessionDescription, closure: @escaping (RTCSessionDescription) -> Void) {
+        setupMediaType()
+        peerConnection.setRemoteDescription(sdp) { error in
+            if let error = error {
+                return assertionFailure("failed to set remote offer sdp, due to \(error)")
+            }
+            createAnswer(closure: closure)
+        }
+    }
+
+    /// Receive answer sdp from message channel
+    /// - Parameter sdp: SDP Desc
+    func receive(sdp: RTCSessionDescription) {
+        peerConnection.setRemoteDescription(sdp) { error in
+            if let error = error {
+                return assertionFailure("failed to set answer sdp, due to \(error)")
+            }
+        }
+    }
+
+    func receive(candidate: RTCIceCandidate) {
+        peerConnection.add(candidate)
+    }
 }
 
 extension WebRtcClient: RTCPeerConnectionDelegate {
@@ -59,6 +87,15 @@ extension WebRtcClient: RTCPeerConnectionDelegate {
 
 	public func peerConnection(_ peerConnection: RTCPeerConnection, didAdd stream: RTCMediaStream) {
 		print("\(#function)")
+        self.remoteStream = stream
+
+        if let track = stream.videoTracks.first {
+            track.add(remoteRenderView)
+        }
+
+        if let track = stream.audioTracks.first {
+            track.source.volume = 8
+        }
 	}
 	
 	public func peerConnection(_ peerConnection: RTCPeerConnection, didRemove stream: RTCMediaStream) {

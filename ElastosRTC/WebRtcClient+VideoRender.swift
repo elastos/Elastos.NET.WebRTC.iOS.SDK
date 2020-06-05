@@ -55,5 +55,21 @@ extension WebRtcClient: RTCVideoViewDelegate {
 
     public func videoView(_ videoView: RTCVideoRenderer, didChangeVideoSize size: CGSize) {
         print("\(#function)")
+        let isLandScape = size.width < size.height
+        let isLocalRenderView = videoView.isEqual(localRenderView)
+
+        //todo: other cases ?
+        let renderView = isLocalRenderView ? localRenderView : remoteRenderView
+        let parentView = isLocalRenderView ? localView : remoteView
+
+        if isLandScape {
+            let ratio = size.width / size.height
+            renderView.frame = CGRect(x: 0, y: 0, width: parentView.frame.height * ratio, height: parentView.frame.height)
+            renderView.center.x = parentView.frame.width / 2
+        } else {
+            let ratio = size.height / size.width
+            renderView.frame = CGRect(x: 0, y: 0, width: parentView.frame.width, height: parentView.frame.width * ratio)
+            renderView.center.y = parentView.frame.height / 2
+        }
     }
 }
