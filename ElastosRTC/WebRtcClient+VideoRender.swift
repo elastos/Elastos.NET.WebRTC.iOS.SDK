@@ -24,7 +24,7 @@ extension WebRtcClient {
 	func startCaptureLocalVideo(cameraPositon: AVCaptureDevice.Position, videoWidth: Int, videoHeight: Int?, videoFps: Int) {
 		if let capturer = self.videoCapturer as? RTCCameraVideoCapturer {
 			guard let targetDevice = RTCCameraVideoCapturer.captureDevices().first(where: { $0.position == cameraPositon }) else {
-				fatalError("could not found target device")
+				fatalError("could not find target device")
 			}
 			var targetFormat: AVCaptureDevice.Format?
 			// find target format
@@ -39,7 +39,7 @@ extension WebRtcClient {
 					targetFormat = format
 				}
 			}
-			guard let format = targetFormat else { fatalError("could not found target format" ) }
+			guard let format = targetFormat else { fatalError("could not find target format" ) }
 			capturer.startCapture(with: targetDevice, format: format, fps: videoFps)
 		} else if let capturer = videoCapturer as? RTCFileVideoCapturer {
 			if Bundle.main.path( forResource: "sample.mp4", ofType: nil ) != nil {

@@ -23,7 +23,7 @@ public enum SupportMediaType {
 	case none
 }
 
-public protocol WebRtcDelegate {
+public protocol WebRtcDelegate: class {
 
     /// fired when receive invite from yur friends
     /// - Parameter friendId: who is calling you
@@ -48,7 +48,7 @@ public class WebRtcClient: NSObject {
     
     public let carrier: Carrier
     public var customFrameCapturer = false
-    public let delegate: WebRtcDelegate
+    public weak var delegate: WebRtcDelegate?
 	
 	public var mediaType: SupportMediaType = .audioAndVideo {
 		didSet {

@@ -16,11 +16,11 @@ extension WebRtcClient {
 		peerConnection.offer(for: constraints) { [weak self] (desc, error) in
 			guard let self = self else { return }
 			if let error = error {
-				return assertionFailure("cound not create offer, due to \(error)")
+				return assertionFailure("failed to create offer, due to \(error)")
 			} else if let desc = desc {
 				self.peerConnection.setLocalDescription(desc) { error in
 					if let error = error {
-						return assertionFailure("cound not set local sdp, due to \(error)")
+						return assertionFailure("failed to set local sdp, due to \(error)")
 					} else {
 						closure(desc)
 					}
@@ -69,7 +69,7 @@ extension WebRtcClient {
     func receive(sdp: RTCSessionDescription) {
         peerConnection.setRemoteDescription(sdp) { error in
             if let error = error {
-                return assertionFailure("failed to set answer sdp, due to \(error)")
+                return assertionFailure("failed to set remote answer sdp, due to \(error)")
             }
         }
     }
