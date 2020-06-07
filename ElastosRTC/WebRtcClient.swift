@@ -159,3 +159,12 @@ public class WebRtcClient: NSObject {
         peerConnection.close()
     }
 }
+
+extension WebRtcClient: CameraSessionDelegate {
+    
+    func didOutput(_ sampleBuffer: CMSampleBuffer) {
+        guard let cvpixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer),
+            let capturer = self.videoCapturer as? RTCFrameCapturer else { return }
+        capturer.capture(cvpixelBuffer)
+    }
+}

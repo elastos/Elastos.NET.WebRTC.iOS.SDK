@@ -9,7 +9,14 @@
 import Foundation
 import AVFoundation
 
+@objc protocol CameraSessionDelegate {
+    
+    func didOutput(_ sampleBuffer: CMSampleBuffer)
+}
+
 class CameraSession: NSObject {
+    
+    weak var delegate: CameraSessionDelegate?
 
     private var session: AVCaptureSession = {
         let session = AVCaptureSession()
@@ -41,6 +48,6 @@ class CameraSession: NSObject {
 extension CameraSession: AVCaptureVideoDataOutputSampleBufferDelegate {
 
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        
+        self.delegate?.didOutput(sampleBuffer)
     }
 }

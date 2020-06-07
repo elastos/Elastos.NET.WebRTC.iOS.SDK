@@ -22,6 +22,6 @@ Pod::Spec.new do |spec|
   spec.requires_arc = true
   spec.swift_version = '5.0'
   spec.dependency "GoogleWebRTC", "1.1.29400"
-  spec.dependency "ElastosCarrierSDK", "5.5.1"
+  spec.dependency "ElastosCarrierSDK", "5.6.0"
   
 end
