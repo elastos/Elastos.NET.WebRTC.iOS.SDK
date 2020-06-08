@@ -48,6 +48,7 @@ public class WebRtcClient: NSObject {
     
     public let carrier: Carrier
     public var customFrameCapturer = false
+	public var friendId: String?
     public weak var delegate: WebRtcDelegate?
 	
 	public var mediaType: SupportMediaType = .audioAndVideo {
@@ -62,7 +63,9 @@ public class WebRtcClient: NSObject {
 	lazy var peerConnection: RTCPeerConnection = {
         let config = RTCConfiguration()
         let constraints = RTCMediaConstraints.init(mandatoryConstraints: nil, optionalConstraints: nil)
-        config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"])]
+        config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"]),
+                             RTCIceServer(urlStrings: ["stun:gfax.net:3478"]),
+                             RTCIceServer(urlStrings: ["turn:gfax.net:3478"], username: "allcom", credential: "allcompass")]
         return peerConnectionFactory.peerConnection(with: config, constraints: constraints, delegate: self)
     }()
 
@@ -148,6 +151,7 @@ public class WebRtcClient: NSObject {
     }
 
     public func inviteCall(friendId: String) {
+		self.friendId = friendId
         setupMediaType()
 		createOffer { [weak self] sdp in
             guard let self = self else { return }
