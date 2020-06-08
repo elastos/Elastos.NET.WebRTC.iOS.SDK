@@ -23,6 +23,18 @@ extension WebRtcClient {
         }
     }
 
+    func send(removal candidates: [RTCIceCandidate]) {
+        // todo: send removal candidates to friend by carrier sdk
+        do {
+            let signal = RtcSignal(type: .removeCandiate, candidates: candidates.map({ $0.to() }))
+            let data = try JSONEncoder().encode(signal)
+            guard let message = String(data: data, encoding: .utf8) else { return }
+            send(json: message)
+        } catch {
+            assertionFailure("failed to convert data, due to \(error)")
+        }
+    }
+
     func send(desc: RTCSessionDescription) {
         // todo: send offer or answer to friend by carrier sdk
         do {
