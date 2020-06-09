@@ -16,11 +16,21 @@ public enum CallReason {
     case missing
 }
 
-public enum SupportMediaType {
-	case audio
-	case video
-	case audioAndVideo
-	case none
+public enum MediaOptionItem: Equatable {
+    case audio
+    case video
+    case dataChannel
+}
+
+public class MediaOptions: ExpressibleByArrayLiteral, CustomStringConvertible {
+
+    public typealias ArrayLiteralElement = MediaOptionItem
+
+    private let options: [MediaOptionItem]
+
+    public required init(arrayLiteral elements: MediaOptionItem...) {
+        self.options = elements
+    }
 }
 
 public protocol WebRtcDelegate: class {
@@ -50,12 +60,15 @@ public class WebRtcClient: NSObject {
     public var customFrameCapturer = false
 	public var friendId: String?
     public weak var delegate: WebRtcDelegate?
-	
-	public var mediaType: SupportMediaType = .audioAndVideo {
-		didSet {
-            setupMediaType()
-		}
-	}
+
+    public let localView: UIView?
+    public let remoteView: UIView?
+
+    public var options: MediaOptions? {
+        didSet {
+            
+        }
+    }
 
 	var videoCapturer: RTCVideoCapturer?
     var remoteStream: RTCMediaStream?
@@ -80,20 +93,6 @@ public class WebRtcClient: NSObject {
 		config.channelId = 0
 		return peerConnection.dataChannel(forLabel: "dataChannel", configuration: config)!
 	}()
-
-    // todo: move to demo
-    lazy var localView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
-    // todo: move to demo 
-    lazy var remoteView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
 
     lazy var localRenderView: RTCEAGLVideoView = {
         let view = RTCEAGLVideoView()
@@ -126,28 +125,16 @@ public class WebRtcClient: NSObject {
         return peerConnectionFactory.videoTrack(with: source, trackId: "video0")
     }()
         
-    public init(carrier: Carrier, delegate: WebRtcDelegate) {
+    public init(carrier: Carrier, delegate: WebRtcDelegate, localView: UIView? = nil, remoteView: UIView? = nil) {
         self.carrier = carrier
         self.delegate = delegate
+        self.localView = localView
+        self.remoteView = remoteView
     }
 
     private func setupViews() {
-        localView.addSubview(localRenderView)
-        remoteView.addSubview(remoteRenderView)
-    }
-
-    func setupMediaType() {
-        switch mediaType {
-        case .audio:
-            setupAudio()
-        case .video:
-            setupVideo()
-        case .audioAndVideo:
-            setupAudio()
-            setupVideo()
-        case .none:
-            break
-        }
+        localView?.addSubview(localRenderView)
+        remoteView?.addSubview(remoteRenderView)
     }
 
     public func inviteCall(friendId: String) {
