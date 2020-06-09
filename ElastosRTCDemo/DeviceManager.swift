@@ -10,6 +10,7 @@ extension Notification.Name {
     static let friendInfoChanged = Notification.Name("friendInfoChanged")
     static let friendAdded = Notification.Name("friendAdded")
     static let acceptFriend = Notification.Name("acceptFriend")
+    static let friendList = Notification.Name("friendList")
 
 }
 var transferFrientId = ""
@@ -114,6 +115,7 @@ extension DeviceManager : CarrierDelegate
     
     public func didReceiveFriendsList(_ carrier: Carrier,
                                       _ friends: [CarrierFriendInfo]) {
+        NotificationCenter.default.post(name: .friendList, object: self, userInfo: ["friends": friends])
     }
     
     public func friendInfoDidChange(_ carrier: Carrier,
@@ -126,9 +128,9 @@ extension DeviceManager : CarrierDelegate
     public func friendConnectionDidChange(_ carrier: Carrier,
                                           _ friendId: String,
                                           _ newStatus: CarrierConnectionStatus) {
-        if friendId == transferFrientId {
-          NotificationCenter.default.post(name: .friendStatusChanged, object: self, userInfo: ["friendState":newStatus])
-        }
+        NotificationCenter.default.post(name: .friendStatusChanged,
+                                        object: self,
+                                        userInfo: ["friendState": newStatus, "userId": friendId])
     }
     
     public func didReceiveFriendRequest(_ carrier: Carrier,

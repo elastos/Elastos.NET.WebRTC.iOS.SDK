@@ -16,7 +16,7 @@ public enum CallReason {
     case missing
 }
 
-public enum MediaOptionItem: Equatable {
+public enum MediaOptionItem: String, Equatable {
     case audio
     case video
     case dataChannel
@@ -24,12 +24,30 @@ public enum MediaOptionItem: Equatable {
 
 public class MediaOptions: ExpressibleByArrayLiteral, CustomStringConvertible {
 
+    public var description: String {
+        options.reduce(into: "") { (result, item) in
+            result += item.rawValue + ", "
+        }
+    }
+
     public typealias ArrayLiteralElement = MediaOptionItem
 
     private let options: [MediaOptionItem]
 
     public required init(arrayLiteral elements: MediaOptionItem...) {
         self.options = elements
+    }
+
+    public var isEnabledAudio: Bool {
+        options.contains(.audio)
+    }
+
+    public var isEnabledVideo: Bool {
+        options.contains(.video)
+    }
+
+    public var isEnabledDataChannel: Bool {
+        options.contains(.dataChannel)
     }
 }
 
@@ -66,7 +84,7 @@ public class WebRtcClient: NSObject {
 
     public var options: MediaOptions? {
         didSet {
-            
+            setupMedia()
         }
     }
 
@@ -87,12 +105,6 @@ public class WebRtcClient: NSObject {
         let videoEncoder = RTCDefaultVideoEncoderFactory()
         return RTCPeerConnectionFactory(encoderFactory: videoEncoder, decoderFactory: videoDecoder)
     }()
-
-	lazy var dataChannel: RTCDataChannel = {
-		let config = RTCDataChannelConfiguration()
-		config.channelId = 0
-		return peerConnection.dataChannel(forLabel: "dataChannel", configuration: config)!
-	}()
 
     lazy var localRenderView: RTCEAGLVideoView = {
         let view = RTCEAGLVideoView()
@@ -139,7 +151,7 @@ public class WebRtcClient: NSObject {
 
     public func inviteCall(friendId: String) {
 		self.friendId = friendId
-        setupMediaType()
+        setupMedia()
 		createOffer { [weak self] sdp in
             guard let self = self else { return }
             self.send(desc: sdp)

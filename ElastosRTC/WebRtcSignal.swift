@@ -106,28 +106,28 @@ extension RTCSdpType {
 
 	var value: String {
 		switch self {
-			case .answer:
-				return "answer"
-			case .offer:
-				return "offer"
-			case .prAnswer:
-				return "prAnswer"
-			@unknown default:
-				assertionFailure("unknown state")
-				return "unknown"
+		case .answer:
+			return "answer"
+		case .offer:
+			return "offer"
+		case .prAnswer:
+			return "prAnswer"
+		@unknown default:
+			assertionFailure("unknown state")
+			return "unknown"
 		}
 	}
 
     var to: SdpType? {
         switch self {
-            case .answer:
-                return .answer
-            case .offer:
-                return .offer
-            case .prAnswer:
-                return .prAnswer
-            default:
-                return nil
+        case .answer:
+            return .answer
+        case .offer:
+            return .offer
+        case .prAnswer:
+            return .prAnswer
+        default:
+            return nil
         }
     }
 }

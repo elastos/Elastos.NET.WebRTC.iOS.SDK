@@ -59,7 +59,7 @@ extension WebRtcClient {
     ///   - sdp: SDP Desc
     ///   - closure: called when set offer sdp success and create a answer sdp and set local success
     func receive(sdp: RTCSessionDescription, closure: @escaping (RTCSessionDescription) -> Void) {
-        setupMediaType()
+        setupMedia()
         peerConnection.setRemoteDescription(sdp) { error in
             if let error = error {
                 return assertionFailure("failed to set remote offer sdp, due to \(error)")

@@ -17,11 +17,10 @@ class ViewController: UIViewController, CarrierDelegate {
         DeviceManager.sharedInstance.carrierInst
     }
 
-    private let qrcodeView: UIImageView = {
-        let view = UIImageView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+    @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var myUserIdLabel: UILabel!
+    @IBOutlet weak var myQRCodeView: UIImageView!
 
     private let titleLabel: UILabel = {
         let view = UILabel()
@@ -33,90 +32,97 @@ class ViewController: UIViewController, CarrierDelegate {
         return view
     }()
 
-    private let textField: UITextField = {
-        let view = UITextField()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.adjustsFontSizeToFitWidth = true
-        view.textColor = .white
-        return view
-    }()
-
-    private let bottomLine: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .white
-        return view
-    }()
-
-    private let tableView: UITableView = {
-        let view = UITableView(frame: .zero, style: .grouped)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.register(UITableViewCell.self, forCellReuseIdentifier: NSStringFromClass(UITableViewCell.self))
-        return view
-    }()
-
-    private var friends: [String] = ["xx"]
+    private var friends: Set<FriendCellModel> = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = "WebRtc Demo"
-        view.backgroundColor = .darkGray
+        tableView.register(FriendCell.self, forCellReuseIdentifier: NSStringFromClass(FriendCell.self))
         DeviceManager.sharedInstance.start()
-        setupSubviews()
-        setupConstraints()
         loadMyInfo()
     }
 
-    private func setupSubviews() {
-        view.addSubview(titleLabel)
-        view.addSubview(textField)
-        view.addSubview(bottomLine)
-        view.addSubview(tableView)
-        view.addSubview(qrcodeView)
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.backgroundView = nil
-        tableView.backgroundColor = .clear
+    func setupObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleFriendStatusChanged(notif:)), name: .friendStatusChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleFriendList(notif:)), name: .friendList, object: nil)
     }
-    
-    private func setupConstraints() {
-        let views = ["title": titleLabel, "textField": textField, "line": bottomLine, "tableView": tableView, "qrcode": qrcodeView]
-        var constraints: [NSLayoutConstraint] = []
-        constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-[title]-|", options: [], metrics: nil, views: views)
-        constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-[textField]-|", options: [], metrics: nil, views: views)
-        constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-[line]-|", options: [], metrics: nil, views: views)
-        constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|[tableView]|", options: [], metrics: nil, views: views)
-        constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:[title]-20-[textField][line(1)]-20-[tableView]-[qrcode(80)]|", options: [], metrics: nil, views: views)
-        constraints.append(titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20))
-        constraints.append(qrcodeView.widthAnchor.constraint(equalToConstant: 80))
-        constraints.append(qrcodeView.centerXAnchor.constraint(equalTo: view.centerXAnchor))
-        NSLayoutConstraint.activate(constraints)
-    }
-    
+
     func loadMyInfo() {
         let address = carrier.getAddress()
-        qrcodeView.image = UIImage(cgImage: EFQRCode.generate(content: address)!)
+        myQRCodeView.image = UIImage(cgImage: EFQRCode.generate(content: address)!)
+    }
+
+    @objc func handleFriendStatusChanged(notif: NSNotification) {
+//        guard let friendState = notif.userInfo?["friendState"] as? CarrierConnectionStatus,
+//            let id = notif.userInfo?["id"] as? String else {
+//            return assertionFailure("missing data")
+//        }
+    }
+
+    @objc func handleFriendList(notif: NSNotification) {
+        guard let list = notif.userInfo?["friends"] as? [CarrierFriendInfo] else {
+            return assertionFailure("missing data")
+        }
+        friends = Set(list.map({ $0.convert() }))
     }
 }
 
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return friends.count
     }
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    
+
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "My Favorite"
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(UITableViewCell.self), for: indexPath)
-        cell.textLabel?.text = friends[indexPath.row]
-        cell.backgroundColor = .clear
-        cell.textLabel?.textColor = .white
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(FriendCell.self), for: indexPath) as? FriendCell else { fatalError() }
+        cell.update(FriendCellModel(id: "xxx", name: "Tomas Shao", avatar: nil, status: .online))
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    }
+}
+
+extension CarrierConnectionStatus {
+
+    var status: Status {
+        switch self {
+        case .Connected:
+            return .online
+        case .Disconnected:
+            return .offline
+        }
+    }
+}
+
+extension CarrierPresenceStatus {
+
+    var status: Status {
+        switch self {
+        case .None:
+            return .online
+        case .Busy:
+            return .busy
+        case .Away:
+            return .away
+        }
+    }
+}
+
+extension CarrierFriendInfo {
+
+    func convert() -> FriendCellModel {
+        FriendCellModel(id: self.userId ?? "no user id",
+                        name: self.label ?? self.name ?? "no name",
+                        avatar: nil,
+                        status: self.presence.status)
     }
 }
