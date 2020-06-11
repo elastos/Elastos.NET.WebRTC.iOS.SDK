@@ -52,6 +52,8 @@ class FriendCell: UITableViewCell {
     private let nameLabel: UILabel = {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.lineBreakMode = .byCharWrapping
+        view.numberOfLines = 0
         return view
     }()
 
@@ -90,7 +92,7 @@ class FriendCell: UITableViewCell {
     }
 
     func update(_ friend: FriendCellModel) {
-        nameLabel.text = friend.name + "(" + friend.id + ")"
+        nameLabel.text = friend.name + friend.id
         statusLabel.text = friend.status.rawValue
         statusLabel.textColor = friend.status.textColor
     }

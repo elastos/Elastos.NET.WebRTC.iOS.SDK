@@ -115,6 +115,7 @@ extension DeviceManager : CarrierDelegate
     
     public func didReceiveFriendsList(_ carrier: Carrier,
                                       _ friends: [CarrierFriendInfo]) {
+        print("\(#function), friends: \(friends)")
         NotificationCenter.default.post(name: .friendList, object: self, userInfo: ["friends": friends])
     }
     

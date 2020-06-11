@@ -7,16 +7,21 @@ PODS:
     - ElastosCarrierSDK (= 5.6.0)
     - GoogleWebRTC (= 1.1.29400)
   - GoogleWebRTC (1.1.29400)
+  - SDWebImage (5.8.0):
+    - SDWebImage/Core (= 5.8.0)
+  - SDWebImage/Core (5.8.0)
 
 DEPENDENCIES:
   - EFQRCode
   - ElastosWebRtc (from `./`)
+  - SDWebImage
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - EFQRCode
     - ElastosCarrierSDK
     - GoogleWebRTC
+    - SDWebImage
 
 EXTERNAL SOURCES:
   ElastosWebRtc:
@@ -27,7 +32,8 @@ SPEC CHECKSUMS:
   ElastosCarrierSDK: 995971cd22f839518fcfc657ab250feeb179ab48
   ElastosWebRtc: 60118274764901b42910ba505f5cb9cedc266bf9
   GoogleWebRTC: cfb83bc346435a17fe06bb05f04ad826b858a7fb
+  SDWebImage: 84000f962cbfa70c07f19d2234cbfcf5d779b5dc
 
-PODFILE CHECKSUM: 850afcaced15a4578387231829a9f173f9fd33e5
+PODFILE CHECKSUM: f2ee6974c602237f3a80d968b967496b12b8a1e9
 
 COCOAPODS: 1.9.3

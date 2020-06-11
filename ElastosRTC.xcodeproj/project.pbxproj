@@ -11,6 +11,7 @@
 		807706C9248908390066D477 /* WebRtcClient+VideoRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807706C8248908390066D477 /* WebRtcClient+VideoRender.swift */; };
 		807706CB248A21DE0066D477 /* CameraSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807706CA248A21DE0066D477 /* CameraSession.swift */; };
 		C5FC6EA084D0886BEEC5A48C /* Pods_ElastosRTCDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75885C044B032846CFCCBA1F /* Pods_ElastosRTCDemo.framework */; };
+		F928409324927AEC00A89EC0 /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F928409224927AEB00A89EC0 /* CallViewController.swift */; };
 		F9870083248FE1DB005758F3 /* FriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9870082248FE1DB005758F3 /* FriendCell.swift */; };
 		F9A2817F2487F05A0032A2C0 /* WebRtcClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A2817E2487F05A0032A2C0 /* WebRtcClient.swift */; };
 		F9A281812487F5230032A2C0 /* WebRtcClient+Carrier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A281802487F5230032A2C0 /* WebRtcClient+Carrier.swift */; };
@@ -46,6 +47,7 @@
 		807706C8248908390066D477 /* WebRtcClient+VideoRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebRtcClient+VideoRender.swift"; sourceTree = "<group>"; };
 		807706CA248A21DE0066D477 /* CameraSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSession.swift; sourceTree = "<group>"; };
 		D106126C256D19CEF427196A /* Pods-ElastosRTCDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosRTCDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ElastosRTCDemo/Pods-ElastosRTCDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		F928409224927AEB00A89EC0 /* CallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
 		F9870082248FE1DB005758F3 /* FriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCell.swift; sourceTree = "<group>"; };
 		F9A2817E2487F05A0032A2C0 /* WebRtcClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRtcClient.swift; sourceTree = "<group>"; };
 		F9A281802487F5230032A2C0 /* WebRtcClient+Carrier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebRtcClient+Carrier.swift"; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 				F9A8D0CD2486AA1C00FFDFD2 /* Main.storyboard */,
 				F9A8D0C92486AA1C00FFDFD2 /* SceneDelegate.swift */,
 				F9A8D0CB2486AA1C00FFDFD2 /* ViewController.swift */,
+				F928409224927AEB00A89EC0 /* CallViewController.swift */,
 				F9870082248FE1DB005758F3 /* FriendCell.swift */,
 			);
 			path = ElastosRTCDemo;
@@ -389,6 +392,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F928409324927AEC00A89EC0 /* CallViewController.swift in Sources */,
 				F9A8D0C82486AA1C00FFDFD2 /* AppDelegate.swift in Sources */,
 				743AC317248D33EA00A04AD0 /* DeviceManager.swift in Sources */,
 				F9A8D0CA2486AA1C00FFDFD2 /* SceneDelegate.swift in Sources */,
