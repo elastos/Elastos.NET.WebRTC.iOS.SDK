@@ -38,8 +38,9 @@ class ViewController: UIViewController, CarrierDelegate {
     }
     
     func setupObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleFriendStatusChanged(notif:)), name: .friendStatusChanged, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleFriendList(notif:)), name: .friendList, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleFriendStatusChanged(_:)), name: .friendStatusChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleFriendList(_:)), name: .friendList, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(newFriendAdded(_:)), name: .friendAdded, object: nil)
     }
 
     func loadMyInfo() {
@@ -47,23 +48,6 @@ class ViewController: UIViewController, CarrierDelegate {
         myUserIdLabel.text = address
         print(address)
         myQRCodeView.image = UIImage(cgImage: EFQRCode.generate(content: address)!)
-    }
-
-    @objc func handleFriendStatusChanged(notif: NSNotification) {
-//        guard let friendState = notif.userInfo?["friendState"] as? CarrierConnectionStatus,
-//            let id = notif.userInfo?["id"] as? String else {
-//            return assertionFailure("missing data")
-//        }
-    }
-
-    @objc func handleFriendList(notif: NSNotification) {
-        guard let list = notif.userInfo?["friends"] as? [CarrierFriendInfo] else {
-            return assertionFailure("missing data")
-        }
-        friends = Set(list.map({ $0.convert() }))
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
     }
 }
 
@@ -98,6 +82,30 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
             calling.friendId = Array(friends)[index].id
         }
     }
+}
+
+/// Handle Notification
+extension ViewController {
+
+	@objc func handleFriendStatusChanged(_ notification: NSNotification) {
+
+	}
+	
+	@objc func newFriendAdded(_ notification: NSNotification) {
+		guard let friend = notification.userInfo?["friend"] as? CarrierFriendInfo else { return assertionFailure("missing data") }
+		friends.insert(friend.convert())
+	}
+
+	@objc func handleFriendList(_ notification: NSNotification) {
+		guard let list = notification.userInfo?["friends"] as? [CarrierFriendInfo] else {
+			return assertionFailure("missing data")
+		}
+		friends = Set(list.map({ $0.convert() }))
+		DispatchQueue.main.async {
+			self.tableView.reloadData()
+		}
+	}
+
 }
 
 extension CarrierConnectionStatus {

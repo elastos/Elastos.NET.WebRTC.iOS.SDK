@@ -19,7 +19,7 @@ enum Status: String {
     case .online:
         return .systemGreen
     case .offline:
-        return .systemGray2
+        return .lightGray
     case .busy, .away:
         return .red
     }

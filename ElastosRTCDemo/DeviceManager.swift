@@ -111,6 +111,7 @@ extension DeviceManager : CarrierDelegate
 
     public func selfUserInfoDidChange(_ carrier: Carrier,
                                       _ newInfo: CarrierUserInfo) {
+		print("\(#function), newInfo: \(newInfo)")
     }
     
     public func didReceiveFriendsList(_ carrier: Carrier,

@@ -49,7 +49,7 @@ extension WebRtcClient {
 	func send(json: String) {
 		guard let friendId = self.friendId else { return assertionFailure("friendId is null") }
 		do {
-			try carrier.sendInviteFriendRequest(to: friendId, withData: json) { (carrier, _, _, _, _) in }
+			try carrier.inviteFriend(friendId, json, { (_, _, _, _, _) in })
 		} catch {
 			assertionFailure("failed to send candidate to \(friendId), due to \(error)")
 		}

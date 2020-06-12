@@ -23,7 +23,6 @@
 		F9A8D0B62486A9C100FFDFD2 /* ElastosRTCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A8D0B52486A9C100FFDFD2 /* ElastosRTCTests.swift */; };
 		F9A8D0B82486A9C100FFDFD2 /* ElastosRTC.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A8D0AA2486A9C100FFDFD2 /* ElastosRTC.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F9A8D0C82486AA1C00FFDFD2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A8D0C72486AA1C00FFDFD2 /* AppDelegate.swift */; };
-		F9A8D0CA2486AA1C00FFDFD2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A8D0C92486AA1C00FFDFD2 /* SceneDelegate.swift */; };
 		F9A8D0CC2486AA1C00FFDFD2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A8D0CB2486AA1C00FFDFD2 /* ViewController.swift */; };
 		F9A8D0CF2486AA1C00FFDFD2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F9A8D0CD2486AA1C00FFDFD2 /* Main.storyboard */; };
 		F9A8D0D12486AA2100FFDFD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F9A8D0D02486AA2100FFDFD2 /* Assets.xcassets */; };
@@ -63,7 +62,6 @@
 		F9A8D0B72486A9C100FFDFD2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F9A8D0C52486AA1C00FFDFD2 /* ElastosRTCDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ElastosRTCDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9A8D0C72486AA1C00FFDFD2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		F9A8D0C92486AA1C00FFDFD2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		F9A8D0CB2486AA1C00FFDFD2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		F9A8D0CE2486AA1C00FFDFD2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F9A8D0D02486AA2100FFDFD2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -180,7 +178,6 @@
 				F9A8D0D52486AA2100FFDFD2 /* Info.plist */,
 				F9A8D0D22486AA2100FFDFD2 /* LaunchScreen.storyboard */,
 				F9A8D0CD2486AA1C00FFDFD2 /* Main.storyboard */,
-				F9A8D0C92486AA1C00FFDFD2 /* SceneDelegate.swift */,
 				F9A8D0CB2486AA1C00FFDFD2 /* ViewController.swift */,
 				F928409224927AEB00A89EC0 /* CallViewController.swift */,
 				F9870082248FE1DB005758F3 /* FriendCell.swift */,
@@ -395,7 +392,6 @@
 				F928409324927AEC00A89EC0 /* CallViewController.swift in Sources */,
 				F9A8D0C82486AA1C00FFDFD2 /* AppDelegate.swift in Sources */,
 				743AC317248D33EA00A04AD0 /* DeviceManager.swift in Sources */,
-				F9A8D0CA2486AA1C00FFDFD2 /* SceneDelegate.swift in Sources */,
 				F9A8D0CC2486AA1C00FFDFD2 /* ViewController.swift in Sources */,
 				F9870083248FE1DB005758F3 /* FriendCell.swift in Sources */,
 			);

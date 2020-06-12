@@ -74,7 +74,7 @@ public protocol WebRtcDelegate: class {
 
 public class WebRtcClient: NSObject {
     
-    public let carrier: Carrier
+    public let carrier: CarrierExtension
     public var customFrameCapturer = false
 	public var friendId: String?
     public weak var delegate: WebRtcDelegate?
@@ -138,7 +138,7 @@ public class WebRtcClient: NSObject {
     }()
         
     public init(carrier: Carrier, delegate: WebRtcDelegate, localView: UIView? = nil, remoteView: UIView? = nil) {
-        self.carrier = carrier
+        self.carrier = CarrierExtension(carrier)
         self.delegate = delegate
         self.localView = localView
         self.remoteView = remoteView
