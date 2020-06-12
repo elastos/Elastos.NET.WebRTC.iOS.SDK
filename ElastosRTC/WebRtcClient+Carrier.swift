@@ -51,7 +51,7 @@ extension WebRtcClient {
 		do {
 			try carrier.inviteFriend(friendId, json, { (_, _, _, _, _) in })
 		} catch {
-			assertionFailure("failed to send candidate to \(friendId), due to \(error)")
+			assertionFailure("failed to send data to \(friendId), \(json), due to \(error)")
 		}
 	}
 }

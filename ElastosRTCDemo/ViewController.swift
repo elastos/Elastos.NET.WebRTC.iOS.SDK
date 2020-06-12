@@ -73,14 +73,14 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
         performSegue(withIdentifier: "callingPage", sender: self)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let calling = segue.destination as? CallViewController, let index = tableView.indexPathForSelectedRow?.row {
-            calling.friendId = Array(friends)[index].id
-        }
+		guard let navigation = segue.destination as? UINavigationController,
+			let calling = navigation.viewControllers.first as? CallViewController,
+			let index = tableView.indexPathForSelectedRow?.row else { return assertionFailure() }
+        calling.friendId = Array(friends)[index].id
     }
 }
 
@@ -92,7 +92,7 @@ extension ViewController {
 	}
 	
 	@objc func newFriendAdded(_ notification: NSNotification) {
-		guard let friend = notification.userInfo?["friend"] as? CarrierFriendInfo else { return assertionFailure("missing data") }
+		guard let friend = notification.userInfo?["friendInfo"] as? CarrierFriendInfo else { return assertionFailure("missing data") }
 		friends.insert(friend.convert())
 	}
 
