@@ -142,6 +142,15 @@ public class WebRtcClient: NSObject {
         self.delegate = delegate
         self.localView = localView
         self.remoteView = remoteView
+
+		do {
+			try self.carrier.registerExtension { (carrier, arg1, arg2) in
+				print("register extension callback, \(arg1), \(arg2 ?? "no value")")
+			}
+
+		} catch {
+			print("register extension error, due to \(error)")
+		}
     }
 
     private func setupViews() {

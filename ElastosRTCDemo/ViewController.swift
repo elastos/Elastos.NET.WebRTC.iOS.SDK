@@ -134,12 +134,24 @@ extension CarrierPresenceStatus {
     }
 }
 
+extension CarrierConnectionStatus {
+
+	var to: Status {
+		switch self {
+		case .Connected:
+			return .online
+		case .Disconnected:
+			return .offline
+		}
+	}
+}
+
 extension CarrierFriendInfo {
 
     func convert() -> FriendCellModel {
         FriendCellModel(id: self.userId ?? "no user id",
                         name: self.label ?? self.name ?? "no name",
                         avatar: nil,
-                        status: self.presence.status)
+						status: self.status.to)
     }
 }
