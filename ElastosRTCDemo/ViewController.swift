@@ -33,7 +33,11 @@ class ViewController: UIViewController, CarrierDelegate {
     }
     @IBAction func addAsFriend(_ sender: Any) {
         if textField.text?.isEmpty == false {
-            try? carrier.addFriend(with: textField.text!, withGreeting: "hi my friend.")
+            do {
+                try carrier.addFriend(with: textField.text!, withGreeting: "hi my friend.")
+            } catch {
+                print("add as friend error, due to \(error)")
+            }
         }
     }
     
