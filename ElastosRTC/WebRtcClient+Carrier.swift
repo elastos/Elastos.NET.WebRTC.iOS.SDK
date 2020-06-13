@@ -49,6 +49,7 @@ extension WebRtcClient {
 	func send(json: String) {
 		guard let friendId = self.friendId else { return assertionFailure("friendId is null") }
 		do {
+            print("send data to friend \nname = \(friendId), content = \(json)")
 			try carrier.inviteFriend(friendId, json, { (_, _, _, _, _) in })
 		} catch {
 			assertionFailure("failed to send data to \(friendId), \(json), due to \(error)")

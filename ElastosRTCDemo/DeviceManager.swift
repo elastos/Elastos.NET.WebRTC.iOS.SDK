@@ -124,12 +124,13 @@ extension DeviceManager : CarrierDelegate
                                     _ friendId: String,
                                     _ newInfo: CarrierFriendInfo) {
         print("friendInfoDidChange : \(newInfo)")
-        NotificationCenter.default.post(name: .friendInfoChanged, object: self, userInfo: ["friendInfo":newInfo])
+        NotificationCenter.default.post(name: .friendInfoChanged, object: self, userInfo: ["friend":newInfo])
     }
     
     public func friendConnectionDidChange(_ carrier: Carrier,
                                           _ friendId: String,
                                           _ newStatus: CarrierConnectionStatus) {
+        print("friendConnectionDidChange : \(friendId), \(newStatus)")
         NotificationCenter.default.post(name: .friendStatusChanged,
                                         object: self,
                                         userInfo: ["friendState": newStatus, "userId": friendId])
@@ -145,7 +146,7 @@ extension DeviceManager : CarrierDelegate
         } catch {
             NSLog("Accept friend \(userId) error : \(error.localizedDescription)")
         }
-        NotificationCenter.default.post(name: .acceptFriend, object: self, userInfo: ["friendInfo":userInfo])
+        NotificationCenter.default.post(name: .acceptFriend, object: self, userInfo: ["friend": userInfo])
     }
     
     public func didReceiveFriendResponse(_ carrier: Carrier,
@@ -160,7 +161,7 @@ extension DeviceManager : CarrierDelegate
     public func newFriendAdded(_ carrier: Carrier,
                                _ newFriend: CarrierFriendInfo) {
         print("newFriendAdded : \(newFriend)")
-        NotificationCenter.default.post(name: .friendAdded, object: self, userInfo: ["friendInfo":newFriend])
+        NotificationCenter.default.post(name: .friendAdded, object: self, userInfo: ["friend":newFriend])
     }
     
     public func friendRemoved(_ carrier: Carrier,

@@ -30,7 +30,20 @@ class ViewController: UIViewController, CarrierDelegate {
         tableView.register(FriendCell.self, forCellReuseIdentifier: NSStringFromClass(FriendCell.self))
         DeviceManager.sharedInstance.start()
         loadMyInfo()
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(testMessage))
     }
+    
+    @objc func testMessage() {
+        do {
+            try self.carrier.sendFriendMessage(to: "Djyqhb7skN1uNa5phVp275MoMUFCZ1g4QvxYmPbdfWEo", "hi message".data(using: .utf8)!)
+            try self.carrier.sendInviteFriendRequest(to: "Djyqhb7skN1uNa5phVp275MoMUFCZ1g4QvxYmPbdfWEo", withData: "hi invite message", responseHandler: { (_, _, _, _, _) in
+            })
+        } catch {
+            print(error)
+        }
+    }
+    
     @IBAction func addAsFriend(_ sender: Any) {
         if textField.text?.isEmpty == false {
             do {
@@ -39,16 +52,20 @@ class ViewController: UIViewController, CarrierDelegate {
                 print("add as friend error, due to \(error)")
             }
         }
+        
+        self.view.endEditing(true)
     }
     
     func setupObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleFriendStatusChanged(_:)), name: .friendStatusChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleFriendList(_:)), name: .friendList, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(newFriendAdded(_:)), name: .friendAdded, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(newFriendAdded(_:)), name: .friendInfoChanged, object: nil)
     }
 
     func loadMyInfo() {
         let address = carrier.getAddress()
+        print(carrier.getUserId())
         myUserIdLabel.text = address
         print(address)
         myQRCodeView.image = UIImage(cgImage: EFQRCode.generate(content: address)!)
@@ -96,7 +113,8 @@ extension ViewController {
 	}
 	
 	@objc func newFriendAdded(_ notification: NSNotification) {
-		guard let friend = notification.userInfo?["friendInfo"] as? CarrierFriendInfo else { return assertionFailure("missing data") }
+		guard let friend = notification.userInfo?["friend"] as? CarrierFriendInfo else { return assertionFailure("missing data") }
+        friends.remove(friend.convert())
 		friends.insert(friend.convert())
 	}
 
