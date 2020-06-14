@@ -3,14 +3,18 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		743AC317248D33EA00A04AD0 /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743AC316248D33EA00A04AD0 /* DeviceManager.swift */; };
 		745CB72E2494668A00E7D308 /* Carrier+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745CB72D2494668A00E7D308 /* Carrier+Util.swift */; };
+		745CB7312495A0B400E7D308 /* ElastosRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A8D0A72486A9C100FFDFD2 /* ElastosRTC.framework */; };
+		745CB7322495A0B400E7D308 /* ElastosRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9A8D0A72486A9C100FFDFD2 /* ElastosRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		807706C9248908390066D477 /* WebRtcClient+VideoRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807706C8248908390066D477 /* WebRtcClient+VideoRender.swift */; };
 		807706CB248A21DE0066D477 /* CameraSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807706CA248A21DE0066D477 /* CameraSession.swift */; };
+		83751758AB9C042ECF924374 /* Pods_ElastosRTCTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9433CAE98CBBF62000E449C2 /* Pods_ElastosRTCTests.framework */; };
+		8C3285D5CB4A9871CAD13993 /* Pods_ElastosRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D89F702DD67FA45DCC3E3EF5 /* Pods_ElastosRTC.framework */; };
 		C5FC6EA084D0886BEEC5A48C /* Pods_ElastosRTCDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75885C044B032846CFCCBA1F /* Pods_ElastosRTCDemo.framework */; };
 		F928409324927AEC00A89EC0 /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F928409224927AEB00A89EC0 /* CallViewController.swift */; };
 		F9870083248FE1DB005758F3 /* FriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9870082248FE1DB005758F3 /* FriendCell.swift */; };
@@ -31,6 +35,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		745CB72F2495A0AC00E7D308 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F9A8D09E2486A9C100FFDFD2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F9A8D0A62486A9C100FFDFD2;
+			remoteInfo = ElastosRTC;
+		};
+		745CB7332495A0B400E7D308 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F9A8D09E2486A9C100FFDFD2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F9A8D0A62486A9C100FFDFD2;
+			remoteInfo = ElastosRTC;
+		};
 		F9A8D0B22486A9C100FFDFD2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F9A8D09E2486A9C100FFDFD2 /* Project object */;
@@ -40,14 +58,34 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		745CB7352495A0B400E7D308 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				745CB7322495A0B400E7D308 /* ElastosRTC.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		43126D9EA6BBEC3B2A90F90E /* Pods-ElastosRTCTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosRTCTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ElastosRTCTests/Pods-ElastosRTCTests.release.xcconfig"; sourceTree = "<group>"; };
 		743AC316248D33EA00A04AD0 /* DeviceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
 		7446E9EDE7D97C628741B805 /* Pods-ElastosRTCDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosRTCDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-ElastosRTCDemo/Pods-ElastosRTCDemo.release.xcconfig"; sourceTree = "<group>"; };
 		745CB72D2494668A00E7D308 /* Carrier+Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Carrier+Util.swift"; sourceTree = "<group>"; };
+		749E621FACBE3D5FE0323038 /* Pods-ElastosRTCTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosRTCTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ElastosRTCTests/Pods-ElastosRTCTests.debug.xcconfig"; sourceTree = "<group>"; };
 		75885C044B032846CFCCBA1F /* Pods_ElastosRTCDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ElastosRTCDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		807706C8248908390066D477 /* WebRtcClient+VideoRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebRtcClient+VideoRender.swift"; sourceTree = "<group>"; };
 		807706CA248A21DE0066D477 /* CameraSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSession.swift; sourceTree = "<group>"; };
+		9433CAE98CBBF62000E449C2 /* Pods_ElastosRTCTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ElastosRTCTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D106126C256D19CEF427196A /* Pods-ElastosRTCDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosRTCDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ElastosRTCDemo/Pods-ElastosRTCDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		D89F702DD67FA45DCC3E3EF5 /* Pods_ElastosRTC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ElastosRTC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA2A2ECC557F86F530E0EAC5 /* Pods-ElastosRTC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosRTC.release.xcconfig"; path = "Pods/Target Support Files/Pods-ElastosRTC/Pods-ElastosRTC.release.xcconfig"; sourceTree = "<group>"; };
+		E083358915BD80DF61BBD546 /* Pods-ElastosRTC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosRTC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ElastosRTC/Pods-ElastosRTC.debug.xcconfig"; sourceTree = "<group>"; };
 		F928409224927AEB00A89EC0 /* CallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
 		F9870082248FE1DB005758F3 /* FriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCell.swift; sourceTree = "<group>"; };
 		F9A2817E2487F05A0032A2C0 /* WebRtcClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRtcClient.swift; sourceTree = "<group>"; };
@@ -76,6 +114,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C3285D5CB4A9871CAD13993 /* Pods_ElastosRTC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +123,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9A8D0B12486A9C100FFDFD2 /* ElastosRTC.framework in Frameworks */,
+				83751758AB9C042ECF924374 /* Pods_ElastosRTCTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,6 +131,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				745CB7312495A0B400E7D308 /* ElastosRTC.framework in Frameworks */,
 				C5FC6EA084D0886BEEC5A48C /* Pods_ElastosRTCDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -103,6 +144,10 @@
 			children = (
 				D106126C256D19CEF427196A /* Pods-ElastosRTCDemo.debug.xcconfig */,
 				7446E9EDE7D97C628741B805 /* Pods-ElastosRTCDemo.release.xcconfig */,
+				E083358915BD80DF61BBD546 /* Pods-ElastosRTC.debug.xcconfig */,
+				DA2A2ECC557F86F530E0EAC5 /* Pods-ElastosRTC.release.xcconfig */,
+				749E621FACBE3D5FE0323038 /* Pods-ElastosRTCTests.debug.xcconfig */,
+				43126D9EA6BBEC3B2A90F90E /* Pods-ElastosRTCTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -111,6 +156,8 @@
 			isa = PBXGroup;
 			children = (
 				75885C044B032846CFCCBA1F /* Pods_ElastosRTCDemo.framework */,
+				D89F702DD67FA45DCC3E3EF5 /* Pods_ElastosRTC.framework */,
+				9433CAE98CBBF62000E449C2 /* Pods_ElastosRTCTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -206,6 +253,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F9A8D0BB2486A9C100FFDFD2 /* Build configuration list for PBXNativeTarget "ElastosRTC" */;
 			buildPhases = (
+				1F3EEC6D21540BDA0E96DD19 /* [CP] Check Pods Manifest.lock */,
 				F9A8D0A22486A9C100FFDFD2 /* Headers */,
 				F9A8D0A32486A9C100FFDFD2 /* Sources */,
 				F9A8D0A42486A9C100FFDFD2 /* Frameworks */,
@@ -224,6 +272,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F9A8D0BE2486A9C100FFDFD2 /* Build configuration list for PBXNativeTarget "ElastosRTCTests" */;
 			buildPhases = (
+				8F10D294BE8B630DD5D609F8 /* [CP] Check Pods Manifest.lock */,
 				F9A8D0AC2486A9C100FFDFD2 /* Sources */,
 				F9A8D0AD2486A9C100FFDFD2 /* Frameworks */,
 				F9A8D0AE2486A9C100FFDFD2 /* Resources */,
@@ -246,11 +295,14 @@
 				F9A8D0C12486AA1C00FFDFD2 /* Sources */,
 				F9A8D0C22486AA1C00FFDFD2 /* Frameworks */,
 				F9A8D0C32486AA1C00FFDFD2 /* Resources */,
-				8625274CC810CAD74A90BC46 /* [CP] Embed Pods Frameworks */,
+				745CB7352495A0B400E7D308 /* Embed Frameworks */,
+				46A9DEA9A25A7650A8559EF4 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				745CB7302495A0AC00E7D308 /* PBXTargetDependency */,
+				745CB7342495A0B400E7D308 /* PBXTargetDependency */,
 			);
 			name = ElastosRTCDemo;
 			productName = ElastosRTCDemo;
@@ -327,6 +379,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1F3EEC6D21540BDA0E96DD19 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ElastosRTC-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		1F9A2A72EED35DD23D4D1AB7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -345,7 +419,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8625274CC810CAD74A90BC46 /* [CP] Embed Pods Frameworks */ = {
+		46A9DEA9A25A7650A8559EF4 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -360,6 +434,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ElastosRTCDemo/Pods-ElastosRTCDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8F10D294BE8B630DD5D609F8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ElastosRTCTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -404,6 +500,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		745CB7302495A0AC00E7D308 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F9A8D0A62486A9C100FFDFD2 /* ElastosRTC */;
+			targetProxy = 745CB72F2495A0AC00E7D308 /* PBXContainerItemProxy */;
+		};
+		745CB7342495A0B400E7D308 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F9A8D0A62486A9C100FFDFD2 /* ElastosRTC */;
+			targetProxy = 745CB7332495A0B400E7D308 /* PBXContainerItemProxy */;
+		};
 		F9A8D0B32486A9C100FFDFD2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F9A8D0A62486A9C100FFDFD2 /* ElastosRTC */;
@@ -553,6 +659,7 @@
 		};
 		F9A8D0BC2486A9C100FFDFD2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E083358915BD80DF61BBD546 /* Pods-ElastosRTC.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -580,6 +687,7 @@
 		};
 		F9A8D0BD2486A9C100FFDFD2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DA2A2ECC557F86F530E0EAC5 /* Pods-ElastosRTC.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -606,6 +714,7 @@
 		};
 		F9A8D0BF2486A9C100FFDFD2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 749E621FACBE3D5FE0323038 /* Pods-ElastosRTCTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -624,6 +733,7 @@
 		};
 		F9A8D0C02486A9C100FFDFD2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 43126D9EA6BBEC3B2A90F90E /* Pods-ElastosRTCTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;

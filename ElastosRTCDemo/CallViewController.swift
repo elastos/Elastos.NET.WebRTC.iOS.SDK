@@ -8,7 +8,7 @@
 
 import UIKit
 import ElastosCarrierSDK
-import ElastosWebRtc
+import ElastosRTC
 
 class CallViewController: UIViewController {
 

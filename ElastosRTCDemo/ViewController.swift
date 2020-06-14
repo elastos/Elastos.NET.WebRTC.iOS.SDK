@@ -9,7 +9,6 @@
 import UIKit
 import EFQRCode
 import ElastosCarrierSDK
-import ElastosWebRtc
 
 class ViewController: UIViewController, CarrierDelegate {
 
