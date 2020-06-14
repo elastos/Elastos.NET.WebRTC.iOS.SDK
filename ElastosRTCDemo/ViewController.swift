@@ -9,6 +9,7 @@
 import UIKit
 import EFQRCode
 import ElastosCarrierSDK
+import ElastosRTC
 
 class ViewController: UIViewController, CarrierDelegate {
 
@@ -18,29 +19,15 @@ class ViewController: UIViewController, CarrierDelegate {
 
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var myUserIdLabel: UILabel!
-    @IBOutlet weak var myQRCodeView: UIImageView!
 
-    private var friends: Set<FriendCellModel> = []
+    private var friends: [FriendCellModel] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupObserver()
         tableView.register(FriendCell.self, forCellReuseIdentifier: NSStringFromClass(FriendCell.self))
+        tableView.register(ProfileFooter.self, forHeaderFooterViewReuseIdentifier: NSStringFromClass(ProfileFooter.self))
         DeviceManager.sharedInstance.start()
-        loadMyInfo()
-        
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(testMessage))
-    }
-    
-    @objc func testMessage() {
-        do {
-            try self.carrier.sendFriendMessage(to: "Djyqhb7skN1uNa5phVp275MoMUFCZ1g4QvxYmPbdfWEo", "hi message".data(using: .utf8)!)
-            try self.carrier.sendInviteFriendRequest(to: "Djyqhb7skN1uNa5phVp275MoMUFCZ1g4QvxYmPbdfWEo", withData: "hi invite message", responseHandler: { (_, _, _, _, _) in
-            })
-        } catch {
-            print(error)
-        }
     }
     
     @IBAction func addAsFriend(_ sender: Any) {
@@ -60,14 +47,6 @@ class ViewController: UIViewController, CarrierDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(handleFriendList(_:)), name: .friendList, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(newFriendAdded(_:)), name: .friendAdded, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(newFriendAdded(_:)), name: .friendInfoChanged, object: nil)
-    }
-
-    func loadMyInfo() {
-        let address = carrier.getAddress()
-        print(carrier.getUserId())
-        myUserIdLabel.text = address
-        print(address)
-        myQRCodeView.image = UIImage(cgImage: EFQRCode.generate(content: address)!)
     }
 }
 
@@ -91,16 +70,31 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         cell.update(FriendCellModel(id: friend.id, name: friend.name, avatar: nil, status: friend.status))
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: NSStringFromClass(ProfileFooter.self)) as? ProfileFooter else { return nil }
+        view.update(userId: carrier.getUserId(), addressId: carrier.getAddress())
+        return view
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 60
+    }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "callingPage", sender: self)
+        performSegue(withIdentifier: "calling", sender: self)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		guard let navigation = segue.destination as? UINavigationController,
-			let calling = navigation.viewControllers.first as? CallViewController,
-			let index = tableView.indexPathForSelectedRow?.row else { return assertionFailure() }
-        calling.friendId = Array(friends)[index].id
+        switch segue.identifier {
+        case "calling":
+            guard let calling = (segue.destination as? UINavigationController)?.viewControllers.first as? CallViewController else { return }
+            calling.friendId = friends[tableView.indexPathForSelectedRow?.row ?? 0].id
+        case "setting":
+            break
+        default:
+            assertionFailure("not support now")
+        }
     }
 }
 
@@ -108,22 +102,41 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
 extension ViewController {
 
 	@objc func handleFriendStatusChanged(_ notification: NSNotification) {
-
+        guard let id = notification.userInfo?["friendId"] as? String,
+            let status = notification.userInfo?["status"] as? CarrierConnectionStatus else { return assertionFailure("missing data") }
+        if var found = friends.first(where: { $0.id == id }) {
+            found.status = status.status
+            upSert(friend: found)
+        } else {
+            print("❌ not found friend information in friendslist")
+        }
 	}
 	
 	@objc func newFriendAdded(_ notification: NSNotification) {
 		guard let friend = notification.userInfo?["friend"] as? CarrierFriendInfo else { return assertionFailure("missing data") }
-        friends.remove(friend.convert())
-		friends.insert(friend.convert())
+        upSert(friend: friend.convert())
 	}
 
 	@objc func handleFriendList(_ notification: NSNotification) {
 		guard let list = notification.userInfo?["friends"] as? [CarrierFriendInfo] else {
 			return assertionFailure("missing data")
 		}
-		friends = Set(list.map({ $0.convert() }))
-		DispatchQueue.main.async {
-			self.tableView.reloadData()
-		}
+		friends = list.map { $0.convert() }
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+
 	}
+    
+    func upSert(friend: FriendCellModel) {
+        if let index = friends.firstIndex(of: friend) {
+            friends.remove(at: index)
+            friends.insert(friend, at: index)
+        } else {
+            friends.append(friend)
+        }
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
 }

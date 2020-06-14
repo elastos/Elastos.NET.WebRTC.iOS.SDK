@@ -12,28 +12,15 @@ import ElastosRTC
 
 class CallViewController: UIViewController {
 
-    //todo: for a test
     var friendId: String = ""
 
     @IBOutlet weak var localVideoView: UIView!
     @IBOutlet weak var remoteVideoView: UIView!
-    
-    var carrier: Carrier {
-        DeviceManager.sharedInstance.carrierInst
-    }
-
-    lazy var client: WebRtcClient = {
-        let instance = WebRtcClient(carrier: carrier,
-                                    delegate: self,
-                                    localView: localVideoView,
-                                    remoteView: remoteVideoView)
-        return instance
-    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        client.inviteCall(friendId: friendId)
+
+        DataManager.shared.rtcClient.inviteCall(friendId: friendId)
     }
 
     @IBAction func onBack(_ sender: Any) {

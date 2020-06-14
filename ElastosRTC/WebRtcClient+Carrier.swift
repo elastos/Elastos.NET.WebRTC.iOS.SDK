@@ -19,7 +19,7 @@ extension WebRtcClient {
             guard let message = String(data: data, encoding: .utf8) else { return }
             send(json: message)
         } catch {
-            assertionFailure("failed to convert data, due to \(error)")
+            Logger.log(level: .error, message: "convert candidate to json failure, due to \(error)")
         }
     }
 
@@ -31,7 +31,7 @@ extension WebRtcClient {
             guard let message = String(data: data, encoding: .utf8) else { return }
             send(json: message)
         } catch {
-            assertionFailure("failed to convert data, due to \(error)")
+            Logger.log(level: .error, message: "convert removeal candidate to json failure, due to \(error)")
         }
     }
 
@@ -42,19 +42,21 @@ extension WebRtcClient {
             guard let message = String(data: data, encoding: .utf8) else { return }
             send(json: message)
         } catch {
-            assertionFailure("failed to convert data, due to \(error)")
+            Logger.log(level: .error, message: "convert sdp to json failure, due to \(error)")
         }
     }
 
-	func send(json: String) {
-		guard let friendId = self.friendId else { return assertionFailure("friendId is null") }
-		do {
-            print("send data to friend \nname = \(friendId), content = \(json)")
-			try carrier.inviteFriend(friendId, json, { (_, _, _, _, _) in })
-		} catch {
-			assertionFailure("failed to send data to \(friendId), \(json), due to \(error)")
-		}
-	}
+    func send(json: String) {
+        guard let friendId = self.friendId else { return assertionFailure("friendId is null") }
+        do {
+            Logger.log(level: .debug, message: "send data to friend \nname = \(friendId), content = \(json)")
+            try carrier.inviteFriend(friendId, json, { (carrier, arg1, arg2, arg3, arg4) in
+                Logger.log(level: .debug, message: "invite friend callback, \(arg1), \(arg2), \(String(describing: arg3)), \(String(describing: arg4))")
+            })
+        } catch {
+            Logger.log(level: .error, message: "send data failure, due to \(error)")
+        }
+    }
 }
 
 extension WebRtcClient: CarrierDelegate {
@@ -78,13 +80,13 @@ extension WebRtcClient: CarrierDelegate {
                 guard let candidate = message.candidate, from == self.friendId else { return }
                 receive(candidate: RTCIceCandidate(sdp: candidate.sdp, sdpMLineIndex: candidate.sdpMLineIndex, sdpMid: candidate.sdpMid))
             case .prAnswer:
-                assertionFailure("not support prAnswer")
+                Logger.log(level: .error, message: "not support prAnswer")
             case .removeCandiate:
                 guard let candiates = message.removeCandidates, from == self.friendId else { return }
                 receive(removal: candiates)
             }
         } catch {
-            assertionFailure("signal message decode error, due to \(error)")
+            Logger.log(level: .error, message: "signal message decode error, due to \(error)")
         }
 	}
 }

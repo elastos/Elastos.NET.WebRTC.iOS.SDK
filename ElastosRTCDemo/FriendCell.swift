@@ -31,7 +31,7 @@ struct FriendCellModel: Equatable, Hashable {
     let id: String
     let name: String
     let avatar: URL?
-    let status: Status
+    var status: Status
 
     static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.id == rhs.id
@@ -92,7 +92,7 @@ class FriendCell: UITableViewCell {
     }
 
     func update(_ friend: FriendCellModel) {
-        nameLabel.text = friend.name + friend.id
+        nameLabel.text = "[" + friend.name + "]" + friend.id
         statusLabel.text = friend.status.rawValue
         statusLabel.textColor = friend.status.textColor
     }

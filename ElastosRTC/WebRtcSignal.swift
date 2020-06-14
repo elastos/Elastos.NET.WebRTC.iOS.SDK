@@ -17,22 +17,6 @@ enum SdpType: String, Codable {
     case prAnswer = "prAnswer"
 }
 
-//jsonPut(json, "type", "remove-candidates");
-//JSONArray jsonArray = new JSONArray();
-//for (final IceCandidate candidate : candidates) {
-//    jsonArray.put(toJsonCandidate(candidate));
-//}
-//jsonPut(json, "candidates", jsonArray);
-
-//jsonPut(json, "type", "candidate");
-//jsonPut(json, "label", candidate.sdpMLineIndex);
-//jsonPut(json, "id", candidate.sdpMid);
-//jsonPut(json, "candidate", candidate.sdp);
-
-//jsonPut(json, "sdp", sdp.description);
-//jsonPut(json, "type", "answer");
-//send(json.toString());
-
 struct RtcSignal: Codable {
 	let type: SdpType
 	let sdp: String?

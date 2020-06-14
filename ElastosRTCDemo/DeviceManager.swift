@@ -133,7 +133,7 @@ extension DeviceManager : CarrierDelegate
         print("friendConnectionDidChange : \(friendId), \(newStatus)")
         NotificationCenter.default.post(name: .friendStatusChanged,
                                         object: self,
-                                        userInfo: ["friendState": newStatus, "userId": friendId])
+                                        userInfo: ["status": newStatus, "friendId": friendId])
     }
     
     public func didReceiveFriendRequest(_ carrier: Carrier,
