@@ -26,6 +26,7 @@ class CallViewController: UIViewController {
     }
 
     @IBAction func onBack(_ sender: Any) {
+        DataManager.shared.rtcClient.endCall(friendId: self.friendId)
         self.dismiss(animated: true, completion: nil)
     }
 }

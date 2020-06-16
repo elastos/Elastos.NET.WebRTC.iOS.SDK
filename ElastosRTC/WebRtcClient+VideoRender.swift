@@ -33,35 +33,35 @@ extension WebRtcClient {
         }
     }
 
-	func startCaptureLocalVideo(cameraPositon: AVCaptureDevice.Position, videoWidth: Int, videoHeight: Int?, videoFps: Int) {
-		if let capturer = self.videoCapturer as? RTCCameraVideoCapturer {
-			guard let targetDevice = RTCCameraVideoCapturer.captureDevices().first(where: { $0.position == cameraPositon }) else {
-				fatalError("could not find target device")
-			}
-			var targetFormat: AVCaptureDevice.Format?
-			let formats = RTCCameraVideoCapturer.supportedFormats(for: targetDevice)
-			formats.forEach { format in
-				let description = format.formatDescription as CMFormatDescription
-				let dimensions = CMVideoFormatDescriptionGetDimensions(description)
+    func startCaptureLocalVideo(cameraPositon: AVCaptureDevice.Position, videoWidth: Int, videoHeight: Int?, videoFps: Int) {
+        if let capturer = self.videoCapturer as? RTCCameraVideoCapturer {
+            guard let targetDevice = RTCCameraVideoCapturer.captureDevices().first(where: { $0.position == cameraPositon }) else {
+                fatalError("could not find target device")
+            }
+            var targetFormat: AVCaptureDevice.Format?
+            let formats = RTCCameraVideoCapturer.supportedFormats(for: targetDevice)
+            formats.forEach { format in
+                let description = format.formatDescription as CMFormatDescription
+                let dimensions = CMVideoFormatDescriptionGetDimensions(description)
 
-				if dimensions.width == videoWidth && dimensions.height == videoHeight ?? 0 {
-					targetFormat = format
-				} else if dimensions.width == videoWidth {
-					targetFormat = format
-				}
-			}
-			guard let format = targetFormat else { fatalError("could not find target format" ) }
-			capturer.startCapture(with: targetDevice, format: format, fps: videoFps)
-		} else if let capturer = videoCapturer as? RTCFileVideoCapturer {
+                if dimensions.width == videoWidth && dimensions.height == videoHeight ?? 0 {
+                    targetFormat = format
+                } else if dimensions.width == videoWidth {
+                    targetFormat = format
+                }
+            }
+            guard let format = targetFormat else { fatalError("could not find target format" ) }
+            capturer.startCapture(with: targetDevice, format: format, fps: videoFps)
+        } else if let capturer = videoCapturer as? RTCFileVideoCapturer {
             #if DEBUG
-			if Bundle.main.path( forResource: "sample.mp4", ofType: nil ) != nil {
-				capturer.startCapturing(fromFileNamed: "sample.mp4") { err in print(err) }
-			} else {
-				print("file did not found")
-			}
+            if Bundle.main.path( forResource: "sample.mp4", ofType: nil ) != nil {
+                capturer.startCapturing(fromFileNamed: "sample.mp4") { err in print(err) }
+            } else {
+                print("file did not found")
+            }
             #endif
-		}
-	}
+        }
+    }
 }
 
 extension WebRtcClient: RTCVideoViewDelegate {

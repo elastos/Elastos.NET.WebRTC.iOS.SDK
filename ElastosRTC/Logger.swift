@@ -9,11 +9,11 @@
 import Foundation
 
 public class Logger {
-    
+
     public enum Level {
         case debug
         case error
-        
+
         var flag: String {
             switch self {
             case .debug:
@@ -23,7 +23,7 @@ public class Logger {
             }
         }
     }
-    
+
     public static func log(level: Level, message: String) {
         print("\(level.flag) + \(message)")
     }

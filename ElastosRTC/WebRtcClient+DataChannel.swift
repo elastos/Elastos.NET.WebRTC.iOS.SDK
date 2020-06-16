@@ -10,11 +10,11 @@ import Foundation
 import WebRTC
 
 extension WebRtcClient: RTCDataChannelDelegate {
-    
+
     public func dataChannelDidChangeState(_ dataChannel: RTCDataChannel) {
         print("\(#function)")
     }
-    
+
     public func dataChannel(_ dataChannel: RTCDataChannel, didReceiveMessageWith buffer: RTCDataBuffer) {
         print("\(#function)")
     }

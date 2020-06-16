@@ -53,7 +53,7 @@ public class MediaOptions: ExpressibleByArrayLiteral, CustomStringConvertible {
 
 public protocol WebRtcDelegate: class {
 
-    /// fired when receive invite from yur friends
+    /// fired when receive invite from your friends
     /// - Parameter friendId: who is calling you
     func onInvite(friendId: String)
 
@@ -79,8 +79,17 @@ public class WebRtcClient: NSObject {
     public var friendId: String?
     public weak var delegate: WebRtcDelegate?
 
-    public var localVideoView: UIView?
-    public var remoteVideoView: UIView?
+    public var localVideoView: UIView? {
+        didSet {
+            localVideoView?.addSubview(localRenderView)
+        }
+    }
+
+    public var remoteVideoView: UIView? {
+        didSet {
+            remoteVideoView?.addSubview(remoteRenderView)
+        }
+    }
 
     public var options: MediaOptions? {
         didSet {
@@ -150,11 +159,6 @@ public class WebRtcClient: NSObject {
         }
     }
 
-    private func setupViews() {
-        localVideoView?.addSubview(localRenderView)
-        remoteVideoView?.addSubview(remoteRenderView)
-    }
-
     public func inviteCall(friendId: String, options: MediaOptions) {
         self.friendId = friendId
         self.options = options
@@ -177,4 +181,3 @@ extension WebRtcClient: CameraSessionDelegate {
         capturer.capture(cvpixelBuffer)
     }
 }
-

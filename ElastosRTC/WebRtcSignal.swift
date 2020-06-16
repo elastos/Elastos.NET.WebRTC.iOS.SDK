@@ -18,19 +18,19 @@ enum SdpType: String, Codable {
 }
 
 struct RtcSignal: Codable {
-	let type: SdpType
-	let sdp: String?
-	let sdpMLineIndex: Int32?
-	let sdpMid: String?
+    let type: SdpType
+    let sdp: String?
+    let sdpMLineIndex: Int32?
+    let sdpMid: String?
     let candidates: [RtcCandidateSignal]?
 
-	enum CoingKeys: CodingKey {
-		case type
+    enum CoingKeys: CodingKey {
+        case type
         case sdp
         case sdpMLineIndex
         case sdpMid
         case candidates
-	}
+    }
 
     init(type: SdpType, sdp: String? = nil, sdpMLineIndex: Int32? = nil, sdpMid: String? = nil, candidates: [RtcCandidateSignal]? = nil) {
         self.type = type
@@ -88,19 +88,19 @@ extension RTCSessionDescription {
 
 extension RTCSdpType {
 
-	var value: String {
-		switch self {
-		case .answer:
-			return "answer"
-		case .offer:
-			return "offer"
-		case .prAnswer:
-			return "prAnswer"
-		@unknown default:
-			assertionFailure("unknown state")
-			return "unknown"
-		}
-	}
+    var value: String {
+        switch self {
+        case .answer:
+            return "answer"
+        case .offer:
+            return "offer"
+        case .prAnswer:
+            return "prAnswer"
+        @unknown default:
+            assertionFailure("unknown state")
+            return "unknown"
+        }
+    }
 
     var to: SdpType? {
         switch self {
