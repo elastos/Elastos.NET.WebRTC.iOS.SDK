@@ -48,6 +48,7 @@ class ViewController: UIViewController, CarrierDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(handleFriendList(_:)), name: .friendList, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(newFriendAdded(_:)), name: .friendAdded, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(newFriendAdded(_:)), name: .friendInfoChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeReady), name: .didBecomeReady, object: nil)
     }
 }
 
@@ -140,6 +141,10 @@ extension ViewController {
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
+    }
+
+    @objc func didBecomeReady() {
+        DataManager.shared.start()
     }
 }
 

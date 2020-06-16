@@ -104,8 +104,7 @@ extension DeviceManager : CarrierDelegate
             myInfo.name = UIDevice.current.name
             try? carrier.setSelfUserInfo(myInfo)
         }
-        _ = try? CarrierSessionManager.createInstance(carrier: carrier, sessionRequestHandler: { (carrier, frome, adp) in
-        })
+        _ = try? CarrierSessionManager.createInstance(carrier: carrier, sessionRequestHandler: { (carrier, frome, adp) in })
         NotificationCenter.default.post(name: .didBecomeReady, object: nil)
     }
 
