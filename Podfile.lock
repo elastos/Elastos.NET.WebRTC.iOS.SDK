@@ -2,15 +2,15 @@ PODS:
   - EFQRCode (5.1.6):
     - EFQRCode/Core (= 5.1.6)
   - EFQRCode/Core (5.1.6)
-  - ElastosCarrierSDKWebRTC (1.1.0)
+  - ElastosCarrierSDKWebRTC (1.2.0)
   - ElastosWebRtc (0.0.1):
-    - ElastosCarrierSDKWebRTC (= 1.1.0)
+    - ElastosCarrierSDKWebRTC (= 1.2.0)
     - GoogleWebRTC (= 1.1.29400)
   - GoogleWebRTC (1.1.29400)
 
 DEPENDENCIES:
   - EFQRCode
-  - ElastosCarrierSDKWebRTC (= 1.1.0)
+  - ElastosCarrierSDKWebRTC (= 1.2.0)
   - ElastosWebRtc (from `./`)
   - GoogleWebRTC (= 1.1.29400)
 
@@ -27,10 +27,10 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   EFQRCode: a7ea2e517912f5bf6ba258b631327a83cd8084a5
-  ElastosCarrierSDKWebRTC: 3ccd4b5a94b6d697fa7ee27dd6f6fcf760c818cc
-  ElastosWebRtc: ceacadac95781d5264d88e0132642af2e65befcd
+  ElastosCarrierSDKWebRTC: 9c68df17784224581f82aa8a36ae31439d233fab
+  ElastosWebRtc: 284f3f51bb6eda4abe50c274e7bd8c1efdabb943
   GoogleWebRTC: cfb83bc346435a17fe06bb05f04ad826b858a7fb
 
-PODFILE CHECKSUM: c1b8b096c83087f4d5d5e2f874228f4f4d2a5299
+PODFILE CHECKSUM: 689f8e4314c5ab8a6025d31fdd0bfaff4aa8c217
 
 COCOAPODS: 1.9.3
