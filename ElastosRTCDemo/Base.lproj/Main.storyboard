@@ -46,13 +46,16 @@
                                 </constraints>
                             </view>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="friend user id" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BYK-Tc-owU">
-                                <rect key="frame" x="20" y="179" width="95.5" height="30"/>
+                                <rect key="frame" x="20" y="179" width="330" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="1Nq-43-7Ef"/>
                                 </constraints>
                                 <color key="textColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="send"/>
+                                <connections>
+                                    <outlet property="delegate" destination="VdH-7R-LkV" id="M89-61-qvD"/>
+                                </connections>
                             </textField>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="GIh-27-rfY">
                                 <rect key="frame" x="0.0" y="250" width="414" height="612"/>
@@ -63,9 +66,10 @@
                                 </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AQK-c9-1Gf">
-                                <rect key="frame" x="364" y="175" width="30" height="44"/>
+                                <rect key="frame" x="350" y="175" width="44" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="1ut-25-6ro"/>
+                                    <constraint firstAttribute="width" constant="44" id="mwF-tf-Dcg"/>
                                 </constraints>
                                 <state key="normal" title="Add"/>
                                 <connections>
@@ -86,7 +90,7 @@
                             <constraint firstItem="CWh-IH-XVm" firstAttribute="trailing" secondItem="AQK-c9-1Gf" secondAttribute="trailing" id="gCV-RR-LVY"/>
                             <constraint firstItem="CWh-IH-XVm" firstAttribute="top" secondItem="BYK-Tc-owU" secondAttribute="bottom" constant="10" id="kir-Sh-HOz"/>
                             <constraint firstAttribute="trailing" secondItem="gca-mB-ANf" secondAttribute="trailing" constant="20" id="lRR-BQ-EpP"/>
-                            <constraint firstItem="AQK-c9-1Gf" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="BYK-Tc-owU" secondAttribute="trailing" constant="8" symbolic="YES" id="og5-3Q-9CI"/>
+                            <constraint firstItem="AQK-c9-1Gf" firstAttribute="leading" secondItem="BYK-Tc-owU" secondAttribute="trailing" id="og5-3Q-9CI"/>
                             <constraint firstItem="CWh-IH-XVm" firstAttribute="top" secondItem="AQK-c9-1Gf" secondAttribute="bottom" id="twq-22-jgN"/>
                             <constraint firstItem="gca-mB-ANf" firstAttribute="leading" secondItem="iBU-IX-cIA" secondAttribute="leading" constant="20" id="vRW-fW-twI"/>
                             <constraint firstItem="BYK-Tc-owU" firstAttribute="top" secondItem="gca-mB-ANf" secondAttribute="bottom" constant="30" id="wTr-NO-fTi"/>

@@ -74,6 +74,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: NSStringFromClass(ProfileFooter.self)) as? ProfileFooter else { return nil }
+        print("userID: \(carrier.getUserId()), addressID: \(carrier.getAddress())")
         view.update(userId: carrier.getUserId(), addressId: carrier.getAddress())
         return view
     }
@@ -139,6 +140,16 @@ extension ViewController {
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
+    }
+}
+
+extension ViewController: UITextFieldDelegate {
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == self.textField {
+            addAsFriend(textField)
+        }
+        return true
     }
 }
 
