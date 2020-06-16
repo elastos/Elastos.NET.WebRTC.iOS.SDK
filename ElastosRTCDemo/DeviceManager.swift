@@ -32,7 +32,6 @@ class DeviceManager : NSObject {
     func start() {
         if carrierInst == nil {
             do {
-
                 let carrierDirectory: String = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)[0] + "/carrier"
                 if !FileManager.default.fileExists(atPath: carrierDirectory) {
                     var url = URL(fileURLWithPath: carrierDirectory)
@@ -77,7 +76,7 @@ class DeviceManager : NSObject {
                 carrierInst = try Carrier.createInstance(options: options, delegate: self)
                 print("carrier instance created")
 
-                try! carrierInst.start(iterateInterval: 1000)
+                try carrierInst.start(iterateInterval: 1000)
                 print("carrier started, waiting for ready")
             }
             catch {
