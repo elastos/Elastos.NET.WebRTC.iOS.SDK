@@ -11,18 +11,14 @@ import UIKit
 enum Status: String {
     case online
     case offline
-    case busy
-    case away
 
     var textColor: UIColor {
-    switch self {
-    case .online:
-        return .systemGreen
-    case .offline:
-        return .lightGray
-    case .busy, .away:
-        return .red
-    }
+        switch self {
+        case .online:
+            return .systemGreen
+        case .offline:
+            return .lightGray
+        }
     }
 }
 

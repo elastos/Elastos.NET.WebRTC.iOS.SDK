@@ -27,9 +27,10 @@ class ViewController: UIViewController, CarrierDelegate {
         setupObserver()
         tableView.register(FriendCell.self, forCellReuseIdentifier: NSStringFromClass(FriendCell.self))
         tableView.register(ProfileFooter.self, forHeaderFooterViewReuseIdentifier: NSStringFromClass(ProfileFooter.self))
+        tableView.sectionFooterHeight = UITableView.automaticDimension
         DeviceManager.sharedInstance.start()
     }
-    
+
     @IBAction func addAsFriend(_ sender: Any) {
         if textField.text?.isEmpty == false {
             do {
@@ -38,14 +39,14 @@ class ViewController: UIViewController, CarrierDelegate {
                 print("add as friend error, due to \(error)")
             }
         }
-        
+
         self.view.endEditing(true)
     }
-    
+
     func setupObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleFriendStatusChanged(_:)), name: .friendStatusChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleFriendList(_:)), name: .friendList, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(newFriendAdded(_:)), name: .friendAdded, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(newFriendAdded(_:)), name: .friendAdded, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(newFriendAdded(_:)), name: .friendInfoChanged, object: nil)
     }
 }
@@ -70,21 +71,21 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         cell.update(FriendCellModel(id: friend.id, name: friend.name, avatar: nil, status: friend.status))
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: NSStringFromClass(ProfileFooter.self)) as? ProfileFooter else { return nil }
         view.update(userId: carrier.getUserId(), addressId: carrier.getAddress())
         return view
     }
-    
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 60
+
+    func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
+        return 100
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "calling", sender: self)
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
         case "calling":
@@ -101,7 +102,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
 /// Handle Notification
 extension ViewController {
 
-	@objc func handleFriendStatusChanged(_ notification: NSNotification) {
+    @objc func handleFriendStatusChanged(_ notification: NSNotification) {
         guard let id = notification.userInfo?["friendId"] as? String,
             let status = notification.userInfo?["status"] as? CarrierConnectionStatus else { return assertionFailure("missing data") }
         if var found = friends.first(where: { $0.id == id }) {
@@ -110,24 +111,24 @@ extension ViewController {
         } else {
             print("❌ not found friend information in friendslist")
         }
-	}
-	
-	@objc func newFriendAdded(_ notification: NSNotification) {
-		guard let friend = notification.userInfo?["friend"] as? CarrierFriendInfo else { return assertionFailure("missing data") }
-        upSert(friend: friend.convert())
-	}
+    }
 
-	@objc func handleFriendList(_ notification: NSNotification) {
-		guard let list = notification.userInfo?["friends"] as? [CarrierFriendInfo] else {
-			return assertionFailure("missing data")
-		}
-		friends = list.map { $0.convert() }
+    @objc func newFriendAdded(_ notification: NSNotification) {
+        guard let friend = notification.userInfo?["friend"] as? CarrierFriendInfo else { return assertionFailure("missing data") }
+        upSert(friend: friend.convert())
+    }
+
+    @objc func handleFriendList(_ notification: NSNotification) {
+        guard let list = notification.userInfo?["friends"] as? [CarrierFriendInfo] else {
+            return assertionFailure("missing data")
+        }
+        friends = list.map { $0.convert() }
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
 
-	}
-    
+    }
+
     func upSert(friend: FriendCellModel) {
         if let index = friends.firstIndex(of: friend) {
             friends.remove(at: index)
@@ -140,3 +141,4 @@ extension ViewController {
         }
     }
 }
+
