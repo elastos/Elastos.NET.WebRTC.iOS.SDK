@@ -20,7 +20,9 @@ class CallViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        DataManager.shared.rtcClient.inviteCall(friendId: friendId)
+        DataManager.shared.rtcClient.localVideoView = localVideoView
+        DataManager.shared.rtcClient.remoteVideoView = remoteVideoView
+        DataManager.shared.rtcClient.inviteCall(friendId: self.friendId, options: [.audio, .video])
     }
 
     @IBAction func onBack(_ sender: Any) {

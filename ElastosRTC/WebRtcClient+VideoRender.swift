@@ -11,12 +11,6 @@ import WebRTC
 
 extension WebRtcClient {
 
-	private func setupVideo() {
-		startCaptureLocalVideo(cameraPositon: .front, videoWidth: 640, videoHeight: 640*16/9, videoFps: 30)
-		localVideoTrack.add(localRenderView)
-        peerConnection.add(localVideoTrack, streamIds: ["stream0"])
-	}
-
     func setupMedia() {
         if options?.isEnabledAudio == true {
             peerConnection.add(localAudioTrack, streamIds: ["stream0"])
@@ -25,7 +19,9 @@ extension WebRtcClient {
         }
 
         if options?.isEnabledVideo == true {
-            setupVideo()
+            startCaptureLocalVideo(cameraPositon: .front, videoWidth: 640, videoHeight: 640*16/9, videoFps: 30)
+            localVideoTrack.add(localRenderView)
+            peerConnection.add(localVideoTrack, streamIds: ["stream0"])
         } else {
             // disable video
         }
@@ -33,7 +29,7 @@ extension WebRtcClient {
         if options?.isEnabledDataChannel == true {
             //todo: setup data channel
         } else {
-
+            // disable data channel
         }
     }
 
@@ -76,7 +72,7 @@ extension WebRtcClient: RTCVideoViewDelegate {
         let isLocalRenderView = videoView.isEqual(localRenderView)
 
         //todo: other cases ?
-        guard let parentView = isLocalRenderView ? localView : remoteView else { return }
+        guard let parentView = isLocalRenderView ? localVideoView : remoteVideoView else { return }
         let renderView = isLocalRenderView ? localRenderView : remoteRenderView
 
         if isLandScape {

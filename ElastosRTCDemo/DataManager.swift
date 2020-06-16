@@ -17,7 +17,7 @@ class DataManager {
     }
     
     lazy var rtcClient: WebRtcClient = {
-        let client = WebRtcClient(carrier: self.carrier, delegate: self, localView: nil, remoteView: nil)
+        let client = WebRtcClient(carrier: self.carrier, delegate: self)
         return client
     }()
     

@@ -56,31 +56,31 @@ public protocol WebRtcDelegate: class {
     /// fired when receive invite from yur friends
     /// - Parameter friendId: who is calling you
     func onInvite(friendId: String)
-    
+
     func onAnswer();
-    
+
     func onActive()
-    
+
     func onEndCall(reason: CallReason)
-    
+
     func onIceConnected()
-    
+
     func onIceDisconnected()
-    
+
     func onConnectionError(error: Error)
-    
+
     func onConnectionClosed()
 }
 
 public class WebRtcClient: NSObject {
-    
+
     public let carrier: CarrierExtension
     public var customFrameCapturer = false
-	public var friendId: String?
+    public var friendId: String?
     public weak var delegate: WebRtcDelegate?
 
-    public let localView: UIView?
-    public let remoteView: UIView?
+    public var localVideoView: UIView?
+    public var remoteVideoView: UIView?
 
     public var options: MediaOptions? {
         didSet {
@@ -88,10 +88,10 @@ public class WebRtcClient: NSObject {
         }
     }
 
-	var videoCapturer: RTCVideoCapturer?
+    var videoCapturer: RTCVideoCapturer?
     var remoteStream: RTCMediaStream?
 
-	lazy var peerConnection: RTCPeerConnection = {
+    lazy var peerConnection: RTCPeerConnection = {
         let config = RTCConfiguration()
         let constraints = RTCMediaConstraints.init(mandatoryConstraints: nil, optionalConstraints: nil)
         config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"]),
@@ -118,13 +118,13 @@ public class WebRtcClient: NSObject {
         return view
     }()
 
-	lazy var localAudioTrack: RTCAudioTrack = {
+    lazy var localAudioTrack: RTCAudioTrack = {
         let constraints = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil)
         let source = peerConnectionFactory.audioSource(with: constraints)
         return peerConnectionFactory.audioTrack(with: source, trackId: "audio0")
     }()
 
-	lazy var localVideoTrack: RTCVideoTrack = {
+    lazy var localVideoTrack: RTCVideoTrack = {
         let source = peerConnectionFactory.videoSource()
 
         if customFrameCapturer {
@@ -136,35 +136,32 @@ public class WebRtcClient: NSObject {
         }
         return peerConnectionFactory.videoTrack(with: source, trackId: "video0")
     }()
-        
-    public init(carrier: Carrier, delegate: WebRtcDelegate, localView: UIView? = nil, remoteView: UIView? = nil) {
+
+    public init(carrier: Carrier, delegate: WebRtcDelegate) {
         self.carrier = CarrierExtension(carrier)
         self.delegate = delegate
-        self.localView = localView
-        self.remoteView = remoteView
 
-		do {
-			try self.carrier.registerExtension { (carrier, arg1, arg2) in
-				print("register extension callback, \(arg1), \(arg2 ?? "no value")")
-			}
-
-		} catch {
-			print("register extension error, due to \(error)")
-		}
+        do {
+            try self.carrier.registerExtension { (carrier, arg1, arg2) in
+                print("register extension callback, \(arg1), \(arg2 ?? "no value")")
+            }
+        } catch {
+            print("register extension error, due to \(error)")
+        }
     }
 
     private func setupViews() {
-        localView?.addSubview(localRenderView)
-        remoteView?.addSubview(remoteRenderView)
+        localVideoView?.addSubview(localRenderView)
+        remoteVideoView?.addSubview(remoteRenderView)
     }
 
-    public func inviteCall(friendId: String) {
-		self.friendId = friendId
-        setupMedia()
-		createOffer { [weak self] sdp in
+    public func inviteCall(friendId: String, options: MediaOptions) {
+        self.friendId = friendId
+        self.options = options
+        createOffer { [weak self] sdp in
             guard let self = self else { return }
             self.send(desc: sdp)
-		}
+        }
     }
 
     public func endCall(friendId: String) {
@@ -173,10 +170,11 @@ public class WebRtcClient: NSObject {
 }
 
 extension WebRtcClient: CameraSessionDelegate {
-    
+
     func didOutput(_ sampleBuffer: CMSampleBuffer) {
         guard let cvpixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer),
             let capturer = self.videoCapturer as? RTCFrameCapturer else { return }
         capturer.capture(cvpixelBuffer)
     }
 }
+
