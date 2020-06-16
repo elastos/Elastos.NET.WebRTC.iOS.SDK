@@ -163,7 +163,11 @@
                         <viewLayoutGuide key="safeArea" id="MGs-ht-f0u"/>
                     </view>
                     <navigationItem key="navigationItem" title="Calling" id="sWK-Pp-Cgj">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="zLX-zD-anR"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="zLX-zD-anR">
+                            <connections>
+                                <action selector="onBack:" destination="j84-3R-fnE" id="zbZ-tl-FZn"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="localVideoView" destination="FHL-fI-9AP" id="CIc-tP-tjS"/>
