@@ -50,7 +50,7 @@ extension WebRtcClient {
         guard let friendId = self.friendId else { return assertionFailure("friendId is null") }
         do {
             Logger.log(level: .debug, message: "send data to friend \nname = \(friendId), content = \(json)")
-            try carrier.inviteFriend(friendId, json, { (carrier, arg1, arg2, arg3, arg4) in
+            try carrier.sendInviteFriendRequest(to: friendId, withData: json, { (carrier, arg1, arg2, arg3, arg4) in
                 Logger.log(level: .debug, message: "invite friend callback, \(arg1), \(arg2), \(String(describing: arg3)), \(String(describing: arg4))")
             })
         } catch {
