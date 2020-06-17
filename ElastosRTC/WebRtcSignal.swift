@@ -20,31 +20,23 @@ enum SdpType: String, Codable {
 struct RtcSignal: Codable {
     let type: SdpType
     let sdp: String?
-    let sdpMLineIndex: Int32?
-    let sdpMid: String?
     let candidates: [RtcCandidateSignal]?
 
     enum CoingKeys: CodingKey {
         case type
         case sdp
-        case sdpMLineIndex
-        case sdpMid
         case candidates
     }
 
-    init(type: SdpType, sdp: String? = nil, sdpMLineIndex: Int32? = nil, sdpMid: String? = nil, candidates: [RtcCandidateSignal]? = nil) {
+    init(type: SdpType, sdp: String? = nil, candidates: [RtcCandidateSignal]? = nil) {
         self.type = type
         self.sdp = sdp
-        self.sdpMLineIndex = sdpMLineIndex
-        self.sdpMid = sdpMid
         self.candidates = candidates
     }
 
     var candidate: RTCIceCandidate? {
-        guard type == .candidate, let sdp = sdp, let index = sdpMLineIndex, let mid = sdpMid else {
-            return nil
-        }
-        return RTCIceCandidate(sdp: sdp, sdpMLineIndex: index, sdpMid: mid)
+        guard type == .candidate, let sdp = candidates?.first?.sdp, let sdpMLineIndex = candidates?.first?.sdpMLineIndex else { return nil }
+        return RTCIceCandidate(sdp: sdp, sdpMLineIndex: sdpMLineIndex, sdpMid: candidates?.first?.sdpMid)
     }
 
     var offer: RTCSessionDescription? {

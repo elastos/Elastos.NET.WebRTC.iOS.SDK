@@ -149,14 +149,8 @@ public class WebRtcClient: NSObject {
     public init(carrier: Carrier, delegate: WebRtcDelegate) {
         self.carrier = CarrierExtension(carrier)
         self.delegate = delegate
-
-        do {
-            try self.carrier.registerExtension { (carrier, friendId, message) in
-                print("register extension callback, \(friendId), \(message ?? "no value")")
-            }
-        } catch {
-            print("register extension error, due to \(error)")
-        }
+        super.init()
+        self.registerCarrierCallback()
     }
 
     public func inviteCall(friendId: String, options: MediaOptions) {
