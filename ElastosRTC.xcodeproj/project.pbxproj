@@ -10,13 +10,13 @@
 		743AC317248D33EA00A04AD0 /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743AC316248D33EA00A04AD0 /* DeviceManager.swift */; };
 		745CB72E2494668A00E7D308 /* Carrier+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745CB72D2494668A00E7D308 /* Carrier+Util.swift */; };
 		745CB7372495A41600E7D308 /* ProfileFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745CB7362495A41600E7D308 /* ProfileFooter.swift */; };
-		745CB7392496443D00E7D308 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745CB7382496443D00E7D308 /* DataManager.swift */; };
 		745CB73B249652E500E7D308 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745CB73A249652E500E7D308 /* SettingViewController.swift */; };
 		745CB73D2496564000E7D308 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745CB73C2496564000E7D308 /* Logger.swift */; };
 		745CB74024965D8400E7D308 /* ElastosRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A8D0A72486A9C100FFDFD2 /* ElastosRTC.framework */; };
 		745CB74124965D8400E7D308 /* ElastosRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9A8D0A72486A9C100FFDFD2 /* ElastosRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		807706C9248908390066D477 /* WebRtcClient+VideoRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807706C8248908390066D477 /* WebRtcClient+VideoRender.swift */; };
 		807706CB248A21DE0066D477 /* CameraSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807706CA248A21DE0066D477 /* CameraSession.swift */; };
+		80D404D6249B8BBA00E5DE60 /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D404D5249B8BBA00E5DE60 /* InviteViewController.swift */; };
 		83751758AB9C042ECF924374 /* Pods_ElastosRTCTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9433CAE98CBBF62000E449C2 /* Pods_ElastosRTCTests.framework */; };
 		8C3285D5CB4A9871CAD13993 /* Pods_ElastosRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D89F702DD67FA45DCC3E3EF5 /* Pods_ElastosRTC.framework */; };
 		C5FC6EA084D0886BEEC5A48C /* Pods_ElastosRTCDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75885C044B032846CFCCBA1F /* Pods_ElastosRTCDemo.framework */; };
@@ -82,13 +82,13 @@
 		7446E9EDE7D97C628741B805 /* Pods-ElastosRTCDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosRTCDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-ElastosRTCDemo/Pods-ElastosRTCDemo.release.xcconfig"; sourceTree = "<group>"; };
 		745CB72D2494668A00E7D308 /* Carrier+Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Carrier+Util.swift"; sourceTree = "<group>"; };
 		745CB7362495A41600E7D308 /* ProfileFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFooter.swift; sourceTree = "<group>"; };
-		745CB7382496443D00E7D308 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		745CB73A249652E500E7D308 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		745CB73C2496564000E7D308 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		749E621FACBE3D5FE0323038 /* Pods-ElastosRTCTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosRTCTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ElastosRTCTests/Pods-ElastosRTCTests.debug.xcconfig"; sourceTree = "<group>"; };
 		75885C044B032846CFCCBA1F /* Pods_ElastosRTCDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ElastosRTCDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		807706C8248908390066D477 /* WebRtcClient+VideoRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebRtcClient+VideoRender.swift"; sourceTree = "<group>"; };
 		807706CA248A21DE0066D477 /* CameraSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSession.swift; sourceTree = "<group>"; };
+		80D404D5249B8BBA00E5DE60 /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
 		9433CAE98CBBF62000E449C2 /* Pods_ElastosRTCTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ElastosRTCTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D106126C256D19CEF427196A /* Pods-ElastosRTCDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosRTCDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ElastosRTCDemo/Pods-ElastosRTCDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		D89F702DD67FA45DCC3E3EF5 /* Pods_ElastosRTC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ElastosRTC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -238,10 +238,10 @@
 				F9A8D0CD2486AA1C00FFDFD2 /* Main.storyboard */,
 				F9A8D0CB2486AA1C00FFDFD2 /* ViewController.swift */,
 				F928409224927AEB00A89EC0 /* CallViewController.swift */,
-				745CB7382496443D00E7D308 /* DataManager.swift */,
 				F9870082248FE1DB005758F3 /* FriendCell.swift */,
 				745CB7362495A41600E7D308 /* ProfileFooter.swift */,
 				745CB73A249652E500E7D308 /* SettingViewController.swift */,
+				80D404D5249B8BBA00E5DE60 /* InviteViewController.swift */,
 				745CB72D2494668A00E7D308 /* Carrier+Util.swift */,
 			);
 			path = ElastosRTCDemo;
@@ -502,7 +502,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F928409324927AEC00A89EC0 /* CallViewController.swift in Sources */,
-				745CB7392496443D00E7D308 /* DataManager.swift in Sources */,
 				F9A8D0C82486AA1C00FFDFD2 /* AppDelegate.swift in Sources */,
 				743AC317248D33EA00A04AD0 /* DeviceManager.swift in Sources */,
 				F9A8D0CC2486AA1C00FFDFD2 /* ViewController.swift in Sources */,
@@ -510,6 +509,7 @@
 				745CB7372495A41600E7D308 /* ProfileFooter.swift in Sources */,
 				745CB72E2494668A00E7D308 /* Carrier+Util.swift in Sources */,
 				F9870083248FE1DB005758F3 /* FriendCell.swift in Sources */,
+				80D404D6249B8BBA00E5DE60 /* InviteViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,11 +11,6 @@ import UIKit
 import ElastosCarrierSDK
 import WebRTC
 
-public enum CallReason {
-    case reject
-    case missing
-}
-
 public enum MediaOptionItem: String, Equatable {
     case audio
     case video
@@ -55,7 +50,8 @@ public protocol WebRtcDelegate: class {
 
     /// fired when receive invite from your friends
     /// - Parameter friendId: who is calling you
-    func onInvite(friendId: String)
+    /// - Parameter completion: reject or accept
+    func onInvite(friendId: String, completion: @escaping (Bool) -> Void)
 
     func onAnswer();
 

@@ -17,6 +17,11 @@ class ViewController: UIViewController, CarrierDelegate {
         DeviceManager.sharedInstance.carrierInst
     }
 
+    lazy var rtcClient: WebRtcClient = {
+        let client = WebRtcClient(carrier: self.carrier, delegate: self)
+        return client
+    }()
+
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var tableView: UITableView!
 
@@ -93,6 +98,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         case "calling":
             guard let calling = (segue.destination as? UINavigationController)?.viewControllers.first as? CallViewController else { return }
             calling.friendId = friends[tableView.indexPathForSelectedRow?.row ?? 0].id
+            calling.weakDataSource = self
         case "setting":
             break
         default:
@@ -144,7 +150,7 @@ extension ViewController {
     }
 
     @objc func didBecomeReady() {
-        DataManager.shared.start()
+        print(self.rtcClient)
     }
 }
 
@@ -158,3 +164,49 @@ extension ViewController: UITextFieldDelegate {
     }
 }
 
+extension ViewController: CallingDelegate {
+
+    func getClient() -> WebRtcClient {
+        return self.rtcClient
+    }
+}
+
+extension ViewController: WebRtcDelegate {
+
+    func onInvite(friendId: String, completion: @escaping (Bool) -> Void) {
+        print("reject or accept")
+        DispatchQueue.main.async {
+            let vc = InviteViewController()
+            vc.closure = completion
+            self.present(vc, animated: true, completion: nil)
+        }
+    }
+
+    func onAnswer() {
+
+    }
+
+    func onActive() {
+
+    }
+
+    func onEndCall(reason: CallReason) {
+
+    }
+
+    func onIceConnected() {
+
+    }
+
+    func onIceDisconnected() {
+
+    }
+
+    func onConnectionError(error: Error) {
+
+    }
+
+    func onConnectionClosed() {
+
+    }
+}

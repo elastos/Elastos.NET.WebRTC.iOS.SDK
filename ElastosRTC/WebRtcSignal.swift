@@ -9,18 +9,25 @@
 import Foundation
 import WebRTC
 
+public enum CallReason: String, Codable {
+    case reject
+    case missing
+}
+
 enum SdpType: String, Codable {
     case answer = "answer"
     case offer = "offer"
     case candidate = "candidate"
     case removeCandiate = "remove-candidates"
     case prAnswer = "prAnswer"
+    case bye = "bye"
 }
 
 struct RtcSignal: Codable {
     let type: SdpType
     let sdp: String?
     let candidates: [RtcCandidateSignal]?
+    let reason: CallReason?
 
     enum CoingKeys: CodingKey {
         case type
@@ -28,10 +35,11 @@ struct RtcSignal: Codable {
         case candidates
     }
 
-    init(type: SdpType, sdp: String? = nil, candidates: [RtcCandidateSignal]? = nil) {
+    init(type: SdpType, sdp: String? = nil, candidates: [RtcCandidateSignal]? = nil, reason: CallReason? = nil) {
         self.type = type
         self.sdp = sdp
         self.candidates = candidates
+        self.reason = reason
     }
 
     var candidate: RTCIceCandidate? {

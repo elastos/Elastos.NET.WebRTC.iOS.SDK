@@ -60,24 +60,28 @@ extension WebRtcClient {
         do {
             let message = try JSONDecoder().decode(RtcSignal.self, from: data.data(using: .utf8)!)
             switch message.type {
-                case .offer:
-                    guard let sdp = message.offer else { return }
-                    self.friendId = from
-                    receive(sdp: sdp) { [weak self] desc in
+            case .offer:
+                guard let sdp = message.offer else { return }
+                self.friendId = from
+                self.delegate?.onInvite(friendId: from, completion: { result in
+                    self.receive(sdp: sdp) { [weak self] desc in
                         guard let self = self else { return }
                         self.send(desc: desc)
-                }
-                case .answer:
-                    guard let sdp = message.answer, from == self.friendId else { return }
-                    receive(sdp: sdp)
-                case .candidate:
-                    guard let candidate = message.candidate, from == self.friendId else { return }
-                    receive(candidate: RTCIceCandidate(sdp: candidate.sdp, sdpMLineIndex: candidate.sdpMLineIndex, sdpMid: candidate.sdpMid))
-                case .prAnswer:
-                    Logger.log(level: .error, message: "not support prAnswer")
-                case .removeCandiate:
-                    guard let candiates = message.removeCandidates, from == self.friendId else { return }
-                    receive(removal: candiates)
+                    }
+                })
+            case .answer:
+                guard let sdp = message.answer, from == self.friendId else { return }
+                receive(sdp: sdp)
+            case .candidate:
+                guard let candidate = message.candidate, from == self.friendId else { return }
+                receive(candidate: RTCIceCandidate(sdp: candidate.sdp, sdpMLineIndex: candidate.sdpMLineIndex, sdpMid: candidate.sdpMid))
+            case .prAnswer:
+                Logger.log(level: .error, message: "not support prAnswer")
+            case .removeCandiate:
+                guard let candiates = message.removeCandidates, from == self.friendId else { return }
+                receive(removal: candiates)
+            case .bye: break
+                //
             }
         } catch {
             Logger.log(level: .error, message: "signal message decode error, due to \(error)")
