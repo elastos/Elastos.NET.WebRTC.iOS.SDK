@@ -14,7 +14,8 @@ extension WebRtcClient {
 
     func send(candidate: RTCIceCandidate) {
         do {
-            let data = try JSONEncoder().encode(candidate.to())
+            let signal = RtcSignal(type: .candidate, sdp: nil, candidates: [candidate.to()])
+            let data = try JSONEncoder().encode(signal)
             guard let message = String(data: data, encoding: .utf8) else { return }
             send(json: message)
         } catch {

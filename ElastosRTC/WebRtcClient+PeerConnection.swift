@@ -101,12 +101,14 @@ extension WebRtcClient: RTCPeerConnectionDelegate {
         print("\(#function)")
         self.remoteStream = stream
 
-        if let track = stream.videoTracks.first {
-            track.add(remoteRenderView)
-        }
+        DispatchQueue.main.async {
+            if let track = stream.videoTracks.first {
+                track.add(self.remoteRenderView)
+            }
 
-        if let track = stream.audioTracks.first {
-            track.source.volume = 8
+            if let track = stream.audioTracks.first {
+                track.source.volume = 8
+            }
         }
     }
 

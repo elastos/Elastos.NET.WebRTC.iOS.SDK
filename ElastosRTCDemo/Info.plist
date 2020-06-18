@@ -4,6 +4,8 @@
 <dict>
 	<key>NSCameraUsageDescription</key>
 	<string>ElastosRTCDemo want to use your camera</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>ElastosRTCDemo want to use your Microphone</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
