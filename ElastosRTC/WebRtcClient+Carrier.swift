@@ -12,36 +12,29 @@ import WebRTC
 
 extension WebRtcClient {
 
-    func send(candidate: RTCIceCandidate) {
+    func send(signal: RtcSignal) {
         do {
-            let signal = RtcSignal(type: .candidate, sdp: nil, candidates: [candidate.to()])
             let data = try JSONEncoder().encode(signal)
             guard let message = String(data: data, encoding: .utf8) else { return }
             send(json: message)
         } catch {
-            Logger.log(level: .error, message: "convert candidate to json failure, due to \(error)")
+            Logger.log(level: .error, message: "convert signal to json failure, due to \(error)")
         }
+    }
+
+    func send(candidate: RTCIceCandidate) {
+        let signal = RtcSignal(type: .candidate, sdp: nil, candidates: [candidate.to()])
+        send(signal: signal)
     }
 
     func send(removal candidates: [RTCIceCandidate]) {
-        do {
-            let signal = RtcSignal(type: .removeCandiate, candidates: candidates.map({ $0.to() }))
-            let data = try JSONEncoder().encode(signal)
-            guard let message = String(data: data, encoding: .utf8) else { return }
-            send(json: message)
-        } catch {
-            Logger.log(level: .error, message: "convert removeal candidate to json failure, due to \(error)")
-        }
+        let signal = RtcSignal(type: .removeCandiate, candidates: candidates.map({ $0.to() }))
+        send(signal: signal)
     }
 
     func send(desc: RTCSessionDescription) {
-        do {
-            let data = try JSONEncoder().encode(desc.to())
-            guard let message = String(data: data, encoding: .utf8) else { return }
-            send(json: message)
-        } catch {
-            Logger.log(level: .error, message: "convert sdp to json failure, due to \(error)")
-        }
+        let signal = desc.to()
+        send(signal: signal)
     }
 
     func send(json: String) {
@@ -63,12 +56,21 @@ extension WebRtcClient {
             case .offer:
                 guard let sdp = message.offer else { return }
                 self.friendId = from
-                self.delegate?.onInvite(friendId: from, completion: { result in
-                    self.receive(sdp: sdp) { [weak self] desc in
-                        guard let self = self else { return }
-                        self.send(desc: desc)
+                if let delegate = self.delegate {
+                    delegate.onInvite(friendId: from) { [weak self] result in
+                        if result {
+                            self?.receive(sdp: sdp) { [weak self] sdp in
+                                self?.send(desc: sdp)
+                            }
+                        } else {
+                            self?.send(signal: RtcSignal(type: .bye, reason: .reject))
+                        }
                     }
-                })
+                } else {
+                    self.receive(sdp: sdp) { [weak self] sdp in
+                        self?.send(desc: sdp)
+                    }
+                }
             case .answer:
                 guard let sdp = message.answer, from == self.friendId else { return }
                 receive(sdp: sdp)
@@ -80,8 +82,9 @@ extension WebRtcClient {
             case .removeCandiate:
                 guard let candiates = message.removeCandidates, from == self.friendId else { return }
                 receive(removal: candiates)
-            case .bye: break
-                //
+            case .bye:
+                self.delegate?.onEndCall(reason: message.reason ?? .unknown)
+                self.peerConnection.close()
             }
         } catch {
             Logger.log(level: .error, message: "signal message decode error, due to \(error)")

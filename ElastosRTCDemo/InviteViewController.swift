@@ -13,7 +13,8 @@ class InviteViewController: UIViewController {
     private let nameLabel: UILabel = {
         let view = UILabel(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = .blue
+        view.textColor = .orange
+        view.text = "Name ?"
         return view
     }()
 
@@ -21,9 +22,12 @@ class InviteViewController: UIViewController {
         let view = UIButton(type: .custom)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setTitle("Reject", for: .normal)
-        view.heightAnchor.constraint(equalToConstant: 44).isActive = true
-        view.widthAnchor.constraint(equalToConstant: 44).isActive = true
+        view.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        view.widthAnchor.constraint(equalToConstant: 80).isActive = true
         view.addTarget(self, action: #selector(rejectCall), for: .touchUpInside)
+        view.backgroundColor = .red
+        view.layer.masksToBounds = true
+        view.layer.cornerRadius = 40
         return view
     }()
 
@@ -31,9 +35,25 @@ class InviteViewController: UIViewController {
         let view = UIButton(type: .custom)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setTitle("Accept", for: .normal)
-        view.heightAnchor.constraint(equalToConstant: 44).isActive = true
-        view.widthAnchor.constraint(equalToConstant: 44).isActive = true
+        view.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        view.widthAnchor.constraint(equalToConstant: 80).isActive = true
         view.addTarget(self, action: #selector(acceptCall), for: .touchUpInside)
+        view.backgroundColor = .blue
+        view.layer.masksToBounds = true
+        view.layer.cornerRadius = 40
+        return view
+    }()
+
+    private lazy var endBtn: UIButton = {
+        let view = UIButton(type: .custom)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.setTitle("End", for: .normal)
+        view.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        view.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        view.addTarget(self, action: #selector(endCall), for: .touchUpInside)
+        view.backgroundColor = .blue
+        view.layer.masksToBounds = true
+        view.layer.cornerRadius = 40
         return view
     }()
 
@@ -41,7 +61,7 @@ class InviteViewController: UIViewController {
         let view = UIStackView(arrangedSubviews: [rejectBtn, acceptBtn])
         view.translatesAutoresizingMaskIntoConstraints = false
         view.axis = .horizontal
-        view.spacing = 20
+        view.spacing = 80
         return view
     }()
 
@@ -49,6 +69,8 @@ class InviteViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = .white
 
         view.addSubview(nameLabel)
         view.addSubview(stackView)
@@ -67,5 +89,9 @@ class InviteViewController: UIViewController {
 
     @objc func rejectCall() {
         closure?(false)
+    }
+
+    @objc func endCall() {
+
     }
 }
