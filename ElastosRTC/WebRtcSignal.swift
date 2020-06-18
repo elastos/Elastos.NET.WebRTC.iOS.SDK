@@ -12,6 +12,7 @@ import WebRTC
 public enum CallReason: String, Codable {
     case reject
     case missing
+    case cancel
     case unknown
 }
 

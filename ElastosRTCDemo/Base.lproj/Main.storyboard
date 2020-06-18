@@ -133,7 +133,7 @@
         <!--Calling-->
         <scene sceneID="37R-ZK-bG9">
             <objects>
-                <viewController id="j84-3R-fnE" customClass="CallViewController" customModule="ElastosRTCDemo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="call_page" id="j84-3R-fnE" customClass="CallViewController" customModule="ElastosRTCDemo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="jXv-2t-LYh">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

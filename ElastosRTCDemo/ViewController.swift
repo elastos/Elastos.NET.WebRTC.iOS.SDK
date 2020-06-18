@@ -99,6 +99,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
             guard let calling = (segue.destination as? UINavigationController)?.viewControllers.first as? CallViewController else { return }
             calling.friendId = friends[tableView.indexPathForSelectedRow?.row ?? 0].id
             calling.weakDataSource = self
+            calling.state = .calling
         case "setting":
             break
         default:
@@ -176,9 +177,16 @@ extension ViewController: WebRtcDelegate {
     func onInvite(friendId: String, completion: @escaping (Bool) -> Void) {
         print("reject or accept")
         DispatchQueue.main.async {
-            let vc = InviteViewController()
-            vc.closure = completion
-            self.present(vc, animated: true, completion: nil)
+            
+            if #available(iOS 13.0, *) {
+                guard let vc = self.storyboard?.instantiateViewController(identifier: "call_page") as? CallViewController else { return }
+                vc.closure = completion
+                vc.state = .receiving
+                self.present(vc, animated: true, completion: nil)
+            } else {
+                // Fallback on earlier versions
+            }
+            
         }
     }
 
