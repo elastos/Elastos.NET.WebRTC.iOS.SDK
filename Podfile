@@ -7,7 +7,7 @@ use_frameworks!
 # Debug Mode
 target 'ElastosRTC' do
   pod "GoogleWebRTC", "1.1.29400"
-  pod "ElastosCarrierSDKWebRTC", "1.2.0"
+  pod "ElastosCarrierSDKWebRTC", "1.3.0"
 
   target 'ElastosRTCDemo' do
     pod 'EFQRCode'
