@@ -56,20 +56,23 @@ extension WebRtcClient {
             case .offer:
                 guard let sdp = message.offer else { return }
                 self.friendId = from
+
+                let closure = { [weak self] in
+                    self?.receive(sdp: sdp) { [weak self] sdp in
+                        self?.send(desc: sdp)
+                    }
+                }
+
                 if let delegate = self.delegate {
                     delegate.onInvite(friendId: from) { [weak self] result in
                         if result {
-                            self?.receive(sdp: sdp) { [weak self] sdp in
-                                self?.send(desc: sdp)
-                            }
+                            closure()
                         } else {
                             self?.send(signal: RtcSignal(type: .bye, reason: .reject))
                         }
                     }
                 } else {
-                    self.receive(sdp: sdp) { [weak self] sdp in
-                        self?.send(desc: sdp)
-                    }
+                    closure()
                 }
             case .answer:
                 guard let sdp = message.answer, from == self.friendId else { return }

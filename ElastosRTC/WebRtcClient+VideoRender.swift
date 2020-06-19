@@ -67,7 +67,6 @@ extension WebRtcClient {
 extension WebRtcClient: RTCVideoViewDelegate {
 
     public func videoView(_ videoView: RTCVideoRenderer, didChangeVideoSize size: CGSize) {
-        print("\(#function)")
         let isLandScape = size.width < size.height
         let isLocalRenderView = videoView.isEqual(localRenderView)
 

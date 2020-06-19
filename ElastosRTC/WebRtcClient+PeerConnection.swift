@@ -100,12 +100,10 @@ extension WebRtcClient: RTCPeerConnectionDelegate {
     public func peerConnection(_ peerConnection: RTCPeerConnection, didAdd stream: RTCMediaStream) {
         print("\(#function)")
         self.remoteStream = stream
-
         DispatchQueue.main.async {
             if let track = stream.videoTracks.first {
                 track.add(self.remoteRenderView)
             }
-
             if let track = stream.audioTracks.first {
                 track.source.volume = 8
             }
@@ -113,7 +111,14 @@ extension WebRtcClient: RTCPeerConnectionDelegate {
     }
 
     public func peerConnection(_ peerConnection: RTCPeerConnection, didRemove stream: RTCMediaStream) {
-        print("\(#function)")
+        print("\(#function) stream = \(stream)")
+        if stream.videoTracks.isEmpty {
+            Logger.log(level: .debug, message: "remove video track")
+        }
+        if stream.audioTracks.isEmpty {
+            Logger.log(level: .debug, message: "remove audio track")
+
+        }
     }
 
     public func peerConnectionShouldNegotiate(_ peerConnection: RTCPeerConnection) {
@@ -121,7 +126,17 @@ extension WebRtcClient: RTCPeerConnectionDelegate {
     }
 
     public func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceConnectionState) {
-        print("\(#function), \(newState)")
+        Logger.log(level: .debug, message: "peer connection did change state: \(newState)")
+        switch newState {
+        case .connected:
+            self.delegate?.onIceConnected()
+        case .disconnected, .failed:
+            self.delegate?.onIceDisconnected()
+        case .closed:
+            self.delegate?.onConnectionClosed()
+        default:
+            break
+        }
     }
 
     public func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceGatheringState) {

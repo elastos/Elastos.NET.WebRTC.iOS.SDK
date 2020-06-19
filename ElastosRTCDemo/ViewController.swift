@@ -177,16 +177,10 @@ extension ViewController: WebRtcDelegate {
     func onInvite(friendId: String, completion: @escaping (Bool) -> Void) {
         print("reject or accept")
         DispatchQueue.main.async {
-            
-            if #available(iOS 13.0, *) {
-                guard let vc = self.storyboard?.instantiateViewController(identifier: "call_page") as? CallViewController else { return }
-                vc.closure = completion
-                vc.state = .receiving
-                self.present(vc, animated: true, completion: nil)
-            } else {
-                // Fallback on earlier versions
-            }
-            
+            let vc = CallViewController(nibName: nil, bundle: nil)
+            vc.closure = completion
+            vc.state = .receiving
+            self.present(vc, animated: true, completion: nil)
         }
     }
 
