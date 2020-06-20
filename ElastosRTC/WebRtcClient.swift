@@ -98,7 +98,7 @@ public class WebRtcClient: NSObject {
 
     var _peerConnection: RTCPeerConnection?
 
-    lazy var peerConnection: RTCPeerConnection = {
+    var peerConnection: RTCPeerConnection {
         if _peerConnection == nil {
             let config = RTCConfiguration()
             let constraints = RTCMediaConstraints.init(mandatoryConstraints: nil, optionalConstraints: nil)
@@ -108,7 +108,7 @@ public class WebRtcClient: NSObject {
             _peerConnection = peerConnectionFactory.peerConnection(with: config, constraints: constraints, delegate: self)
         }
         return _peerConnection!
-    }()
+    }
 
     private let peerConnectionFactory: RTCPeerConnectionFactory = {
         let videoDecoder = RTCDefaultVideoDecoderFactory()
@@ -164,7 +164,7 @@ public class WebRtcClient: NSObject {
     }
 
     public func endCall(friendId: String) {
-        _peerConnection?.close()
-        _peerConnection = nil
+        cleanup()
+        Logger.log(level: .debug, message: "dealloc peerconnection")
     }
 }

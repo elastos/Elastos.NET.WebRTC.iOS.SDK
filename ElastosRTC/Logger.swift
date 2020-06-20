@@ -17,7 +17,7 @@ public class Logger {
         var flag: String {
             switch self {
             case .debug:
-                return "[Debug] "
+                return "[ℹ️] "
             case .error:
                 return "[❌] "
             }
