@@ -117,7 +117,6 @@ extension WebRtcClient: RTCPeerConnectionDelegate {
         }
         if stream.audioTracks.isEmpty {
             Logger.log(level: .debug, message: "remove audio track")
-
         }
     }
 

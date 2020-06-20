@@ -13,12 +13,14 @@ extension WebRtcClient {
 
     func setupMedia() {
         if options?.isEnabledAudio == true {
+            Logger.log(level: .debug, message: "enable audio")
             peerConnection.add(localAudioTrack, streamIds: ["stream0"])
         } else {
             // disable audio
         }
 
         if options?.isEnabledVideo == true {
+            Logger.log(level: .debug, message: "enable video")
             startCaptureLocalVideo(cameraPositon: .front, videoWidth: 640, videoHeight: 640*16/9, videoFps: 30)
             localVideoTrack.add(localRenderView)
             peerConnection.add(localVideoTrack, streamIds: ["stream0"])
@@ -28,6 +30,7 @@ extension WebRtcClient {
 
         if options?.isEnabledDataChannel == true {
             //todo: setup data channel
+            Logger.log(level: .debug, message: "enable data channel")
         } else {
             // disable data channel
         }

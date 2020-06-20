@@ -197,11 +197,11 @@ extension ViewController: WebRtcDelegate {
     }
 
     func onIceConnected() {
-
+        NotificationCenter.default.post(name: .iceConnected, object: nil)
     }
 
     func onIceDisconnected() {
-
+        NotificationCenter.default.post(name: .iceDisconnected, object: nil)
     }
 
     func onConnectionError(error: Error) {

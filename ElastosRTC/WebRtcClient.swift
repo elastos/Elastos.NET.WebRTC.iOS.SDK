@@ -96,13 +96,18 @@ public class WebRtcClient: NSObject {
     var videoCapturer: RTCVideoCapturer?
     var remoteStream: RTCMediaStream?
 
+    var _peerConnection: RTCPeerConnection?
+
     lazy var peerConnection: RTCPeerConnection = {
-        let config = RTCConfiguration()
-        let constraints = RTCMediaConstraints.init(mandatoryConstraints: nil, optionalConstraints: nil)
-        config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"]),
-                             RTCIceServer(urlStrings: ["stun:gfax.net:3478"]),
-                             RTCIceServer(urlStrings: ["turn:gfax.net:3478"], username: "allcom", credential: "allcompass")]
-        return peerConnectionFactory.peerConnection(with: config, constraints: constraints, delegate: self)
+        if _peerConnection == nil {
+            let config = RTCConfiguration()
+            let constraints = RTCMediaConstraints.init(mandatoryConstraints: nil, optionalConstraints: nil)
+            config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"]),
+                                 RTCIceServer(urlStrings: ["stun:gfax.net:3478"]),
+                                 RTCIceServer(urlStrings: ["turn:gfax.net:3478"], username: "allcom", credential: "allcompass")]
+            _peerConnection = peerConnectionFactory.peerConnection(with: config, constraints: constraints, delegate: self)
+        }
+        return _peerConnection!
     }()
 
     private let peerConnectionFactory: RTCPeerConnectionFactory = {
@@ -159,15 +164,7 @@ public class WebRtcClient: NSObject {
     }
 
     public func endCall(friendId: String) {
-        peerConnection.close()
-    }
-}
-
-extension WebRtcClient: CameraSessionDelegate {
-
-    func didOutput(_ sampleBuffer: CMSampleBuffer) {
-        guard let cvpixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer),
-            let capturer = self.videoCapturer as? RTCFrameCapturer else { return }
-        capturer.capture(cvpixelBuffer)
+        _peerConnection?.close()
+        _peerConnection = nil
     }
 }

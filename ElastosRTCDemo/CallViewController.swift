@@ -150,34 +150,46 @@ class CallViewController: UIViewController {
             view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 60)
         ])
         updateUI()
+        NotificationCenter.default.addObserver(self, selector: #selector(iceDidConnected), name: .iceConnected, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(iceDidDisconnected), name: .iceDisconnected, object: nil)
+    }
+    
+    @objc func iceDidConnected() {
+        self.state = .connected
+    }
+    
+    @objc func iceDidDisconnected() {
+        self.state = .disconnected
     }
     
     func updateUI() {
-        switch state {
-            case .calling:
-                self.acceptBtn.isHidden = true
-                self.endBtn.isHidden = true
-                self.rejectBtn.isHidden = true
-                self.cancelBtn.isHidden = false
-            case .receiving:
-                self.acceptBtn.isHidden = false
-                self.rejectBtn.isHidden = false
-                self.cancelBtn.isHidden = true
-                self.endBtn.isHidden = true
-            case .connected:
-                self.acceptBtn.isHidden = true
-                self.rejectBtn.isHidden = true
-                self.cancelBtn.isHidden = true
-                self.endBtn.isHidden = false
-            case .connecting:
-                self.acceptBtn.isHidden = true
-                self.rejectBtn.isHidden = true
-                self.cancelBtn.isHidden = false
-                self.endBtn.isHidden = true
-            case .disconnected:
-                self.dismiss(animated: true, completion: nil)
+        DispatchQueue.main.async {
+            switch self.state {
+                case .calling:
+                    self.acceptBtn.isHidden = true
+                    self.endBtn.isHidden = true
+                    self.rejectBtn.isHidden = true
+                    self.cancelBtn.isHidden = false
+                case .receiving:
+                    self.acceptBtn.isHidden = false
+                    self.rejectBtn.isHidden = false
+                    self.cancelBtn.isHidden = true
+                    self.endBtn.isHidden = true
+                case .connected:
+                    self.acceptBtn.isHidden = true
+                    self.rejectBtn.isHidden = true
+                    self.cancelBtn.isHidden = true
+                    self.endBtn.isHidden = false
+                case .connecting:
+                    self.acceptBtn.isHidden = true
+                    self.rejectBtn.isHidden = true
+                    self.cancelBtn.isHidden = false
+                    self.endBtn.isHidden = true
+                case .disconnected:
+                    self.dismiss(animated: true, completion: nil)
+            }
+            self.nameLabel.text = self.state.title
         }
-        self.nameLabel.text = state.title
     }
 
     @IBAction func onBack(_ sender: Any) {

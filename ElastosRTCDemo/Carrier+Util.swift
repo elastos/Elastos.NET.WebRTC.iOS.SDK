@@ -25,7 +25,7 @@ extension CarrierFriendInfo {
 
     func convert() -> FriendCellModel {
         FriendCellModel(id: self.userId ?? "no user id",
-                        name: self.label ?? self.name ?? "no name",
+                        name: self.name ?? "no name",
                         avatar: nil,
                         status: self.status.status)
     }

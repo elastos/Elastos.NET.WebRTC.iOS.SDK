@@ -11,6 +11,9 @@ extension Notification.Name {
     static let friendAdded = Notification.Name("friendAdded")
     static let acceptFriend = Notification.Name("acceptFriend")
     static let friendList = Notification.Name("friendList")
+    
+    static let iceConnected = Notification.Name("ice_did_connect")
+    static let iceDisconnected = Notification.Name("ice_did_disconnected")
 
 }
 var transferFrientId = ""
