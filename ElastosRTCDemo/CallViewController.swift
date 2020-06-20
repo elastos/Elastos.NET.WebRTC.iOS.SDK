@@ -21,6 +21,21 @@ enum CallState {
     case connecting
     case connected
     case disconnected
+
+    var title: String {
+        switch self {
+        case .calling:
+            return "正在呼出..."
+        case .receiving:
+            return "正在呼入..."
+        case .connecting:
+            return "正在连接中..."
+        case .connected:
+            return "已连接"
+        case .disconnected:
+            return "已断开连接"
+        }
+    }
 }
 
 
@@ -162,6 +177,7 @@ class CallViewController: UIViewController {
             case .disconnected:
                 self.dismiss(animated: true, completion: nil)
         }
+        self.nameLabel.text = state.title
     }
 
     @IBAction func onBack(_ sender: Any) {
@@ -179,11 +195,12 @@ class CallViewController: UIViewController {
     }
     
     @objc func endCall() {
-        
+        client?.endCall(friendId: self.friendId)
+        self.dismiss(animated: true, completion: nil)
     }
     
     @objc func cancelCall() {
-        weakDataSource?.getClient().endCall(friendId: self.friendId)
+        client?.endCall(friendId: self.friendId)
         self.dismiss(animated: true, completion: nil)
     }
 }
