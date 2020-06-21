@@ -20,12 +20,16 @@ extension WebRtcClient {
         }
 
         if options?.isEnabledVideo == true {
+            localVideoView.addSubview(localRenderView)
+            remoteVideoView.addSubview(remoteRenderView)
             Logger.log(level: .debug, message: "enable video")
             startCaptureLocalVideo(cameraPositon: .front, videoWidth: 640, videoHeight: 640*16/9, videoFps: 30)
             localVideoTrack.add(localRenderView)
             peerConnection.add(localVideoTrack, streamIds: ["stream0"])
         } else {
-            // disable video
+            // todo: disable video
+            localRenderView.removeFromSuperview()
+            remoteRenderView.removeFromSuperview()
         }
 
         if options?.isEnabledDataChannel == true {
@@ -65,6 +69,30 @@ extension WebRtcClient {
             #endif
         }
     }
+
+    public func getLocalVideoView() -> UIView? {
+        if self.options?.isEnabledVideo == true {
+            return self.localVideoView
+        }
+        return nil
+    }
+
+    public func getRemoteVideoView() -> UIView? {
+        if self.options?.isEnabledVideo == true {
+            return self.remoteVideoView
+        }
+        return nil
+    }
+
+    public func setLocalVideoFrame(_ frame: CGRect) {
+        localVideoView.frame = frame
+        localRenderView.frame = frame
+    }
+
+    public func setRemoteVideoFrame(_ frame: CGRect) {
+        remoteVideoView.frame = frame
+        remoteRenderView.frame = frame
+    }
 }
 
 extension WebRtcClient: RTCVideoViewDelegate {
@@ -73,8 +101,7 @@ extension WebRtcClient: RTCVideoViewDelegate {
         let isLandScape = size.width < size.height
         let isLocalRenderView = videoView.isEqual(localRenderView)
 
-        //todo: other cases ?
-        guard let parentView = isLocalRenderView ? localVideoView : remoteVideoView else { return }
+        let parentView = isLocalRenderView ? localVideoView : remoteVideoView
         let renderView = isLocalRenderView ? localRenderView : remoteRenderView
 
         if isLandScape {

@@ -75,17 +75,15 @@ public class WebRtcClient: NSObject {
     public var friendId: String?
     public weak var delegate: WebRtcDelegate?
 
-    public var localVideoView: UIView? {
-        didSet {
-            localVideoView?.addSubview(localRenderView)
-        }
-    }
+    var localVideoView: UIView = {
+        let view = UIView()
+        return view
+    }()
 
-    public var remoteVideoView: UIView? {
-        didSet {
-            remoteVideoView?.addSubview(remoteRenderView)
-        }
-    }
+    var remoteVideoView: UIView = {
+        let view = UIView()
+        return view
+    }()
 
     public var options: MediaOptions? {
         didSet {

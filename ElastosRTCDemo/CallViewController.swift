@@ -141,9 +141,6 @@ class CallViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        client?.localVideoView = localVideoView
-        client?.remoteVideoView = remoteVideoView
         
         if state == .calling {
             client?.inviteCall(friendId: self.friendId, options: [.audio, .video])
@@ -164,6 +161,15 @@ class CallViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(iceDidConnected), name: .iceConnected, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reject(_:)), name: .reject, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(iceDidDisconnected), name: .iceDisconnected, object: nil)
+
+        let localVideoView = client?.getLocalVideoView()
+        let remoteVideoView = client?.getRemoteVideoView()
+
+        guard let localView = localVideoView, let remoteView = remoteVideoView else { return }
+        view.addSubview(localView)
+        view.addSubview(remoteView)
+        client?.setLocalVideoFrame(CGRect(x: 10, y: 40, width: 100, height: 100))
+        client?.setRemoteVideoFrame(CGRect(x: 10, y: 160, width: 100, height: 100))
     }
 
     @objc func iceDidConnected() {
