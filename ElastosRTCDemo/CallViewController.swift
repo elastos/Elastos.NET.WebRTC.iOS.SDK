@@ -15,12 +15,12 @@ protocol CallingDelegate: NSObject {
     func getClient() -> WebRtcClient
 }
 
-enum CallState {
+enum CallState: Equatable {
     case calling
     case receiving
     case connecting
     case connected
-    case disconnected
+    case disconnected(reason: CallReason)
 
     var title: String {
         switch self {
@@ -32,8 +32,19 @@ enum CallState {
             return "正在连接中..."
         case .connected:
             return "已连接"
-        case .disconnected:
-            return "已断开连接"
+        case .disconnected(let reason):
+            switch reason {
+            case .cancel:
+                return "已取消通话"
+            case .close:
+                return "已关闭通话"
+            case .missing:
+                return "missing"
+            case .reject:
+                return "对方拒绝接听"
+            case .unknown:
+                return "unknown 挂断"
+            }
         }
     }
 }
@@ -151,17 +162,18 @@ class CallViewController: UIViewController {
         ])
         updateUI()
         NotificationCenter.default.addObserver(self, selector: #selector(iceDidConnected), name: .iceConnected, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reject(_:)), name: .reject, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(iceDidDisconnected), name: .iceDisconnected, object: nil)
     }
-    
+
     @objc func iceDidConnected() {
         self.state = .connected
     }
-    
+
     @objc func iceDidDisconnected() {
-        self.state = .disconnected
+        self.state = .disconnected(reason: .cancel)
     }
-    
+
     func updateUI() {
         DispatchQueue.main.async {
             switch self.state {
@@ -186,7 +198,9 @@ class CallViewController: UIViewController {
                     self.cancelBtn.isHidden = false
                     self.endBtn.isHidden = true
                 case .disconnected:
-                    self.dismiss(animated: true, completion: nil)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                        self.dismiss(animated: true, completion: nil)
+                }
             }
             self.nameLabel.text = self.state.title
         }
@@ -196,23 +210,29 @@ class CallViewController: UIViewController {
         client?.endCall(friendId: self.friendId)
         self.dismiss(animated: true, completion: nil)
     }
-        
+
     @objc func acceptCall() {
         self.state = .connecting
         closure?(true)
     }
-    
+
     @objc func rejectCall() {
         closure?(false)
+        dismiss(animated: true, completion: nil)
     }
-    
+
     @objc func endCall() {
         client?.endCall(friendId: self.friendId)
         self.dismiss(animated: true, completion: nil)
     }
-    
+
     @objc func cancelCall() {
         client?.endCall(friendId: self.friendId)
         self.dismiss(animated: true, completion: nil)
+    }
+
+    @objc func reject(_ notification: Notification) {
+        guard let reason = notification.object as? CallReason else { return  }
+        self.state = .disconnected(reason: reason)
     }
 }

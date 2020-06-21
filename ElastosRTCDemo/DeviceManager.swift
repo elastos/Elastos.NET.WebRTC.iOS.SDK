@@ -14,6 +14,7 @@ extension Notification.Name {
     
     static let iceConnected = Notification.Name("ice_did_connect")
     static let iceDisconnected = Notification.Name("ice_did_disconnected")
+    static let reject = NSNotification.Name("ice_reject")
 
 }
 var transferFrientId = ""

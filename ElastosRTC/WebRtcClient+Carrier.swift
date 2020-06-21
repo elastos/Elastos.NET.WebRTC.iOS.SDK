@@ -24,12 +24,12 @@ extension WebRtcClient {
 
     func send(candidate: RTCIceCandidate) {
         let signal = RtcSignal(type: .candidate, sdp: nil, candidates: [candidate.to()])
-        send(signal: signal)
+        messageQueue.append(signal)
     }
 
     func send(removal candidates: [RTCIceCandidate]) {
         let signal = RtcSignal(type: .removeCandiate, candidates: candidates.map({ $0.to() }))
-        send(signal: signal)
+        messageQueue.append(signal)
     }
 
     func send(desc: RTCSessionDescription) {
@@ -40,7 +40,7 @@ extension WebRtcClient {
     func send(json: String) {
         guard let friendId = self.friendId else { return assertionFailure("friendId is null") }
         do {
-            Logger.log(level: .debug, message: "send data to friend \nname = \(friendId), content = \(json)")
+            Logger.log(level: .debug, message: "[SEND] \(friendId), \n content = \(json)")
             try carrier.sendInviteFriendRequest(to: friendId, withData: json, { (carrier, arg1, arg2, arg3, arg4) in
                 Logger.log(level: .debug, message: "invite friend callback, \(arg1), \(arg2), \(String(describing: arg3)), \(String(describing: arg4))")
             })
@@ -68,6 +68,7 @@ extension WebRtcClient {
                         if result {
                             closure()
                         } else {
+                            self?.delegate?.onEndCall(reason: .reject)
                             self?.send(signal: RtcSignal(type: .bye, reason: .reject))
                         }
                     }
@@ -87,22 +88,30 @@ extension WebRtcClient {
                 receive(removal: candiates)
             case .bye:
                 self.delegate?.onEndCall(reason: message.reason ?? .unknown)
-                self.peerConnection.close()
+                self.cleanup()
             }
         } catch {
             Logger.log(level: .error, message: "signal message decode error, due to \(error)")
         }
+        drainMessageQueueIfReady()
     }
 
     func registerCarrierCallback() {
         do {
             try self.carrier.registerExtension { [weak self] (carrier, friendId, message) in
-                print("register extension callback, \(friendId), \(message ?? "no value")")
+                Logger.log(level: .debug, message: "[RECV]: \(friendId), \n \(message ?? "no value")")
                 guard let data = message, let self = self else { return }
                 self.receive(from: friendId, data: data)
             }
         } catch {
             print("register extension error, due to \(error)")
+        }
+    }
+
+    func drainMessageQueueIfReady() {
+        if hasReceivedSdp {
+            messageQueue.forEach { self.send(signal: $0) }
+            messageQueue.removeAll()
         }
     }
 }

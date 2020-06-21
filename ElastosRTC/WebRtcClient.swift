@@ -96,8 +96,16 @@ public class WebRtcClient: NSObject {
     var videoCapturer: RTCVideoCapturer?
     var remoteStream: RTCMediaStream?
 
-    var _peerConnection: RTCPeerConnection?
+    var messageQueue: [RtcSignal] = []
+    var hasReceivedSdp: Bool = false {
+        didSet {
+            if hasReceivedSdp {
+                self.drainMessageQueueIfReady()
+            }
+        }
+    }
 
+    private var _peerConnection: RTCPeerConnection?
     var peerConnection: RTCPeerConnection {
         if _peerConnection == nil {
             let config = RTCConfiguration()
@@ -164,7 +172,14 @@ public class WebRtcClient: NSObject {
     }
 
     public func endCall(friendId: String) {
+        send(signal: RtcSignal(type: .bye))
         cleanup()
         Logger.log(level: .debug, message: "dealloc peerconnection")
+    }
+
+    func cleanup() {
+        _peerConnection?.close()
+        _peerConnection = nil
+        hasReceivedSdp = false
     }
 }

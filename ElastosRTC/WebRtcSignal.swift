@@ -14,6 +14,7 @@ public enum CallReason: String, Codable {
     case missing
     case cancel
     case unknown
+    case close
 }
 
 enum SdpType: String, Codable {

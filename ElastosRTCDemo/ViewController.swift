@@ -135,7 +135,6 @@ extension ViewController {
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
-
     }
 
     func upSert(friend: FriendCellModel) {
@@ -177,10 +176,11 @@ extension ViewController: WebRtcDelegate {
     func onInvite(friendId: String, completion: @escaping (Bool) -> Void) {
         print("reject or accept")
         DispatchQueue.main.async {
-            let vc = CallViewController(nibName: nil, bundle: nil)
-            vc.closure = completion
-            vc.state = .receiving
-            self.present(vc, animated: true, completion: nil)
+            let sb = UIStoryboard(name: "Main", bundle: nil)
+            let callVc = sb.instantiateViewController(withIdentifier: "call_page") as! CallViewController
+            callVc.closure = completion
+            callVc.state = .receiving
+            self.present(callVc, animated: true, completion: nil)
         }
     }
 
@@ -193,7 +193,7 @@ extension ViewController: WebRtcDelegate {
     }
 
     func onEndCall(reason: CallReason) {
-
+        NotificationCenter.default.post(name: .reject, object: reason)
     }
 
     func onIceConnected() {
