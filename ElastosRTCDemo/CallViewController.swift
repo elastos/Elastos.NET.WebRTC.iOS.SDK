@@ -139,11 +139,13 @@ class CallViewController: UIViewController {
         }
     }
 
+    var callOptions: MediaOptions = [.audio]
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if state == .calling {
-            client?.inviteCall(friendId: self.friendId, options: [.audio, .video])
+            client?.inviteCall(friendId: self.friendId, options: callOptions)
         }
         
         view.backgroundColor = .white
@@ -170,6 +172,9 @@ class CallViewController: UIViewController {
         view.addSubview(remoteView)
         client?.setLocalVideoFrame(CGRect(x: 10, y: 40, width: 100, height: 100))
         client?.setRemoteVideoFrame(CGRect(x: 10, y: 160, width: 100, height: 100))
+
+        localView.isHidden = callOptions.isEnabledVideo
+        remoteView.isHidden = callOptions.isEnabledVideo
     }
 
     @objc func iceDidConnected() {

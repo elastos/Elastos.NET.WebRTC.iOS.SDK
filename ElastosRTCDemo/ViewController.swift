@@ -73,7 +73,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(FriendCell.self), for: indexPath) as? FriendCell else { fatalError() }
-        let friend = Array(friends)[indexPath.row]
+        let friend = friends[indexPath.row]
         cell.update(FriendCellModel(id: friend.id, name: friend.name, avatar: nil, status: friend.status))
         return cell
     }
@@ -90,21 +90,28 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "calling", sender: self)
+        tableView.deselectRow(at: indexPath, animated: true)
+        let friend = friends[indexPath.row]
+        call(friendId: friend.id)
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        switch segue.identifier {
-        case "calling":
-            guard let calling = (segue.destination as? UINavigationController)?.viewControllers.first as? CallViewController else { return }
-            calling.friendId = friends[tableView.indexPathForSelectedRow?.row ?? 0].id
-            calling.weakDataSource = self
-            calling.state = .calling
-        case "setting":
-            break
-        default:
-            assertionFailure("not support now")
-        }
+    func call(friendId: String) {
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let callVc = sb.instantiateViewController(withIdentifier: "call_page") as! CallViewController
+        callVc.state = .calling
+        callVc.friendId = friendId
+        callVc.weakDataSource = self
+
+        let alert = UIAlertController(title: "通话", message: "选择通话类型", preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "语音", style: .default, handler: { [weak self] _ in
+            callVc.callOptions = [.audio]
+            self?.present(callVc, animated: true, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "视频语音", style: .destructive, handler: { [weak self] _ in
+            callVc.callOptions = [.audio, .video]
+            self?.present(callVc, animated: true, completion: nil)
+        }))
+        present(alert, animated: true, completion: nil)
     }
 }
 
