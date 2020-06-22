@@ -75,12 +75,12 @@ public class WebRtcClient: NSObject {
     public var friendId: String?
     public weak var delegate: WebRtcDelegate?
 
-    var localVideoView: UIView = {
+    lazy var localVideoView: UIView = {
         let view = UIView()
         return view
     }()
 
-    var remoteVideoView: UIView = {
+    lazy var remoteVideoView: UIView = {
         let view = UIView()
         return view
     }()
