@@ -20,16 +20,20 @@ extension WebRtcClient {
         }
 
         if options?.isEnabledVideo == true {
-            localVideoView.addSubview(localRenderView)
-            remoteVideoView.addSubview(remoteRenderView)
+            DispatchQueue.main.async {
+                self.localVideoView.addSubview(self.localRenderView)
+                self.remoteVideoView.addSubview(self.remoteRenderView)
+            }
             Logger.log(level: .debug, message: "enable video")
             startCaptureLocalVideo(cameraPositon: .front, videoWidth: 640, videoHeight: 640*16/9, videoFps: 30)
             localVideoTrack.add(localRenderView)
             peerConnection.add(localVideoTrack, streamIds: ["stream0"])
         } else {
             // todo: disable video
-            localRenderView.removeFromSuperview()
-            remoteRenderView.removeFromSuperview()
+            DispatchQueue.main.async {
+                self.localRenderView.removeFromSuperview()
+                self.remoteRenderView.removeFromSuperview()
+            }
         }
 
         if options?.isEnabledDataChannel == true {
