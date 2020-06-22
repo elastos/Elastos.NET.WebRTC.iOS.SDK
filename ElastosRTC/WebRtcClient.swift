@@ -85,7 +85,7 @@ public class WebRtcClient: NSObject {
         return view
     }()
 
-    public var options: MediaOptions? {
+    public var options: MediaOptions? = [.audio, .video] { //todo: receive call init ?
         didSet {
             setupMedia()
         }
@@ -179,5 +179,6 @@ public class WebRtcClient: NSObject {
         _peerConnection?.close()
         _peerConnection = nil
         hasReceivedSdp = false
+        Logger.log(level: .debug, message: "did receive end call")
     }
 }

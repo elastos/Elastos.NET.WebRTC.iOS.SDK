@@ -20,20 +20,16 @@ extension WebRtcClient {
         }
 
         if options?.isEnabledVideo == true {
-            DispatchQueue.main.async {
-                self.localVideoView.addSubview(self.localRenderView)
-                self.remoteVideoView.addSubview(self.remoteRenderView)
-            }
+            localVideoView.addSubview(localRenderView)
+            remoteVideoView.addSubview(remoteRenderView)
             Logger.log(level: .debug, message: "enable video")
             startCaptureLocalVideo(cameraPositon: .front, videoWidth: 640, videoHeight: 640*16/9, videoFps: 30)
             localVideoTrack.add(localRenderView)
             peerConnection.add(localVideoTrack, streamIds: ["stream0"])
         } else {
             // todo: disable video
-            DispatchQueue.main.async {
-                self.localRenderView.removeFromSuperview()
-                self.remoteRenderView.removeFromSuperview()
-            }
+            localRenderView.removeFromSuperview()
+            remoteRenderView.removeFromSuperview()
         }
 
         if options?.isEnabledDataChannel == true {
@@ -90,12 +86,12 @@ extension WebRtcClient {
 
     public func setLocalVideoFrame(_ frame: CGRect) {
         localVideoView.frame = frame
-        localRenderView.frame = frame
+        localRenderView.frame = CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height)
     }
 
     public func setRemoteVideoFrame(_ frame: CGRect) {
         remoteVideoView.frame = frame
-        remoteRenderView.frame = frame
+        remoteRenderView.frame = CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height)
     }
 }
 

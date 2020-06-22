@@ -139,7 +139,7 @@ class CallViewController: UIViewController {
         }
     }
 
-    var callOptions: MediaOptions = [.audio]
+    var callOptions: MediaOptions = [.audio, .video]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -170,11 +170,14 @@ class CallViewController: UIViewController {
         guard let localView = localVideoView, let remoteView = remoteVideoView else { return }
         view.addSubview(localView)
         view.addSubview(remoteView)
-        client?.setLocalVideoFrame(CGRect(x: 10, y: 40, width: 100, height: 100))
-        client?.setRemoteVideoFrame(CGRect(x: 10, y: 160, width: 100, height: 100))
+        client?.setLocalVideoFrame(CGRect(x: 10, y: 40, width: 200, height: 150))
+        client?.setRemoteVideoFrame(CGRect(x: 10, y: 200, width: 200, height: 150))
 
-        localView.isHidden = callOptions.isEnabledVideo
-        remoteView.isHidden = callOptions.isEnabledVideo
+        localView.backgroundColor = .red
+        remoteView.backgroundColor = .blue
+
+        localView.isHidden = !callOptions.isEnabledVideo
+        remoteView.isHidden = !callOptions.isEnabledVideo
     }
 
     @objc func iceDidConnected() {
@@ -243,7 +246,7 @@ class CallViewController: UIViewController {
     }
 
     @objc func reject(_ notification: Notification) {
-        guard let reason = notification.object as? CallReason else { return  }
+        guard let reason = notification.object as? CallReason else { return assertionFailure() }
         self.state = .disconnected(reason: reason)
     }
 }

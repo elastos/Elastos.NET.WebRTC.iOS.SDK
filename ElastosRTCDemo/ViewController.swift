@@ -10,6 +10,7 @@ import UIKit
 import EFQRCode
 import ElastosCarrierSDK
 import ElastosRTC
+import AVFoundation
 
 class ViewController: UIViewController, CarrierDelegate {
 
@@ -34,6 +35,45 @@ class ViewController: UIViewController, CarrierDelegate {
         tableView.register(ProfileFooter.self, forHeaderFooterViewReuseIdentifier: NSStringFromClass(ProfileFooter.self))
         tableView.sectionFooterHeight = UITableView.automaticDimension
         DeviceManager.sharedInstance.start()
+
+        checkPermission()
+    }
+
+    func checkPermission() {
+        // Request permission to record.
+         AVAudioSession.sharedInstance().requestRecordPermission { granted in
+             if granted {
+                 // The user granted access. Present recording interface.
+             } else {
+                self.alert(message: "Open: Settings -> Privacy -> Microphone")
+             }
+         }
+
+        // Request permission to capture
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+            case .authorized: // The user has previously granted access to the camera.
+                break
+
+            case .notDetermined: // The user has not yet been asked for camera access.
+                AVCaptureDevice.requestAccess(for: .video) { granted in
+                    if granted == false {
+                        self.alert(message: "Open: Settings -> Privacy -> Camera")
+                    }
+                }
+
+            case .denied: // The user has previously denied access.
+                self.alert(message: "Open: Settings -> Privacy -> Camera")
+
+            case .restricted: // The user can't grant access due to restrictions.
+                self.alert(message: "Open: Settings -> Privacy -> Camera")
+        @unknown default:
+            self.alert(message: "Open: Settings -> Privacy -> Camera")
+        }
+    }
+
+    func alert(message: String) {
+        let vc = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        present(vc, animated: true, completion: nil)
     }
 
     @IBAction func addAsFriend(_ sender: Any) {
@@ -112,6 +152,11 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
             self?.present(callVc, animated: true, completion: nil)
         }))
         alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+        alert.modalPresentationStyle = .popover
+        if let presenter = alert.popoverPresentationController {
+            presenter.sourceView = tableView;
+            presenter.sourceRect = tableView.bounds;
+        }
         present(alert, animated: true, completion: nil)
     }
 }
@@ -186,8 +231,10 @@ extension ViewController: WebRtcDelegate {
         DispatchQueue.main.async {
             let sb = UIStoryboard(name: "Main", bundle: nil)
             let callVc = sb.instantiateViewController(withIdentifier: "call_page") as! CallViewController
+
             callVc.closure = completion
             callVc.state = .receiving
+            callVc.weakDataSource = self
             self.present(callVc, animated: true, completion: nil)
         }
     }
