@@ -84,6 +84,7 @@ class FriendCell: UITableViewCell {
         constraints.append(avatar.heightAnchor.constraint(equalTo: avatar.widthAnchor))
         constraints.append(avatar.centerYAnchor.constraint(equalTo: contentView.centerYAnchor))
         constraints.append(statusLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor))
+        constraints.forEach { $0.priority = .required - 1 }
         NSLayoutConstraint.activate(constraints)
     }
 

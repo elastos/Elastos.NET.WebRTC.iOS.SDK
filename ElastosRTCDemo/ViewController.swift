@@ -102,7 +102,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         callVc.friendId = friendId
         callVc.weakDataSource = self
 
-        let alert = UIAlertController(title: "通话", message: "选择通话类型", preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "选择通话类型", message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "语音", style: .default, handler: { [weak self] _ in
             callVc.callOptions = [.audio]
             self?.present(callVc, animated: true, completion: nil)
@@ -111,6 +111,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
             callVc.callOptions = [.audio, .video]
             self?.present(callVc, animated: true, completion: nil)
         }))
+        alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
     }
 }
@@ -164,8 +165,8 @@ extension ViewController {
 extension ViewController: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == self.textField {
-            addAsFriend(textField)
+        if textField == self.textField, let content = textField.text {
+            addAsFriend(content)
         }
         return true
     }
