@@ -23,13 +23,13 @@ open ElastosRTC.xcworkspace
 
 ### WebRTC Protocol
 
-	type		| sdp             |   candidates |  reason  | options |
-|-------------|-----------------|---------------|---------|---------|
-|offer			| required		| - | - | required |
-|answer		| required		| - | - | - |
-|candidate	| - 				| required | - | - |
-|remove-candidates| - 			| required | - | - |
-|bye 			| - 				| - | required | - |
+| type               | sdp      | candidates | reason   | options  |
+|--------------------|----------|------------|----------|----------|
+| offer              | required | -          | -        | required |
+| answer             | required | -          | -        | -        |
+| candidate          | -        | required   | -        | -        |
+| removal-candidates | -        | required   | -        | -        |
+| bye                | -        | -          | required | -        |
 
 ### Example
 #### 1. Offer
@@ -54,9 +54,9 @@ open ElastosRTC.xcworkspace
 {
 	"type":"candiate",
 	"candidates": [{
-		"sdp": "rtc_candidate_desciption",
-		"sdpMLineIndex": 222,
-		"sdpMid": xxx
+		"sdp": "candidate:684496083 1 udp 1685855999 112.65.48.165 17465 ...",
+		"sdpMLineIndex": 0,
+		"sdpMid": audio
 	}]
 }
 ```
@@ -64,17 +64,21 @@ open ElastosRTC.xcworkspace
 
 ```
 {
-	"type":"candiate",
-	"candidates": [{
-		"sdp": "rtc_candidate_desciption",
-		"sdpMLineIndex": 222,
-		"sdpMid": xxx
-	}, 
-	{
-		"sdp": "rtc_candiate_desciption",
-		"sdpMLineIndex": 222,
-		"sdpMid": xxx
-	}, ...]
+	"type":"removal-candidates",
+	"candidates": 
+	[
+		{
+			"sdp": "candidate:684496083 1 udp 1685855999 112.65.48.165 17465 ...",
+			"sdpMLineIndex": 0,
+			"sdpMid": audio
+		}, 
+		{
+			"sdp": "rtc_candiate_desciption",
+			"sdpMLineIndex": 0,
+			"sdpMid": audio
+		}, 
+		...
+	]
 }
 ```
 ### 5. Bye
