@@ -24,7 +24,7 @@ open ElastosRTC.xcworkspace
 ### WebRTC Protocol
 
 	type		| sdp             |   candidates |  reason  | options |
--------------|-----------------|---------------|---------|---------|
+|-------------|-----------------|---------------|---------|---------|
 |offer			| required		| - | - | required |
 |answer		| required		| - | - | - |
 |candidate	| - 				| required | - | - |
