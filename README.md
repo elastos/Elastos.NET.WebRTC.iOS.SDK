@@ -25,11 +25,11 @@ open ElastosRTC.xcworkspace
 
 	type		| sdp             |   candidates |  reason  | options |
 -------------|-----------------|---------------|---------|---------|
-offer| required| - | - | required |
-answer| required| - | - | - |
-candidate| - | required | - | - |
-remove-candidates| - | required | - | - |
-bye | - | - | required | - |
+|offer			| required		| - | - | required |
+|answer		| required		| - | - | - |
+|candidate	| - 				| required | - | - |
+|remove-candidates| - 			| required | - | - |
+|bye 			| - 				| - | required | - |
 
 ### Example
 #### 1. Offer
