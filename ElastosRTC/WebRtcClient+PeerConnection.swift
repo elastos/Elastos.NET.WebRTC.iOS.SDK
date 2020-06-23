@@ -61,6 +61,9 @@ extension WebRtcClient {
     func receive(sdp: RTCSessionDescription, closure: @escaping (RTCSessionDescription) -> Void) {
         setupMedia()
         hasReceivedSdp = true
+        if isEnableVideo {
+            peerConnection.add(self.localVideoTrack, streamIds: ["stream-0"])
+        }
         peerConnection.setRemoteDescription(sdp) { error in
             if let error = error {
                 return assertionFailure("failed to set remote offer sdp, due to \(error)")
@@ -109,6 +112,7 @@ extension WebRtcClient: RTCPeerConnectionDelegate {
                 track.source.volume = 8
             }
         }
+        print("peer connection receive stream: \(stream.videoTracks), \(stream.audioTracks)")
     }
 
     public func peerConnection(_ peerConnection: RTCPeerConnection, didRemove stream: RTCMediaStream) {

@@ -41,7 +41,6 @@ public protocol WebRtcDelegate: class {
 public class WebRtcClient: NSObject {
 
     public let carrier: CarrierExtension
-    public var customFrameCapturer = false
     public var friendId: String?
     public weak var delegate: WebRtcDelegate?
 
@@ -113,13 +112,13 @@ public class WebRtcClient: NSObject {
     lazy var localVideoTrack: RTCVideoTrack = {
         let source = peerConnectionFactory.videoSource()
 
-        if customFrameCapturer {
-            videoCapturer = RTCFrameCapturer(delegate: source)
-        } else if TARGET_OS_SIMULATOR != 0 {
+        #if targetEnvironment(simulator)
+            // we're on the simulator - use the file local video
             videoCapturer = RTCFileVideoCapturer(delegate: source)
-        } else {
-          videoCapturer = RTCCameraVideoCapturer(delegate: source)
-        }
+        #else
+            // we're on a device – use front camera
+            videoCapturer = RTCCameraVideoCapturer(delegate: source)
+        #endif
         return peerConnectionFactory.videoTrack(with: source, trackId: "video0")
     }()
 
@@ -141,6 +140,9 @@ public class WebRtcClient: NSObject {
     public func inviteCall(friendId: String, options: [MediaOption]) {
         self.friendId = friendId
         self.options = options
+        if isEnableVideo {
+            peerConnection.add(self.localVideoTrack, streamIds: ["stream0"])
+        }
         createOffer { [weak self] sdp in
             guard let self = self else { return }
             self.send(desc: sdp, options: options)

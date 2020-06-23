@@ -170,8 +170,8 @@ class CallViewController: UIViewController {
         guard let localView = localVideoView, let remoteView = remoteVideoView else { return }
         view.addSubview(localView)
         view.addSubview(remoteView)
-        client?.setLocalVideoFrame(CGRect(x: 10, y: 40, width: 200, height: 150))
-        client?.setRemoteVideoFrame(CGRect(x: 10, y: 200, width: 200, height: 150))
+        client?.setLocalVideoFrame(CGRect(x: 10, y: 100, width: 150, height: 120))
+        client?.setRemoteVideoFrame(CGRect(x: 170, y: 100, width: 150, height: 120))
 
         localView.backgroundColor = .red
         remoteView.backgroundColor = .blue

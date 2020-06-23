@@ -231,7 +231,6 @@ extension ViewController: WebRtcDelegate {
         DispatchQueue.main.async {
             let sb = UIStoryboard(name: "Main", bundle: nil)
             let callVc = sb.instantiateViewController(withIdentifier: "call_page") as! CallViewController
-
             callVc.closure = completion
             callVc.state = .receiving
             callVc.weakDataSource = self
