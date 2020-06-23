@@ -11,34 +11,9 @@ import UIKit
 import ElastosCarrierSDK
 import WebRTC
 
-public enum MediaOptionItem: String, Equatable, Codable {
+public enum MediaOption: String, Equatable, Codable {
     case audio
     case video
-}
-
-public class MediaOptions: ExpressibleByArrayLiteral, CustomStringConvertible, Codable {
-
-    public var description: String {
-        options.reduce(into: "") { (result, item) in
-            result += item.rawValue + ", "
-        }
-    }
-
-    public typealias ArrayLiteralElement = MediaOptionItem
-
-    private let options: [MediaOptionItem]
-
-    public required init(arrayLiteral elements: MediaOptionItem...) {
-        self.options = elements
-    }
-
-    public var isEnabledAudio: Bool {
-        options.contains(.audio)
-    }
-
-    public var isEnabledVideo: Bool {
-        options.contains(.video)
-    }
 }
 
 public protocol WebRtcDelegate: class {
@@ -80,7 +55,7 @@ public class WebRtcClient: NSObject {
         return view
     }()
 
-    public var options: MediaOptions = [.audio, .video] {
+    public var options: [MediaOption] = [.audio, .video] {
         didSet {
             setupMedia()
         }
@@ -148,6 +123,14 @@ public class WebRtcClient: NSObject {
         return peerConnectionFactory.videoTrack(with: source, trackId: "video0")
     }()
 
+    public var isEnableAudio: Bool {
+        self.options.contains(.audio)
+    }
+
+    public var isEnableVideo: Bool {
+        self.options.contains(.video)
+    }
+
     public init(carrier: Carrier, delegate: WebRtcDelegate) {
         self.carrier = CarrierExtension(carrier)
         self.delegate = delegate
@@ -155,12 +138,12 @@ public class WebRtcClient: NSObject {
         self.registerCarrierCallback()
     }
 
-    public func inviteCall(friendId: String, options: MediaOptions) {
+    public func inviteCall(friendId: String, options: [MediaOption]) {
         self.friendId = friendId
         self.options = options
         createOffer { [weak self] sdp in
             guard let self = self else { return }
-            self.send(desc: sdp)
+            self.send(desc: sdp, options: options)
         }
     }
 

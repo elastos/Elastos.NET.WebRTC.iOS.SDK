@@ -139,7 +139,7 @@ class CallViewController: UIViewController {
         }
     }
 
-    var callOptions: MediaOptions = [.audio, .video]
+    var callOptions: [MediaOption] = [.audio, .video]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -176,8 +176,8 @@ class CallViewController: UIViewController {
         localView.backgroundColor = .red
         remoteView.backgroundColor = .blue
 
-        localView.isHidden = !callOptions.isEnabledVideo
-        remoteView.isHidden = !callOptions.isEnabledVideo
+        localView.isHidden = client?.isEnableVideo == false
+        remoteView.isHidden = client?.isEnableVideo == false
     }
 
     @objc func iceDidConnected() {

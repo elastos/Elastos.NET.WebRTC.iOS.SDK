@@ -12,7 +12,7 @@ import WebRTC
 extension WebRtcClient {
 
     func setupMedia() {
-        if options.isEnabledAudio {
+        if isEnableAudio {
             Logger.log(level: .debug, message: "enable audio")
             peerConnection.add(localAudioTrack, streamIds: ["stream0"])
         } else {
@@ -20,7 +20,7 @@ extension WebRtcClient {
             Logger.log(level: .error, message: "cannot disable audio")
         }
 
-        if options.isEnabledVideo {
+        if isEnableVideo {
             localVideoView.addSubview(localRenderView)
             remoteVideoView.addSubview(remoteRenderView)
             Logger.log(level: .debug, message: "enable video")
@@ -65,14 +65,14 @@ extension WebRtcClient {
     }
 
     public func getLocalVideoView() -> UIView? {
-        if options.isEnabledVideo == true {
+        if isEnableVideo {
             return self.localVideoView
         }
         return nil
     }
 
     public func getRemoteVideoView() -> UIView? {
-        if options.isEnabledVideo == true {
+        if isEnableVideo {
             return self.remoteVideoView
         }
         return nil

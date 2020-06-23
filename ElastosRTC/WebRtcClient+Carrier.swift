@@ -32,8 +32,8 @@ extension WebRtcClient {
         messageQueue.append(signal)
     }
 
-    func send(desc: RTCSessionDescription) {
-        let signal = desc.to()
+    func send(desc: RTCSessionDescription, options: [MediaOption]? = nil) {
+        let signal = desc.to(options: options)
         send(signal: signal)
     }
 

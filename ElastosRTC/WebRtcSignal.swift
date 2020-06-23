@@ -31,7 +31,7 @@ struct RtcSignal: Codable {
     let sdp: String?
     let candidates: [RtcCandidateSignal]?
     let reason: CallReason?
-    let options: MediaOptions?
+    let options: [MediaOption]?
 
 
     enum CoingKeys: CodingKey {
@@ -40,7 +40,7 @@ struct RtcSignal: Codable {
         case candidates
     }
 
-    init(type: SdpType, sdp: String? = nil, candidates: [RtcCandidateSignal]? = nil, reason: CallReason? = nil, options: MediaOptions? = nil) {
+    init(type: SdpType, sdp: String? = nil, candidates: [RtcCandidateSignal]? = nil, reason: CallReason? = nil, options: [MediaOption]? = nil) {
         self.type = type
         self.sdp = sdp
         self.candidates = candidates
@@ -87,8 +87,8 @@ extension RTCIceCandidate {
 
 extension RTCSessionDescription {
 
-    func to() -> RtcSignal {
-        RtcSignal(type: type.to!, sdp: sdp)
+    func to(options: [MediaOption]? = nil) -> RtcSignal {
+        RtcSignal(type: type.to!, sdp: sdp, options: options)
     }
 }
 
