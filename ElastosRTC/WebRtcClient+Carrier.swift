@@ -40,9 +40,9 @@ extension WebRtcClient {
     func send(json: String) {
         guard let friendId = self.friendId else { return assertionFailure("friendId is null") }
         do {
-            Logger.log(level: .debug, message: "[SEND] \(friendId), \n content = \(json)")
+            Logger.log(level: .debug, message: "[SEND]: \(friendId), \n content = \(json)")
             try carrier.sendInviteFriendRequest(to: friendId, withData: json, { (carrier, arg1, arg2, arg3, arg4) in
-                Logger.log(level: .debug, message: "invite friend callback, \(arg1), \(arg2), \(String(describing: arg3)), \(String(describing: arg4))")
+                Logger.log(level: .debug, message: "[RECE]: \(arg1), \(arg2), \(String(describing: arg3)), \(String(describing: arg4))")
             })
         } catch {
             Logger.log(level: .error, message: "send data failure, due to \(error)")
@@ -56,8 +56,9 @@ extension WebRtcClient {
             case .offer:
                 guard let sdp = message.offer else { return }
                 self.friendId = from
+                self.options = message.options ?? [.audio, .video]
 
-                let closure = { [weak self] in
+                let acceptClosure = { [weak self] in
                     self?.receive(sdp: sdp) { [weak self] sdp in
                         self?.send(desc: sdp)
                     }
@@ -66,14 +67,14 @@ extension WebRtcClient {
                 if let delegate = self.delegate {
                     delegate.onInvite(friendId: from) { [weak self] result in
                         if result {
-                            closure()
+                            acceptClosure()
                         } else {
-                            self?.delegate?.onEndCall(reason: .reject)
-                            self?.send(signal: RtcSignal(type: .bye, reason: .reject))
+                            self?.rejectCall()
                         }
                     }
                 } else {
-                    closure()
+                    Logger.log(level: .debug, message: "Auto answer for user")
+                    acceptClosure()
                 }
             case .answer:
                 guard let sdp = message.answer, from == self.friendId else { return }
@@ -113,5 +114,10 @@ extension WebRtcClient {
             messageQueue.forEach { self.send(signal: $0) }
             messageQueue.removeAll()
         }
+    }
+
+    func rejectCall() {
+        send(signal: RtcSignal(type: .bye, reason: .reject))
+        delegate?.onEndCall(reason: .reject)
     }
 }

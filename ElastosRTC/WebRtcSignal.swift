@@ -31,6 +31,8 @@ struct RtcSignal: Codable {
     let sdp: String?
     let candidates: [RtcCandidateSignal]?
     let reason: CallReason?
+    let options: MediaOptions?
+
 
     enum CoingKeys: CodingKey {
         case type
@@ -38,11 +40,12 @@ struct RtcSignal: Codable {
         case candidates
     }
 
-    init(type: SdpType, sdp: String? = nil, candidates: [RtcCandidateSignal]? = nil, reason: CallReason? = nil) {
+    init(type: SdpType, sdp: String? = nil, candidates: [RtcCandidateSignal]? = nil, reason: CallReason? = nil, options: MediaOptions? = nil) {
         self.type = type
         self.sdp = sdp
         self.candidates = candidates
         self.reason = reason
+        self.options = options
     }
 
     var candidate: RTCIceCandidate? {

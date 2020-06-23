@@ -11,13 +11,12 @@ import UIKit
 import ElastosCarrierSDK
 import WebRTC
 
-public enum MediaOptionItem: String, Equatable {
+public enum MediaOptionItem: String, Equatable, Codable {
     case audio
     case video
-    case dataChannel
 }
 
-public class MediaOptions: ExpressibleByArrayLiteral, CustomStringConvertible {
+public class MediaOptions: ExpressibleByArrayLiteral, CustomStringConvertible, Codable {
 
     public var description: String {
         options.reduce(into: "") { (result, item) in
@@ -39,10 +38,6 @@ public class MediaOptions: ExpressibleByArrayLiteral, CustomStringConvertible {
 
     public var isEnabledVideo: Bool {
         options.contains(.video)
-    }
-
-    public var isEnabledDataChannel: Bool {
-        options.contains(.dataChannel)
     }
 }
 
@@ -85,7 +80,7 @@ public class WebRtcClient: NSObject {
         return view
     }()
 
-    public var options: MediaOptions? = [.audio, .video] { //todo: receive call init ?
+    public var options: MediaOptions = [.audio, .video] {
         didSet {
             setupMedia()
         }
