@@ -140,6 +140,7 @@ public class WebRtcClient: NSObject {
     public func inviteCall(friendId: String, options: [MediaOption]) {
         self.friendId = friendId
         self.options = options
+        self.messageQueue = []
         if isEnableVideo {
             peerConnection.add(self.localVideoTrack, streamIds: ["stream0"])
         }
@@ -152,13 +153,13 @@ public class WebRtcClient: NSObject {
     public func endCall(friendId: String) {
         send(signal: RtcSignal(type: .bye))
         cleanup()
-        Logger.log(level: .debug, message: "dealloc peerconnection")
     }
 
     func cleanup() {
         _peerConnection?.close()
         _peerConnection = nil
         hasReceivedSdp = false
-        Logger.log(level: .debug, message: "did receive end call")
+        messageQueue.removeAll()
+        Logger.log(level: .debug, message: "webrtc client cleanup")
     }
 }

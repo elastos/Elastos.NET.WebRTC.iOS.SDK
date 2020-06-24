@@ -34,6 +34,7 @@ class ViewController: UIViewController, CarrierDelegate {
         tableView.register(FriendCell.self, forCellReuseIdentifier: NSStringFromClass(FriendCell.self))
         tableView.register(ProfileFooter.self, forHeaderFooterViewReuseIdentifier: NSStringFromClass(ProfileFooter.self))
         tableView.sectionFooterHeight = UITableView.automaticDimension
+        tableView.keyboardDismissMode = .onDrag
         DeviceManager.sharedInstance.start()
 
         checkPermission()

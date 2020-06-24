@@ -18,18 +18,20 @@ extension WebRtcClient {
             guard let message = String(data: data, encoding: .utf8) else { return }
             send(json: message)
         } catch {
-            Logger.log(level: .error, message: "convert signal to json failure, due to \(error)")
+            assertionFailure("convert signal to json failure, due to \(error)")
         }
     }
 
     func send(candidate: RTCIceCandidate) {
-        let signal = RtcSignal(type: .candidate, sdp: nil, candidates: [candidate.to()])
+        let signal = RtcSignal(type: .candidate, candidates: [candidate.to()])
         messageQueue.append(signal)
+        drainMessageQueueIfReady()
     }
 
     func send(removal candidates: [RTCIceCandidate]) {
         let signal = RtcSignal(type: .removeCandiate, candidates: candidates.map({ $0.to() }))
         messageQueue.append(signal)
+        drainMessageQueueIfReady()
     }
 
     func send(desc: RTCSessionDescription, options: [MediaOption]? = nil) {
@@ -45,6 +47,7 @@ extension WebRtcClient {
                 Logger.log(level: .debug, message: "[RECE]: \(arg1), \(arg2), \(String(describing: arg3)), \(String(describing: arg4))")
             })
         } catch {
+            delegate?.onConnectionError(error: error)
             Logger.log(level: .error, message: "send data failure, due to \(error)")
         }
     }
@@ -55,9 +58,8 @@ extension WebRtcClient {
             switch message.type {
             case .offer:
                 guard let sdp = message.offer else { return }
-                self.friendId = from
-                self.options = message.options ?? [.audio, .video]
-
+                friendId = from
+                options = message.options ?? [.audio, .video]
                 let acceptClosure = { [weak self] in
                     self?.receive(sdp: sdp) { [weak self] sdp in
                         self?.send(desc: sdp)
@@ -105,7 +107,7 @@ extension WebRtcClient {
                 self.receive(from: friendId, data: data)
             }
         } catch {
-            print("register extension error, due to \(error)")
+            assertionFailure("register extension error, due to \(error)")
         }
     }
 
