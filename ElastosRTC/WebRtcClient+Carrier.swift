@@ -60,7 +60,7 @@ extension WebRtcClient {
                 guard let sdp = message.offer else { return }
                 friendId = from
                 options = message.options ?? [.audio, .video]
-                let acceptClosure = { [weak self] in
+                let closureAfterAccepted = { [weak self] in
                     self?.receive(sdp: sdp) { [weak self] sdp in
                         self?.send(desc: sdp)
                     }
@@ -69,14 +69,14 @@ extension WebRtcClient {
                 if let delegate = self.delegate {
                     delegate.onInvite(friendId: from) { [weak self] result in
                         if result {
-                            acceptClosure()
+                            closureAfterAccepted()
                         } else {
                             self?.rejectCall()
                         }
                     }
                 } else {
                     Logger.log(level: .debug, message: "Auto answer for user")
-                    acceptClosure()
+                    closureAfterAccepted()
                 }
             case .answer:
                 guard let sdp = message.answer, from == self.friendId else { return }

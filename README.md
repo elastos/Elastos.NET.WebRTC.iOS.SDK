@@ -52,7 +52,7 @@ open ElastosRTC.xcworkspace
 
 ```
 {
-	"type":"candiate",
+	"type":"candidate",
 	"candidates": [{
 		"sdp": "candidate:684496083 1 udp 1685855999 112.65.48.165 17465 ...",
 		"sdpMLineIndex": 0,
@@ -64,7 +64,7 @@ open ElastosRTC.xcworkspace
 
 ```
 {
-	"type":"removal-candidates",
+	"type":"remove-candidates",
 	"candidates": 
 	[
 		{
