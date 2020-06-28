@@ -48,11 +48,11 @@ open ElastosRTC.xcworkspace
 	"sdp":"rtc_session_description_generated_by_webrtc"
 }
 ```
-### 3. Candiate
+### 3. Candidate
 
 ```
 {
-	"type":"candiate",
+	"type":"candidate",
 	"candidates": [{
 		"sdp": "candidate:684496083 1 udp 1685855999 112.65.48.165 17465 ...",
 		"sdpMLineIndex": 0,
