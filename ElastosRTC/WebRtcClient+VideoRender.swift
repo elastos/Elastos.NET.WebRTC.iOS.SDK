@@ -6,34 +6,23 @@
 //  Copyright © 2020 Elastos Foundation. All rights reserved.
 //
 
-import Foundation
-import WebRTC
-
 extension WebRtcClient {
 
     func setupMedia() {
-        if isEnableAudio {
-            Logger.log(level: .debug, message: "enable audio")
+        if self.options.isEnableAudio {
             peerConnection.add(localAudioTrack, streamIds: ["stream0"])
-        } else {
-            // disable audio
-            Logger.log(level: .error, message: "cannot disable audio")
         }
-        Logger.log(level: .debug, message: isEnableVideo ? "enable video" : "disable video")
-        if isEnableVideo {
+
+        if self.options.isEnableVideo {
             DispatchQueue.main.async {
                 self.localVideoView.addSubview(self.localRenderView)
                 self.remoteVideoView.addSubview(self.remoteRenderView)
                 self.localVideoTrack.add(self.localRenderView)
                 self.startCaptureLocalVideo(cameraPositon: .front, videoWidth: 640, videoHeight: 640 * 16 / 9, videoFps: 30)
             }
-        } else {
-            // todo: disable video
-            DispatchQueue.main.async {
-                self.localRenderView.removeFromSuperview()
-                self.remoteRenderView.removeFromSuperview()
-            }
         }
+        Log.d(TAG, isEnableVideo ? "enable video" : "disable video")
+        Log.d(TAG, isEnableAudio ? "enable audio" : "disable audio")
     }
 
     func startCaptureLocalVideo(cameraPositon: AVCaptureDevice.Position, videoWidth: Int, videoHeight: Int?, videoFps: Int) {
@@ -60,7 +49,7 @@ extension WebRtcClient {
             if Bundle.main.path( forResource: "sample.mp4", ofType: nil ) != nil {
                 capturer.startCapturing(fromFileNamed: "sample.mp4") { err in print(err) }
             } else {
-                print("file did not found")
+                Log.e(TAG, "cannot find sample video for simulator")
             }
             #endif
         } else {
@@ -69,14 +58,14 @@ extension WebRtcClient {
     }
 
     public func getLocalVideoView() -> UIView? {
-        if isEnableVideo {
+        if options.isEnableVideo {
             return self.localVideoView
         }
         return nil
     }
 
     public func getRemoteVideoView() -> UIView? {
-        if isEnableVideo {
+        if options.isEnableVideo {
             return self.remoteVideoView
         }
         return nil
