@@ -48,7 +48,7 @@ open ElastosRTC.xcworkspace
 	"sdp":"rtc_session_description_generated_by_webrtc"
 }
 ```
-### 3. Candiate
+### 3. Candidate
 
 ```
 {
