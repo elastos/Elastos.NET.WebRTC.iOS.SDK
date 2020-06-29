@@ -173,7 +173,7 @@ class CallViewController: UIViewController {
         let view = UIStackView(arrangedSubviews: [switchCameraBtn, loudSpeakerBtn, enableAudioBtn, enableVidoeBtn])
         view.translatesAutoresizingMaskIntoConstraints = false
         view.axis = .horizontal
-        view.distribution = .equalSpacing
+        view.distribution = .fillEqually
         view.spacing = 4.0
         return view
     }()
@@ -215,6 +215,7 @@ class CallViewController: UIViewController {
             view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: toolStack.bottomAnchor, constant: 20),
             view.leadingAnchor.constraint(equalTo: toolStack.leadingAnchor, constant: -20),
             view.trailingAnchor.constraint(equalTo: toolStack.trailingAnchor, constant: 20),
+            toolStack.heightAnchor.constraint(equalToConstant: 60),
         ])
         updateUI()
         NotificationCenter.default.addObserver(self, selector: #selector(iceDidConnected), name: .iceConnected, object: nil)
