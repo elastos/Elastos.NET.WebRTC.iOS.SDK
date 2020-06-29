@@ -132,7 +132,7 @@ public class WebRtcClient: NSObject {
         }
     }
 
-    public var isSpeaker: Bool {
+    public var isLoudSpeaker: Bool {
         true//todo
     }
 
@@ -147,7 +147,7 @@ public class WebRtcClient: NSObject {
         self.friendId = friendId
         self.options = options
         self.messageQueue = []
-        if isEnableVideo {
+        if options.isEnableVideo {
             peerConnection.add(self.localVideoTrack, streamIds: ["stream0"])
         }
         createOffer { [weak self] sdp in

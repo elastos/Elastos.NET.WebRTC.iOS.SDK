@@ -59,7 +59,7 @@ extension WebRtcClient {
     func receive(sdp: RTCSessionDescription, closure: @escaping (RTCSessionDescription) -> Void) {
         setupMedia()
         hasReceivedSdp = true
-        if isEnableVideo {
+        if options.isEnableVideo {
             peerConnection.add(self.localVideoTrack, streamIds: ["stream-0"])
         }
         peerConnection.setRemoteDescription(sdp) { error in
