@@ -18,7 +18,7 @@ class WebRtcSignalTests: XCTestCase {
         XCTAssertEqual(candidate?.sdpMLineIndex, 0)
         XCTAssertEqual(candidate?.sdpMid, "audio")
     }
-
+    //todo: disable decode removal candidates
     func testDecodeRemovalCandidates() {
         let candidates = loadData(from: "removal_candidates", decode: RtcSignal.self)?.removeCandidates
         XCTAssertNotNil(candidates)

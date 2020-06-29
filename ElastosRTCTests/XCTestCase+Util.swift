@@ -33,7 +33,7 @@ extension XCTestCase {
     }
 
     func jsonObject(from fileName: String) -> Any {
-        guard let fileURL = Bundle.url(forResource: fileName, withExtension: "json", subdirectory: nil, in: Bundle(for: ElastosRTCTests.self).bundleURL) else {
+        guard let fileURL = Bundle.url(forResource: fileName, withExtension: "json", subdirectory: nil, in: Bundle(for: WebRtcSignalTests.self).bundleURL) else {
             fatalError("\(fileName) not found")
         }
         let data = try! Data(contentsOf: fileURL, options: [])

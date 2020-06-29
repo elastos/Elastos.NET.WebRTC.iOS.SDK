@@ -11,7 +11,7 @@ public enum MediaOptionItem: String, Equatable, Codable {
     case video
 }
 
-public class MediaOptions: ExpressibleByArrayLiteral, Codable, Equatable {
+public class MediaOptions: ExpressibleByArrayLiteral, Codable, Equatable, CustomDebugStringConvertible {
 
     public typealias ArrayLiteralElement = MediaOptionItem
 
