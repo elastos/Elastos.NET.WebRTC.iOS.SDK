@@ -125,6 +125,59 @@ class CallViewController: UIViewController {
         return view
     }()
 
+    private var usingFrontCamera: Bool = true
+
+    private lazy var toolStack: UIStackView = {
+        var switchCameraBtn: UIButton = {
+            let view = UIButton(type: .custom)
+            view.translatesAutoresizingMaskIntoConstraints = false
+            view.setTitle("Switch", for: .normal)
+            view.addTarget(self, action: #selector(switchCamera), for: .touchUpInside)
+            view.backgroundColor = .orange
+            return view
+        }()
+
+        var loudSpeakerBtn: UIButton = {
+            let view = UIButton(type: .custom)
+            view.translatesAutoresizingMaskIntoConstraints = false
+            view.setTitle("Speaker", for: .normal)
+            view.addTarget(self, action: #selector(switchCamera), for: .touchUpInside)
+            view.backgroundColor = .orange
+            return view
+        }()
+
+        var enableAudioBtn: UIButton = {
+            let view = UIButton(type: .custom)
+            view.translatesAutoresizingMaskIntoConstraints = false
+            view.setTitle("audio Enable", for: .normal)
+            view.setTitle("audio Disable", for: .selected)
+            view.titleLabel?.lineBreakMode = .byWordWrapping
+            view.titleLabel?.numberOfLines = 2
+            view.addTarget(self, action: #selector(switchCamera), for: .touchUpInside)
+            view.backgroundColor = .orange
+            return view
+        }()
+
+        var enableVidoeBtn: UIButton = {
+            let view = UIButton(type: .custom)
+            view.translatesAutoresizingMaskIntoConstraints = false
+            view.setTitle("audio Video", for: .normal)
+            view.setTitle("audio Video", for: .selected)
+            view.titleLabel?.lineBreakMode = .byWordWrapping
+            view.titleLabel?.numberOfLines = 2
+            view.addTarget(self, action: #selector(switchCamera), for: .touchUpInside)
+            view.backgroundColor = .orange
+            return view
+        }()
+
+        let view = UIStackView(arrangedSubviews: [switchCameraBtn, loudSpeakerBtn, enableAudioBtn, enableVidoeBtn])
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.axis = .horizontal
+        view.distribution = .equalSpacing
+        view.spacing = 4.0
+        return view
+    }()
+
     var client: WebRtcClient? {
         self.weakDataSource?.getClient()
     }
@@ -152,12 +205,16 @@ class CallViewController: UIViewController {
         
         view.addSubview(nameLabel)
         view.addSubview(stackView)
-        
+        view.addSubview(toolStack)
+
         NSLayoutConstraint.activate([
             view.centerXAnchor.constraint(equalTo: nameLabel.centerXAnchor),
             view.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
             view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: nameLabel.topAnchor, constant: -60),
-            view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 60)
+            toolStack.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 20),
+            view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: toolStack.bottomAnchor, constant: 20),
+            view.leadingAnchor.constraint(equalTo: toolStack.leadingAnchor, constant: -20),
+            view.trailingAnchor.constraint(equalTo: toolStack.trailingAnchor, constant: 20),
         ])
         updateUI()
         NotificationCenter.default.addObserver(self, selector: #selector(iceDidConnected), name: .iceConnected, object: nil)
@@ -248,5 +305,10 @@ class CallViewController: UIViewController {
     @objc func reject(_ notification: Notification) {
         guard let reason = notification.object as? CallReason else { return assertionFailure() }
         self.state = .disconnected(reason: reason)
+    }
+
+    @objc func switchCamera() {
+        usingFrontCamera = !usingFrontCamera
+        self.client?.switchCarmeraToPosition(usingFrontCamera ? .front : .back)
     }
 }

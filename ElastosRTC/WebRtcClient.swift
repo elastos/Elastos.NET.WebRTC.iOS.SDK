@@ -5,6 +5,7 @@
 //  Created by ZeLiang on 2020/6/3.
 //  Copyright © 2020 Elastos Foundation. All rights reserved.
 //
+import AVFoundation
 
 public protocol WebRtcDelegate: class {
 
@@ -52,6 +53,7 @@ public class WebRtcClient: NSObject {
 
     var videoCapturer: RTCVideoCapturer?
     var remoteStream: RTCMediaStream?
+    var isUsingFrontCamera: Bool = true
 
     var messageQueue: [RtcSignal] = []
     var hasReceivedSdp: Bool = false {
@@ -112,7 +114,26 @@ public class WebRtcClient: NSObject {
         return peerConnectionFactory.videoTrack(with: source, trackId: "video0")
     }()
 
-    public var isEnableAudio: Bool {
+    public init(carrier: Carrier, delegate: WebRtcDelegate) {
+        self.carrier = CarrierExtension(carrier)
+        self.delegate = delegate
+        super.init()
+        self.registerCarrierCallback()
+    }
+
+    func cleanup() {
+        _peerConnection?.close()
+        _peerConnection = nil
+        hasReceivedSdp = false
+        messageQueue.removeAll()
+        Log.d(TAG, "webrtc client cleanup")
+    }
+}
+
+/// Public API
+public extension WebRtcClient {
+
+    var isEnableAudio: Bool {
         get {
             peerConnection.localStreams.first?.audioTracks.first?.isEnabled == true
         }
@@ -122,7 +143,7 @@ public class WebRtcClient: NSObject {
         }
     }
 
-    public var isEnableVideo: Bool {
+    var isEnableVideo: Bool {
         get {
             peerConnection.localStreams.first?.videoTracks.first?.isEnabled == true
         }
@@ -132,18 +153,11 @@ public class WebRtcClient: NSObject {
         }
     }
 
-    public var isLoudSpeaker: Bool {
+    var isLoudSpeaker: Bool {
         true//todo
     }
 
-    public init(carrier: Carrier, delegate: WebRtcDelegate) {
-        self.carrier = CarrierExtension(carrier)
-        self.delegate = delegate
-        super.init()
-        self.registerCarrierCallback()
-    }
-
-    public func inviteCall(friendId: String, options: MediaOptions) {
+    func inviteCall(friendId: String, options: MediaOptions) {
         self.friendId = friendId
         self.options = options
         self.messageQueue = []
@@ -156,16 +170,17 @@ public class WebRtcClient: NSObject {
         }
     }
 
-    public func endCall(friendId: String) {
+    func endCall(friendId: String) {
         send(signal: RtcSignal(type: .bye))
         cleanup()
     }
 
-    func cleanup() {
-        _peerConnection?.close()
-        _peerConnection = nil
-        hasReceivedSdp = false
-        messageQueue.removeAll()
-        Log.d(TAG, "webrtc client cleanup")
+    func switchCarmeraToPosition(_ position: AVCaptureDevice.Position, completion: (() -> Void)? = nil) {
+        self.startCaptureLocalVideo(cameraPositon: position, videoWidth: 640, videoHeight: 640 * 16 / 9, videoFps: 30)
+    }
+
+    func stopCapture() {
+        guard let videoSource = self.videoCapturer as? RTCCameraVideoCapturer else { return }
+        videoSource.stopCapture()
     }
 }
