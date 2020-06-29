@@ -6,8 +6,6 @@
 //  Copyright © 2020 Elastos Foundation. All rights reserved.
 //
 
-import Foundation
-import WebRTC
 
 extension WebRtcClient {
 
@@ -98,9 +96,7 @@ extension WebRtcClient {
 
 extension WebRtcClient: RTCPeerConnectionDelegate {
 
-    public func peerConnection(_ peerConnection: RTCPeerConnection, didChange stateChanged: RTCSignalingState) {
-        print("\(#function)")
-    }
+    public func peerConnection(_ peerConnection: RTCPeerConnection, didChange stateChanged: RTCSignalingState) { }
 
     public func peerConnection(_ peerConnection: RTCPeerConnection, didAdd stream: RTCMediaStream) {
         self.remoteStream = stream
@@ -118,19 +114,16 @@ extension WebRtcClient: RTCPeerConnectionDelegate {
     public func peerConnection(_ peerConnection: RTCPeerConnection, didRemove stream: RTCMediaStream) {
         print("\(#function) stream = \(stream)")
         if stream.videoTracks.isEmpty {
-            Logger.log(level: .debug, message: "remove video track")
+            Log.d(TAG, "peerconnection remove video track")
         }
         if stream.audioTracks.isEmpty {
-            Logger.log(level: .debug, message: "remove audio track")
+            Log.d(TAG, "peerconnection remove audio track")
         }
     }
 
-    public func peerConnectionShouldNegotiate(_ peerConnection: RTCPeerConnection) {
-        print("\(#function)")
-    }
+    public func peerConnectionShouldNegotiate(_ peerConnection: RTCPeerConnection) { }
 
     public func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceConnectionState) {
-        Logger.log(level: .debug, message: "peer connection did change state: \(newState)")
         switch newState {
         case .connected:
             self.delegate?.onIceConnected()
@@ -143,19 +136,15 @@ extension WebRtcClient: RTCPeerConnectionDelegate {
         }
     }
 
-    public func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceGatheringState) {
-        print("\(#function), \(newState)")
-    }
+    public func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceGatheringState) { }
 
     public func peerConnection(_ peerConnection: RTCPeerConnection, didGenerate candidate: RTCIceCandidate) {
-        self.send(candidate: candidate)
+        send(candidate: candidate)
     }
 
     public func peerConnection(_ peerConnection: RTCPeerConnection, didRemove candidates: [RTCIceCandidate]) {
-        self.send(removal: candidates)
+        send(removal: candidates)
     }
 
-    public func peerConnection(_ peerConnection: RTCPeerConnection, didOpen dataChannel: RTCDataChannel) {
-        print("\(#function)")
-    }
+    public func peerConnection(_ peerConnection: RTCPeerConnection, didOpen dataChannel: RTCDataChannel) { }
 }

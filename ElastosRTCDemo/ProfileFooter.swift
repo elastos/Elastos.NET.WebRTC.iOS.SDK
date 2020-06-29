@@ -92,6 +92,7 @@ class ProfileFooter: UITableViewHeaderFooterView {
         constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-2-[container]-[image(100)]-2-|", options: [], metrics: nil, views: views)
         constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[image(100)]-[copy]-20-|", options: [], metrics: nil, views: views)
         constraints.append(copyBtn.centerYAnchor.constraint(equalTo: qrCode.centerYAnchor))
+        constraints.forEach { $0.priority = .required - 1 }
         NSLayoutConstraint.activate(constraints)
     }
 

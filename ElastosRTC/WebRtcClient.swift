@@ -6,16 +6,6 @@
 //  Copyright © 2020 Elastos Foundation. All rights reserved.
 //
 
-import Foundation
-import UIKit
-import ElastosCarrierSDK
-import WebRTC
-
-public enum MediaOption: String, Equatable, Codable {
-    case audio
-    case video
-}
-
 public protocol WebRtcDelegate: class {
 
     /// fired when receive invite from your friends
@@ -54,7 +44,7 @@ public class WebRtcClient: NSObject {
         return view
     }()
 
-    public var options: [MediaOption] = [.audio, .video] {
+    public internal(set) var options: MediaOptions = [.audio, .video] {
         didSet {
             setupMedia()
         }
@@ -123,11 +113,27 @@ public class WebRtcClient: NSObject {
     }()
 
     public var isEnableAudio: Bool {
-        self.options.contains(.audio)
+        get {
+            peerConnection.localStreams.first?.audioTracks.first?.isEnabled == true
+        }
+        set {
+            guard let audioTrack = peerConnection.localStreams.first?.audioTracks.first else { return }
+            audioTrack.isEnabled = newValue
+        }
     }
 
     public var isEnableVideo: Bool {
-        self.options.contains(.video)
+        get {
+            peerConnection.localStreams.first?.videoTracks.first?.isEnabled == true
+        }
+        set {
+            guard let videoTrack = peerConnection.localStreams.first?.videoTracks.first else { return }
+            videoTrack.isEnabled = newValue
+        }
+    }
+
+    public var isSpeaker: Bool {
+        true//todo
     }
 
     public init(carrier: Carrier, delegate: WebRtcDelegate) {
@@ -137,7 +143,7 @@ public class WebRtcClient: NSObject {
         self.registerCarrierCallback()
     }
 
-    public func inviteCall(friendId: String, options: [MediaOption]) {
+    public func inviteCall(friendId: String, options: MediaOptions) {
         self.friendId = friendId
         self.options = options
         self.messageQueue = []
@@ -160,6 +166,6 @@ public class WebRtcClient: NSObject {
         _peerConnection = nil
         hasReceivedSdp = false
         messageQueue.removeAll()
-        Logger.log(level: .debug, message: "webrtc client cleanup")
+        Log.d(TAG, "webrtc client cleanup")
     }
 }

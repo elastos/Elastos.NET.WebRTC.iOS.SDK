@@ -6,8 +6,47 @@
 //  Copyright © 2020 Elastos Foundation. All rights reserved.
 //
 
-import Foundation
-import WebRTC
+public enum MediaOptionItem: String, Equatable, Codable {
+    case audio
+    case video
+}
+
+public class MediaOptions: ExpressibleByArrayLiteral, Codable, Equatable, CustomDebugStringConvertible {
+
+    public typealias ArrayLiteralElement = MediaOptionItem
+
+    private let options: Set<MediaOptionItem>
+
+    public required init(arrayLiteral elements: MediaOptionItem...) {
+        self.options = Set(elements)
+    }
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        try self.options = container.decode(Set<MediaOptionItem>.self)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(self.options)
+    }
+
+    public var debugDescription: String {
+        self.options.reduce(into: "") { (result, item) in result = result + item.rawValue + " " }
+    }
+
+    public var isEnableAudio: Bool {
+        self.options.contains(.audio)
+    }
+
+    public var isEnableVideo: Bool {
+        self.options.contains(.video)
+    }
+
+    public static func == (lhs: MediaOptions, rhs: MediaOptions) -> Bool {
+        lhs.options == rhs.options
+    }
+}
 
 public enum CallReason: String, Codable {
     case reject
@@ -31,16 +70,17 @@ struct RtcSignal: Codable {
     let sdp: String?
     let candidates: [RtcCandidateSignal]?
     let reason: CallReason?
-    let options: [MediaOption]?
+    let options: MediaOptions?
 
-
-    enum CoingKeys: CodingKey {
+    enum CodingKeys: String, CodingKey {
         case type
         case sdp
         case candidates
+        case reason
+        case options
     }
 
-    init(type: SdpType, sdp: String? = nil, candidates: [RtcCandidateSignal]? = nil, reason: CallReason? = nil, options: [MediaOption]? = nil) {
+    init(type: SdpType, sdp: String? = nil, candidates: [RtcCandidateSignal]? = nil, reason: CallReason? = nil, options: MediaOptions? = nil) {
         self.type = type
         self.sdp = sdp
         self.candidates = candidates
@@ -87,7 +127,7 @@ extension RTCIceCandidate {
 
 extension RTCSessionDescription {
 
-    func to(options: [MediaOption]? = nil) -> RtcSignal {
+    func to(options: MediaOptions? = nil) -> RtcSignal {
         RtcSignal(type: type.to!, sdp: sdp, options: options)
     }
 }

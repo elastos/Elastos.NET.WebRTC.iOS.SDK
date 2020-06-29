@@ -6,10 +6,6 @@
 //  Copyright © 2020 Elastos Foundation. All rights reserved.
 //
 
-import Foundation
-import ElastosCarrierSDK
-import WebRTC
-
 extension WebRtcClient {
 
     func send(signal: RtcSignal) {
@@ -34,7 +30,7 @@ extension WebRtcClient {
         drainMessageQueueIfReady()
     }
 
-    func send(desc: RTCSessionDescription, options: [MediaOption]? = nil) {
+    func send(desc: RTCSessionDescription, options: MediaOptions? = nil) {
         let signal = desc.to(options: options)
         send(signal: signal)
     }
@@ -42,13 +38,13 @@ extension WebRtcClient {
     func send(json: String) {
         guard let friendId = self.friendId else { return assertionFailure("friendId is null") }
         do {
-            Logger.log(level: .debug, message: "[SEND]: \(friendId), \n content = \(json)")
+            Log.d(TAG, "[SEND]: \(friendId), \n content = \(json)")
             try carrier.sendInviteFriendRequest(to: friendId, withData: json, { (carrier, arg1, arg2, arg3, arg4) in
-                Logger.log(level: .debug, message: "[RECE]: \(arg1), \(arg2), \(String(describing: arg3)), \(String(describing: arg4))")
+                Log.d(TAG, "[RECE]: \(arg1), \(arg2), \(String(describing: arg3)), \(String(describing: arg4))")
             })
         } catch {
             delegate?.onConnectionError(error: error)
-            Logger.log(level: .error, message: "send data failure, due to \(error)")
+            Log.e(TAG, "send data failure, due to \(error)")
         }
     }
 
@@ -60,6 +56,7 @@ extension WebRtcClient {
                 guard let sdp = message.offer else { return }
                 friendId = from
                 options = message.options ?? [.audio, .video]
+                print(options)
                 let closureAfterAccepted = { [weak self] in
                     self?.receive(sdp: sdp) { [weak self] sdp in
                         self?.send(desc: sdp)
@@ -75,7 +72,7 @@ extension WebRtcClient {
                         }
                     }
                 } else {
-                    Logger.log(level: .debug, message: "Auto answer for user")
+                    Log.d(TAG, "Auto answer for user")
                     closureAfterAccepted()
                 }
             case .answer:
@@ -85,7 +82,7 @@ extension WebRtcClient {
                 guard let candidate = message.candidate, from == self.friendId else { return }
                 receive(candidate: RTCIceCandidate(sdp: candidate.sdp, sdpMLineIndex: candidate.sdpMLineIndex, sdpMid: candidate.sdpMid))
             case .prAnswer:
-                Logger.log(level: .error, message: "not support prAnswer")
+                Log.e(TAG, "not support prAnswer")
             case .removeCandiate:
                 guard let candiates = message.removeCandidates, from == self.friendId else { return }
                 receive(removal: candiates)
@@ -94,7 +91,7 @@ extension WebRtcClient {
                 self.cleanup()
             }
         } catch {
-            Logger.log(level: .error, message: "signal message decode error, due to \(error)")
+            Log.e(TAG, "signal message decode error, due to \(error)")
         }
         drainMessageQueueIfReady()
     }
@@ -102,7 +99,7 @@ extension WebRtcClient {
     func registerCarrierCallback() {
         do {
             try self.carrier.registerExtension { [weak self] (carrier, friendId, message) in
-                Logger.log(level: .debug, message: "[RECV]: \(friendId), \n \(message ?? "no value")")
+                Log.d(TAG, "[RECV]: \(friendId), \n \(message ?? "no value")")
                 guard let data = message, let self = self else { return }
                 self.receive(from: friendId, data: data)
             }

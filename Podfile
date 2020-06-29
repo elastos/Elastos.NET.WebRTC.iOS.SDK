@@ -6,8 +6,8 @@ use_frameworks!
 
 # Debug Mode
 target 'ElastosRTC' do
-  pod "GoogleWebRTC", "1.1.29400"
-  pod "ElastosCarrierSDKWebRTC", "1.3.0"
+  pod "GoogleWebRTC"
+  pod "ElastosCarrierSDKWebRTC"
 
   target 'ElastosRTCDemo' do
     pod 'EFQRCode'
@@ -16,6 +16,7 @@ target 'ElastosRTC' do
   end
 
   target 'ElastosRTCTests' do
+    pod 'ElastosWebRtc', :path => './'
     inherit! :search_paths
   end
 end
