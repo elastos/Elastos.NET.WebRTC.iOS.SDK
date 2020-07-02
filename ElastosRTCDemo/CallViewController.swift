@@ -227,17 +227,15 @@ class CallViewController: UIViewController {
         let localVideoView = client?.getLocalVideoView()
         let remoteVideoView = client?.getRemoteVideoView()
 
-        localVideoView?.backgroundColor = .red
-        remoteVideoView?.backgroundColor = .blue
-
-        self.view.sendSubviewToBack(remoteVideoView)
-        self.view.sendSubviewToBack(localVideoView)
-
         guard let localView = localVideoView, let remoteView = remoteVideoView else { return }
         view.addSubview(localView)
         view.addSubview(remoteView)
-        client?.setLocalVideoFrame(CGRect(x: 0, y: 10, width: self.view.frame.width, height: 480))
-        client?.setRemoteVideoFrame(CGRect(x: 0, y: 100, width: 100, height: 150))
+
+        self.view.sendSubviewToBack(remoteView)
+        self.view.sendSubviewToBack(localView)
+
+        client?.setLocalVideoFrame(CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
+        client?.setRemoteVideoFrame(CGRect(x: 0, y: 100, width: 50, height: 150))
 
         localView.isHidden = client?.options.isEnableVideo == false
         remoteView.isHidden = client?.options.isEnableVideo == false
