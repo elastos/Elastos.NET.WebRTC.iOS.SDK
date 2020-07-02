@@ -9,6 +9,8 @@
 import UIKit
 import ElastosCarrierSDK
 import ElastosRTC
+import AVFoundation
+import AVKit
 
 protocol CallingDelegate: NSObject {
     
@@ -153,7 +155,7 @@ class CallViewController: UIViewController {
             view.setTitle("audio Disable", for: .selected)
             view.titleLabel?.lineBreakMode = .byWordWrapping
             view.titleLabel?.numberOfLines = 2
-            view.addTarget(self, action: #selector(switchCamera), for: .touchUpInside)
+            view.addTarget(self, action: #selector(toggleAudio(_:)), for: .touchUpInside)
             view.backgroundColor = .orange
             return view
         }()
@@ -165,7 +167,7 @@ class CallViewController: UIViewController {
             view.setTitle("audio Video", for: .selected)
             view.titleLabel?.lineBreakMode = .byWordWrapping
             view.titleLabel?.numberOfLines = 2
-            view.addTarget(self, action: #selector(switchCamera), for: .touchUpInside)
+            view.addTarget(self, action: #selector(toggleVideo(_:)), for: .touchUpInside)
             view.backgroundColor = .orange
             return view
         }()
@@ -201,7 +203,7 @@ class CallViewController: UIViewController {
             client?.inviteCall(friendId: self.friendId, options: callOptions)
         }
         
-        view.backgroundColor = .white
+        view.backgroundColor = .black
         
         view.addSubview(nameLabel)
         view.addSubview(stackView)
@@ -225,14 +227,14 @@ class CallViewController: UIViewController {
         let localVideoView = client?.getLocalVideoView()
         let remoteVideoView = client?.getRemoteVideoView()
 
+        localVideoView?.backgroundColor = .red
+        remoteVideoView?.backgroundColor = .blue
+
         guard let localView = localVideoView, let remoteView = remoteVideoView else { return }
         view.addSubview(localView)
         view.addSubview(remoteView)
-        client?.setLocalVideoFrame(CGRect(x: 10, y: 100, width: 150, height: 120))
-        client?.setRemoteVideoFrame(CGRect(x: 170, y: 100, width: 150, height: 120))
-
-        localView.backgroundColor = .red
-        remoteView.backgroundColor = .blue
+        client?.setLocalVideoFrame(CGRect(x: 0, y: 10, width: self.view.frame.width, height: 480))
+        client?.setRemoteVideoFrame(CGRect(x: 0, y: 100, width: 100, height: 150))
 
         localView.isHidden = client?.options.isEnableVideo == false
         remoteView.isHidden = client?.options.isEnableVideo == false
@@ -311,5 +313,15 @@ class CallViewController: UIViewController {
     @objc func switchCamera() {
         usingFrontCamera = !usingFrontCamera
         self.client?.switchCarmeraToPosition(usingFrontCamera ? .front : .back)
+    }
+
+    @objc func toggleAudio(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        client?.isEnableAudio = sender.isSelected
+    }
+
+    @objc func toggleVideo(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        client?.isEnableVideo = sender.isSelected
     }
 }

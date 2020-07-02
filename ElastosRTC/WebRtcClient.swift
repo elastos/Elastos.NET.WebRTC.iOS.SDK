@@ -175,8 +175,12 @@ public extension WebRtcClient {
         cleanup()
     }
 
+    func setResolution(cameraPosition: AVCaptureDevice.Position = .front, width: Int = 1280, height: Int = 1280 * 16 / 9, fps: Int = 30) {
+        self.startCaptureLocalVideo(cameraPositon: cameraPosition, videoWidth: width, videoHeight: width, videoFps: fps)
+    }
+
     func switchCarmeraToPosition(_ position: AVCaptureDevice.Position, completion: (() -> Void)? = nil) {
-        self.startCaptureLocalVideo(cameraPositon: position, videoWidth: 640, videoHeight: 640 * 16 / 9, videoFps: 30)
+        setResolution(cameraPosition: position)
     }
 
     func stopCapture() {

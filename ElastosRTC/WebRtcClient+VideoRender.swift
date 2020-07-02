@@ -18,7 +18,7 @@ extension WebRtcClient {
                 self.localVideoView.addSubview(self.localRenderView)
                 self.remoteVideoView.addSubview(self.remoteRenderView)
                 self.localVideoTrack.add(self.localRenderView)
-                self.startCaptureLocalVideo(cameraPositon: .front, videoWidth: 640, videoHeight: 640 * 16 / 9, videoFps: 30)
+                self.startCaptureLocalVideo(cameraPositon: .front, videoWidth: 1280, videoHeight: 1280 * 16 / 9, videoFps: 30)
             }
         }
         Log.d(TAG, isEnableVideo ? "enable video" : "disable video")
