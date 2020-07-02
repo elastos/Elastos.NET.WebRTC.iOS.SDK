@@ -230,6 +230,9 @@ class CallViewController: UIViewController {
         localVideoView?.backgroundColor = .red
         remoteVideoView?.backgroundColor = .blue
 
+        self.view.sendSubviewToBack(remoteVideoView)
+        self.view.sendSubviewToBack(localVideoView)
+
         guard let localView = localVideoView, let remoteView = remoteVideoView else { return }
         view.addSubview(localView)
         view.addSubview(remoteView)
