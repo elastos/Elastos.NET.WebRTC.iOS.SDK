@@ -38,7 +38,7 @@ open ElastosRTC.xcworkspace
 {
 	"type":"offer",
 	"sdp":"rtc_session_description_generated_by_webrtc",
-	"options":["audio","video"]
+	"options":["audio","video","data"]
 }
 ```
 ### 2. Answer

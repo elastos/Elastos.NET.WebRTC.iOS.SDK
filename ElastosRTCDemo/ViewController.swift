@@ -152,6 +152,17 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
             callVc.callOptions = [.audio, .video]
             self?.present(callVc, animated: true, completion: nil)
         }))
+
+        alert.addAction(UIAlertAction(title: "视频语音+DataChannel", style: .destructive, handler: { [weak self] _ in
+            callVc.callOptions = [.audio, .video, .dataChannel]
+            self?.present(callVc, animated: true, completion: nil)
+        }))
+
+        alert.addAction(UIAlertAction(title: "DataChannel", style: .destructive, handler: { [weak self] _ in
+             callVc.callOptions = [.dataChannel]
+             self?.present(callVc, animated: true, completion: nil)
+         }))
+
         alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
         alert.modalPresentationStyle = .popover
         if let presenter = alert.popoverPresentationController {
@@ -226,6 +237,10 @@ extension ViewController: CallingDelegate {
 }
 
 extension ViewController: WebRtcDelegate {
+
+    func onReceiveMessage(_ data: Data, isBinary: Bool, channelId: Int) {
+        print("receive message from datachannnel")
+    }
 
     func onInvite(friendId: String, completion: @escaping (Bool) -> Void) {
         print("reject or accept")

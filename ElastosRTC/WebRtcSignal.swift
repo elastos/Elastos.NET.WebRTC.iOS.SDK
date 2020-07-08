@@ -9,6 +9,7 @@
 public enum MediaOptionItem: String, Equatable, Codable {
     case audio
     case video
+    case dataChannel = "data"
 }
 
 public class MediaOptions: ExpressibleByArrayLiteral, Codable, Equatable, CustomDebugStringConvertible {
@@ -41,6 +42,10 @@ public class MediaOptions: ExpressibleByArrayLiteral, Codable, Equatable, Custom
 
     public var isEnableVideo: Bool {
         self.options.contains(.video)
+    }
+
+    public var isEnableDataChannel: Bool {
+        self.options.contains(.dataChannel)
     }
 
     public static func == (lhs: MediaOptions, rhs: MediaOptions) -> Bool {

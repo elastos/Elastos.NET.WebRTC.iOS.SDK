@@ -27,6 +27,8 @@ public protocol WebRtcDelegate: class {
     func onConnectionError(error: Error)
 
     func onConnectionClosed()
+
+    func onReceiveMessage(_ data: Data, isBinary: Bool, channelId: Int)
 }
 
 public class WebRtcClient: NSObject {
@@ -114,6 +116,14 @@ public class WebRtcClient: NSObject {
         return peerConnectionFactory.videoTrack(with: source, trackId: "video0")
     }()
 
+    var dataChannel: RTCDataChannel?
+
+    func createDataChannel() -> RTCDataChannel? {
+        let config = RTCDataChannelConfiguration()
+        config.channelId = 0
+        return self.peerConnection.dataChannel(forLabel: "data-channel", configuration: config)
+    }
+
     public init(carrier: Carrier, delegate: WebRtcDelegate) {
         self.carrier = CarrierExtension(carrier)
         self.delegate = delegate
@@ -186,5 +196,10 @@ public extension WebRtcClient {
     func stopCapture() {
         guard let videoSource = self.videoCapturer as? RTCCameraVideoCapturer else { return }
         videoSource.stopCapture()
+    }
+
+    func sendData(_ data: Data, isBinary: Bool) {
+        let buffer = RTCDataBuffer(data: data, isBinary: isBinary)
+        self.dataChannel?.sendData(buffer)
     }
 }

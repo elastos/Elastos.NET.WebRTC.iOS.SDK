@@ -146,5 +146,7 @@ extension WebRtcClient: RTCPeerConnectionDelegate {
         send(removal: candidates)
     }
 
-    public func peerConnection(_ peerConnection: RTCPeerConnection, didOpen dataChannel: RTCDataChannel) { }
+    public func peerConnection(_ peerConnection: RTCPeerConnection, didOpen dataChannel: RTCDataChannel) {
+        Log.d(TAG, "DataChannelDidOpen ✅")
+    }
 }

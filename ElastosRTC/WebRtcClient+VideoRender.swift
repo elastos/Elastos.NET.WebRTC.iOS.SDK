@@ -21,6 +21,12 @@ extension WebRtcClient {
                 self.startCaptureLocalVideo(cameraPositon: .front, videoWidth: 1280, videoHeight: 1280 * 16 / 9, videoFps: 30)
             }
         }
+        if self.options.isEnableDataChannel {
+            self.dataChannel = createDataChannel()
+            self.dataChannel?.delegate = self
+            assert(self.dataChannel != nil, "datachannel cannot be ull")
+        }
+        
         Log.d(TAG, isEnableVideo ? "enable video" : "disable video")
         Log.d(TAG, isEnableAudio ? "enable audio" : "disable audio")
     }
