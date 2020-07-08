@@ -24,7 +24,7 @@ extension WebRtcClient {
         if self.options.isEnableDataChannel {
             self.dataChannel = createDataChannel()
             self.dataChannel?.delegate = self
-            assert(self.dataChannel != nil, "datachannel cannot be ull")
+            assert(self.dataChannel != nil, "create data channel failed")
         }
         
         Log.d(TAG, isEnableVideo ? "enable video" : "disable video")

@@ -13,6 +13,7 @@ extension WebRtcClient {
     /// - Parameter closure: callback was called when both create offer and set local sdp successfully
     func createOffer(closure: @escaping (RTCSessionDescription) -> Void) {
         let constraints = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil)
+        print("create offer ✅")
         peerConnection.offer(for: constraints) { [weak self] (desc, error) in
             guard let self = self else { return }
             if let error = error {
@@ -57,12 +58,12 @@ extension WebRtcClient {
     ///   - sdp: SDP Desc
     ///   - closure: called when set offer sdp success and create a answer sdp and set local success
     func receive(sdp: RTCSessionDescription, closure: @escaping (RTCSessionDescription) -> Void) {
-        setupMedia()
         hasReceivedSdp = true
         if options.isEnableVideo {
             peerConnection.add(self.localVideoTrack, streamIds: ["stream-0"])
         }
-        peerConnection.setRemoteDescription(sdp) { error in
+        peerConnection.setRemoteDescription(sdp) { [weak self] error in
+            guard let self = self else { return }
             if let error = error {
                 return assertionFailure("failed to set remote offer sdp, due to \(error)")
             }
@@ -148,5 +149,8 @@ extension WebRtcClient: RTCPeerConnectionDelegate {
 
     public func peerConnection(_ peerConnection: RTCPeerConnection, didOpen dataChannel: RTCDataChannel) {
         Log.d(TAG, "DataChannelDidOpen ✅")
+        print("DataChannelDidOpen ✅")
+        self.dataChannel = dataChannel
+        self.dataChannel?.delegate = self
     }
 }

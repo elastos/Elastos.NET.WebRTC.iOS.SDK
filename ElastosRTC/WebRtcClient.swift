@@ -120,8 +120,12 @@ public class WebRtcClient: NSObject {
 
     func createDataChannel() -> RTCDataChannel? {
         let config = RTCDataChannelConfiguration()
-        config.channelId = 0
-        return self.peerConnection.dataChannel(forLabel: "data-channel", configuration: config)
+        config.isOrdered = true
+        config.isNegotiated = false
+        config.maxRetransmits = -1
+        config.maxPacketLifeTime = -1
+        config.channelId = 3
+        return self.peerConnection.dataChannel(forLabel: "message", configuration: config)
     }
 
     public init(carrier: Carrier, delegate: WebRtcDelegate) {
@@ -134,6 +138,8 @@ public class WebRtcClient: NSObject {
     func cleanup() {
         _peerConnection?.close()
         _peerConnection = nil
+        dataChannel?.close()
+        dataChannel = nil
         hasReceivedSdp = false
         messageQueue.removeAll()
         Log.d(TAG, "webrtc client cleanup")
@@ -174,6 +180,7 @@ public extension WebRtcClient {
         if options.isEnableVideo {
             peerConnection.add(self.localVideoTrack, streamIds: ["stream0"])
         }
+
         createOffer { [weak self] sdp in
             guard let self = self else { return }
             self.send(desc: sdp, options: options)
@@ -198,8 +205,9 @@ public extension WebRtcClient {
         videoSource.stopCapture()
     }
 
-    func sendData(_ data: Data, isBinary: Bool) {
+    func sendData(_ data: Data, isBinary: Bool) -> Bool {
         let buffer = RTCDataBuffer(data: data, isBinary: isBinary)
-        self.dataChannel?.sendData(buffer)
+        assert(dataChannel != nil, "create data channel first")
+        return self.dataChannel?.sendData(buffer) == true
     }
 }

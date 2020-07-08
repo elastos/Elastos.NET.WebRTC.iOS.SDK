@@ -13,19 +13,28 @@ import Foundation
 extension WebRtcClient: RTCDataChannelDelegate {
 
     public func dataChannelDidChangeState(_ dataChannel: RTCDataChannel) {
-        print("✅, data channel did change state")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            print("send data channel for test")
-            self.dataChannel?.sendData(RTCDataBuffer(data: "hello".data(using: .utf8)!.base64EncodedData(), isBinary: true))
+        print("✅, data channel did change state, \(self.dataChannel)")
+
+        switch dataChannel.readyState {
+        case .open:
+            print("✅: open")
+            dataChannel.sendData(RTCDataBuffer(data: "data".data(using: .utf8)!, isBinary: false))
+        case .closing:
+            print("✅: closing")
+        case .connecting:
+            print("✅: connecting")
+        case .closed:
+            print("✅: closed")
+        @unknown default:
+            print("✅: default")
         }
     }
 
     public func dataChannel(_ dataChannel: RTCDataChannel, didReceiveMessageWith buffer: RTCDataBuffer) {
-        print("✅, data channel did didReceiveMessageWith")
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            print("send data channel for test")
-            self.dataChannel?.sendData(RTCDataBuffer(data: "hello_2".data(using: .utf8)!.base64EncodedData(), isBinary: true))
-        }
+        self.delegate?.onReceiveMessage(buffer.data, isBinary: buffer.isBinary, channelId: Int(dataChannel.channelId))
+    }
+    
+    public func dataChannel(_ dataChannel: RTCDataChannel, didChangeBufferedAmount amount: UInt64) {
+        print("✅, data channel did didChangeBufferedAmount: \(amount)")
     }
 }
