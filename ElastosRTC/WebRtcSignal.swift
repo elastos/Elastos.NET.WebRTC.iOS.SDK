@@ -12,6 +12,17 @@ public enum MediaOptionItem: String, Equatable, Codable {
     case dataChannel = "data"
 }
 
+public enum CallState {
+    case idle
+    case dialing
+    case answering
+    case connected
+    case localFailure
+    case localHangup
+    case remoteHangup
+    case remoteBusy
+}
+
 public class MediaOptions: ExpressibleByArrayLiteral, Codable, Equatable, CustomDebugStringConvertible {
 
     public typealias ArrayLiteralElement = MediaOptionItem
@@ -149,6 +160,22 @@ extension RTCSdpType {
             return .prAnswer
         default:
             return nil
+        }
+    }
+}
+
+extension RTCDataChannelState {
+
+    var state: String {
+        switch self {
+        case .closed:
+            return "closed"
+        case .closing:
+            return "closing"
+        case .connecting:
+            return "connecting"
+        case .open:
+            return "open"
         }
     }
 }

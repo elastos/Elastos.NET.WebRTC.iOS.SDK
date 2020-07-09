@@ -14,7 +14,7 @@ extension WebRtcClient {
         }
 
         if self.options.isEnableVideo {
-            DispatchQueue.main.async {
+            RTCDispatcher.dispatchAsync(on: .typeMain) {
                 self.localVideoView.addSubview(self.localRenderView)
                 self.remoteVideoView.addSubview(self.remoteRenderView)
                 self.localVideoTrack.add(self.localRenderView)

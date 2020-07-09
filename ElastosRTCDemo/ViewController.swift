@@ -239,7 +239,7 @@ extension ViewController: CallingDelegate {
 extension ViewController: WebRtcDelegate {
 
     func onReceiveMessage(_ data: Data, isBinary: Bool, channelId: Int) {
-        print("receive message from datachannnel")
+        print("receive message from datachannnel: \(String(describing: String(data: data, encoding: .utf8)))")
     }
 
     func onInvite(friendId: String, completion: @escaping (Bool) -> Void) {

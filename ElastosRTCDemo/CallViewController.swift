@@ -17,6 +17,11 @@ protocol CallingDelegate: NSObject {
     func getClient() -> WebRtcClient
 }
 
+enum CallDirection {
+    case outgoing
+    case incoming
+}
+
 enum CallState: Equatable {
     case calling
     case receiving
@@ -51,13 +56,23 @@ enum CallState: Equatable {
     }
 }
 
+func makeButton(image: UIImage? = nil, selected: UIImage? = nil, title: String? = nil, target: Any, selector: Selector) -> UIButton {
+    let view = UIButton(type: .custom)
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.setTitle(title, for: .normal)
+    view.setBackgroundImage(image, for: .normal)
+    view.setBackgroundImage(selected, for: .selected)
+    view.heightAnchor.constraint(equalToConstant: 80).isActive = true
+    view.widthAnchor.constraint(equalToConstant: 80).isActive = true
+    view.layer.masksToBounds = true
+    view.layer.cornerRadius = 40
+    view.addTarget(target, action: selector, for: .touchUpInside)
+    return view
+}
 
 class CallViewController: UIViewController {
 
     var friendId: String = ""
-
-    @IBOutlet weak var localVideoView: UIView!
-    @IBOutlet weak var remoteVideoView: UIView!
     
     private let nameLabel: UILabel = {
         let view = UILabel(frame: .zero)
@@ -67,60 +82,31 @@ class CallViewController: UIViewController {
         return view
     }()
     
-    private lazy var rejectBtn: UIButton = {
-        let view = UIButton(type: .custom)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.setTitle("Reject", for: .normal)
-        view.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        view.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        view.addTarget(self, action: #selector(rejectCall), for: .touchUpInside)
-        view.backgroundColor = .red
-        view.layer.masksToBounds = true
-        view.layer.cornerRadius = 40
-        return view
-    }()
-    
-    private lazy var acceptBtn: UIButton = {
-        let view = UIButton(type: .custom)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.setTitle("Accept", for: .normal)
-        view.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        view.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        view.addTarget(self, action: #selector(acceptCall), for: .touchUpInside)
-        view.backgroundColor = .blue
-        view.layer.masksToBounds = true
-        view.layer.cornerRadius = 40
-        return view
-    }()
-    
-    private lazy var endBtn: UIButton = {
-        let view = UIButton(type: .custom)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.setTitle("End", for: .normal)
-        view.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        view.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        view.addTarget(self, action: #selector(endCall), for: .touchUpInside)
-        view.backgroundColor = .blue
-        view.layer.masksToBounds = true
-        view.layer.cornerRadius = 40
-        return view
-    }()
-    
-    private lazy var cancelBtn: UIButton = {
-        let view = UIButton(type: .custom)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.setTitle("Cancel", for: .normal)
-        view.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        view.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        view.addTarget(self, action: #selector(cancelCall), for: .touchUpInside)
-        view.backgroundColor = .blue
-        view.layer.masksToBounds = true
-        view.layer.cornerRadius = 40
-        return view
-    }()
-    
+    private lazy var rejectBtn = makeButton(image: UIImage(named: "hangup"), target: self, selector: #selector(didPressReject(_:)))
+    private lazy var acceptBtn = makeButton(image: UIImage(named: "accept"), target: self, selector: #selector(didPressAccept(_:)))
+    private lazy var endBtn = makeButton(title: "End", target: self, selector: #selector(didPressEndup(_:)))
+    private lazy var cancelBtn = makeButton(title: "Cancel", target: self, selector: #selector(didPressCancel(_:)))
+
+    private lazy var flipCameraBtn = makeButton(image: UIImage(named: "video-switch-camera-unselected"),
+                                                target: self,
+                                                selector: #selector(didPressFlipCamera(_:)))
+
+    private lazy var speakerBtn = makeButton(image: UIImage(named: "audio-call-speaker-inactive"),
+                                             selected: UIImage(named: "audio-call-speaker-active"),
+                                             target: self, selector: #selector(didPressLoudSpeaker(_:)))
+
+    private lazy var muteAudioBtn = makeButton(image: UIImage(named: "video-mute-unselected"),
+                                               selected: UIImage(named: "video-mute-selected"),
+                                               target: self,
+                                               selector: #selector(toggleAudio(_:)))
+
+    private lazy var muteVideoBtn = makeButton(image: UIImage(named: "video-video-selected"),
+                                               selected: UIImage(named: "video-video-unselected"),
+                                               target: self,
+                                               selector: #selector(toggleVideo(_:)))
+
     private lazy var stackView: UIStackView = {
-        let view = UIStackView(arrangedSubviews: [rejectBtn, acceptBtn, endBtn, cancelBtn])
+        let view = UIStackView(arrangedSubviews: [acceptBtn, rejectBtn, endBtn, cancelBtn])
         view.translatesAutoresizingMaskIntoConstraints = false
         view.axis = .horizontal
         view.spacing = 80
@@ -130,53 +116,11 @@ class CallViewController: UIViewController {
     private var usingFrontCamera: Bool = true
 
     private lazy var toolStack: UIStackView = {
-        var switchCameraBtn: UIButton = {
-            let view = UIButton(type: .custom)
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.setTitle("Switch", for: .normal)
-            view.addTarget(self, action: #selector(switchCamera), for: .touchUpInside)
-            view.backgroundColor = .orange
-            return view
-        }()
-
-        var loudSpeakerBtn: UIButton = {
-            let view = UIButton(type: .custom)
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.setTitle("Speaker", for: .normal)
-            view.addTarget(self, action: #selector(switchCamera), for: .touchUpInside)
-            view.backgroundColor = .orange
-            return view
-        }()
-
-        var enableAudioBtn: UIButton = {
-            let view = UIButton(type: .custom)
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.setTitle("audio Enable", for: .normal)
-            view.setTitle("audio Disable", for: .selected)
-            view.titleLabel?.lineBreakMode = .byWordWrapping
-            view.titleLabel?.numberOfLines = 2
-            view.addTarget(self, action: #selector(toggleAudio(_:)), for: .touchUpInside)
-            view.backgroundColor = .orange
-            return view
-        }()
-
-        var enableVidoeBtn: UIButton = {
-            let view = UIButton(type: .custom)
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.setTitle("audio Video", for: .normal)
-            view.setTitle("audio Video", for: .selected)
-            view.titleLabel?.lineBreakMode = .byWordWrapping
-            view.titleLabel?.numberOfLines = 2
-            view.addTarget(self, action: #selector(toggleVideo(_:)), for: .touchUpInside)
-            view.backgroundColor = .orange
-            return view
-        }()
-
-        let view = UIStackView(arrangedSubviews: [switchCameraBtn, loudSpeakerBtn, enableAudioBtn, enableVidoeBtn])
+        let view = UIStackView(arrangedSubviews: [flipCameraBtn, speakerBtn, muteAudioBtn, muteVideoBtn])
         view.translatesAutoresizingMaskIntoConstraints = false
         view.axis = .horizontal
-        view.distribution = .fillEqually
-        view.spacing = 4.0
+        view.distribution = .fillProportionally
+        view.spacing = 6.0
         return view
     }()
 
@@ -215,9 +159,7 @@ class CallViewController: UIViewController {
             view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: nameLabel.topAnchor, constant: -60),
             toolStack.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 20),
             view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: toolStack.bottomAnchor, constant: 20),
-            view.leadingAnchor.constraint(equalTo: toolStack.leadingAnchor, constant: -20),
-            view.trailingAnchor.constraint(equalTo: toolStack.trailingAnchor, constant: 20),
-            toolStack.heightAnchor.constraint(equalToConstant: 60),
+            view.centerXAnchor.constraint(equalTo: toolStack.centerXAnchor),
         ])
         updateUI()
         NotificationCenter.default.addObserver(self, selector: #selector(iceDidConnected), name: .iceConnected, object: nil)
@@ -286,34 +228,41 @@ class CallViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
 
-    @objc func acceptCall() {
-        self.state = .connecting
-        closure?(true)
-    }
-
-    @objc func rejectCall() {
-        closure?(false)
-        dismiss(animated: true, completion: nil)
-    }
-
-    @objc func endCall() {
-        client?.endCall(friendId: self.friendId)
-        self.dismiss(animated: true, completion: nil)
-    }
-
-    @objc func cancelCall() {
-        client?.endCall(friendId: self.friendId)
-        self.dismiss(animated: true, completion: nil)
-    }
-
     @objc func reject(_ notification: Notification) {
         guard let reason = notification.object as? CallReason else { return assertionFailure() }
         self.state = .disconnected(reason: reason)
     }
+}
 
-    @objc func switchCamera() {
-        usingFrontCamera = !usingFrontCamera
-        self.client?.switchCarmeraToPosition(usingFrontCamera ? .front : .back)
+extension CallViewController {
+
+    @objc func didPressFlipCamera(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        self.client?.switchCarmeraToPosition(sender.isSelected ? .back : .front)
+    }
+
+    @objc func didPressLoudSpeaker(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+    }
+
+    @objc func didPressReject(_ sender: UIButton) {
+        closure?(false)
+        dismiss(animated: true, completion: nil)
+    }
+
+    @objc func didPressEndup(_ sender: UIButton) {
+        client?.endCall(friendId: self.friendId)
+        dismiss(animated: true, completion: nil)
+    }
+
+    @objc func didPressCancel(_ sender: UIButton) {
+        client?.endCall(friendId: self.friendId)
+        dismiss(animated: true, completion: nil)
+    }
+
+    @objc func didPressAccept(_ sender: UIButton) {
+        state = .connecting
+        closure?(true)
     }
 
     @objc func toggleAudio(_ sender: UIButton) {

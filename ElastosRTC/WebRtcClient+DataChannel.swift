@@ -13,24 +13,11 @@ import Foundation
 extension WebRtcClient: RTCDataChannelDelegate {
 
     public func dataChannelDidChangeState(_ dataChannel: RTCDataChannel) {
-        print("✅, data channel did change state, \(self.dataChannel)")
-
-        switch dataChannel.readyState {
-        case .open:
-            print("✅: open")
-            dataChannel.sendData(RTCDataBuffer(data: "data".data(using: .utf8)!, isBinary: false))
-        case .closing:
-            print("✅: closing")
-        case .connecting:
-            print("✅: connecting")
-        case .closed:
-            print("✅: closed")
-        @unknown default:
-            print("✅: default")
-        }
+        Log.d(TAG, "data-channel did change state %@", dataChannel.readyState.state as CVarArg)
     }
 
     public func dataChannel(_ dataChannel: RTCDataChannel, didReceiveMessageWith buffer: RTCDataBuffer) {
+        Log.d(TAG, "data-channel did receive message %@, from %d", buffer.data as CVarArg, dataChannel.channelId)
         self.delegate?.onReceiveMessage(buffer.data, isBinary: buffer.isBinary, channelId: Int(dataChannel.channelId))
     }
     
