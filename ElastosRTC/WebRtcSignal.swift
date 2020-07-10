@@ -17,7 +17,7 @@ public enum CallState {
     case dialing
     case answering
     case connected
-    case localFailure
+    case localFailure //set offer or answer local failure
     case localHangup
     case remoteHangup
     case remoteBusy
@@ -176,6 +176,8 @@ extension RTCDataChannelState {
             return "connecting"
         case .open:
             return "open"
+        @unknown default:
+            return "unknown"
         }
     }
 }

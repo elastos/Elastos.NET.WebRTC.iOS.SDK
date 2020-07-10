@@ -55,7 +55,7 @@ extension WebRtcClient {
             if Bundle.main.path( forResource: "sample.mp4", ofType: nil ) != nil {
                 capturer.startCapturing(fromFileNamed: "sample.mp4") { err in print(err) }
             } else {
-                Log.e(TAG, "cannot find sample video for simulator")
+                Log.d(TAG, "cannot find sample video for simulator")
             }
             #endif
         } else {

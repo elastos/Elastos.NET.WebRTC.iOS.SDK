@@ -8,8 +8,6 @@
 
 import Foundation
 
-//Support:
-// image, text
 extension WebRtcClient: RTCDataChannelDelegate {
 
     public func dataChannelDidChangeState(_ dataChannel: RTCDataChannel) {
