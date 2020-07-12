@@ -113,8 +113,6 @@ class CallViewController: UIViewController {
         return view
     }()
 
-    private var usingFrontCamera: Bool = true
-
     private lazy var toolStack: UIStackView = {
         let view = UIStackView(arrangedSubviews: [flipCameraBtn, speakerBtn, muteAudioBtn, muteVideoBtn])
         view.translatesAutoresizingMaskIntoConstraints = false

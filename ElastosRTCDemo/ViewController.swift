@@ -144,26 +144,26 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         callVc.weakDataSource = self
 
         let alert = UIAlertController(title: "选择通话类型", message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "语音", style: .default, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: "Audio", style: .default, handler: { [weak self] _ in
             callVc.callOptions = [.audio]
             self?.present(callVc, animated: true, completion: nil)
         }))
-        alert.addAction(UIAlertAction(title: "视频语音", style: .destructive, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: "Audio + Video", style: .destructive, handler: { [weak self] _ in
             callVc.callOptions = [.audio, .video]
             self?.present(callVc, animated: true, completion: nil)
         }))
 
-        alert.addAction(UIAlertAction(title: "视频语音+DataChannel", style: .destructive, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: "Audio + Video + Data", style: .destructive, handler: { [weak self] _ in
             callVc.callOptions = [.audio, .video, .dataChannel]
             self?.present(callVc, animated: true, completion: nil)
         }))
 
-        alert.addAction(UIAlertAction(title: "DataChannel", style: .destructive, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: "Data", style: .destructive, handler: { [weak self] _ in
              callVc.callOptions = [.dataChannel]
              self?.present(callVc, animated: true, completion: nil)
          }))
 
-        alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         alert.modalPresentationStyle = .popover
         if let presenter = alert.popoverPresentationController {
             presenter.sourceView = tableView;
@@ -183,7 +183,7 @@ extension ViewController {
             found.status = status.status
             upSert(friend: found)
         } else {
-            print("❌ not found friend information in friendslist")
+            assertionFailure("❌ not found friend information in friendslist")
         }
     }
 
@@ -222,8 +222,8 @@ extension ViewController {
 extension ViewController: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == self.textField, let content = textField.text {
-            addAsFriend(content)
+        if textField == self.textField, let addressId = textField.text {
+            addAsFriend(addressId)
         }
         return true
     }

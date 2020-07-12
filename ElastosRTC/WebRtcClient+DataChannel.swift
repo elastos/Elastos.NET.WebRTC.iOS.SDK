@@ -20,6 +20,6 @@ extension WebRtcClient: RTCDataChannelDelegate {
     }
     
     public func dataChannel(_ dataChannel: RTCDataChannel, didChangeBufferedAmount amount: UInt64) {
-        print("✅, data channel did didChangeBufferedAmount: \(amount)")
+        Log.d(TAG, "data-channel didChangeBufferedAmount, %ld", amount)
     }
 }
