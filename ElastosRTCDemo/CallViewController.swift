@@ -144,9 +144,9 @@ class CallViewController: UIViewController {
         if state == .calling {
             client?.inviteCall(friendId: self.friendId, options: callOptions)
         }
-        
+
         view.backgroundColor = .black
-        
+
         view.addSubview(nameLabel)
         view.addSubview(stackView)
         view.addSubview(toolStack)
@@ -192,29 +192,29 @@ class CallViewController: UIViewController {
     func updateUI() {
         DispatchQueue.main.async {
             switch self.state {
-                case .calling:
-                    self.acceptBtn.isHidden = true
-                    self.endBtn.isHidden = true
-                    self.rejectBtn.isHidden = true
-                    self.cancelBtn.isHidden = false
-                case .receiving:
-                    self.acceptBtn.isHidden = false
-                    self.rejectBtn.isHidden = false
-                    self.cancelBtn.isHidden = true
-                    self.endBtn.isHidden = true
-                case .connected:
-                    self.acceptBtn.isHidden = true
-                    self.rejectBtn.isHidden = true
-                    self.cancelBtn.isHidden = true
-                    self.endBtn.isHidden = false
-                case .connecting:
-                    self.acceptBtn.isHidden = true
-                    self.rejectBtn.isHidden = true
-                    self.cancelBtn.isHidden = false
-                    self.endBtn.isHidden = true
-                case .disconnected:
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                        self.dismiss(animated: true, completion: nil)
+            case .calling:
+                self.acceptBtn.isHidden = true
+                self.endBtn.isHidden = true
+                self.rejectBtn.isHidden = true
+                self.cancelBtn.isHidden = false
+            case .receiving:
+                self.acceptBtn.isHidden = false
+                self.rejectBtn.isHidden = false
+                self.cancelBtn.isHidden = true
+                self.endBtn.isHidden = true
+            case .connected:
+                self.acceptBtn.isHidden = true
+                self.rejectBtn.isHidden = true
+                self.cancelBtn.isHidden = true
+                self.endBtn.isHidden = false
+            case .connecting:
+                self.acceptBtn.isHidden = true
+                self.rejectBtn.isHidden = true
+                self.cancelBtn.isHidden = false
+                self.endBtn.isHidden = true
+            case .disconnected:
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                    self.dismiss(animated: true, completion: nil)
                 }
             }
             self.nameLabel.text = self.state.title

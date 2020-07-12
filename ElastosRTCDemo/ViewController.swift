@@ -43,30 +43,25 @@ class ViewController: UIViewController, CarrierDelegate {
     func checkPermission() {
         // Request permission to record.
          AVAudioSession.sharedInstance().requestRecordPermission { granted in
-             if granted {
-                 // The user granted access. Present recording interface.
-             } else {
-                self.alert(message: "Open: Settings -> Privacy -> Microphone")
-             }
+            if !granted {
+                 self.alert(message: "Open: Settings -> Privacy -> Microphone")
+            }
          }
 
         // Request permission to capture
         switch AVCaptureDevice.authorizationStatus(for: .video) {
-            case .authorized: // The user has previously granted access to the camera.
-                break
-
-            case .notDetermined: // The user has not yet been asked for camera access.
-                AVCaptureDevice.requestAccess(for: .video) { granted in
-                    if granted == false {
-                        self.alert(message: "Open: Settings -> Privacy -> Camera")
-                    }
+        case .authorized:
+            break
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                if !granted {
+                    self.alert(message: "Open: Settings -> Privacy -> Camera")
                 }
-
-            case .denied: // The user has previously denied access.
-                self.alert(message: "Open: Settings -> Privacy -> Camera")
-
-            case .restricted: // The user can't grant access due to restrictions.
-                self.alert(message: "Open: Settings -> Privacy -> Camera")
+            }
+        case .denied:
+            self.alert(message: "Open: Settings -> Privacy -> Camera")
+        case .restricted:
+            self.alert(message: "Open: Settings -> Privacy -> Camera")
         @unknown default:
             self.alert(message: "Open: Settings -> Privacy -> Camera")
         }
@@ -222,9 +217,7 @@ extension ViewController {
 extension ViewController: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == self.textField, let addressId = textField.text {
-            addAsFriend(addressId)
-        }
+        addAsFriend(textField)
         return true
     }
 }
