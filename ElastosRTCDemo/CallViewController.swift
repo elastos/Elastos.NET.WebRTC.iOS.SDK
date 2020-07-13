@@ -227,13 +227,11 @@ class CallViewController: UIViewController {
                 }
             }
             self.nameLabel.text = self.state.title
+            self.flipCameraBtn.isEnabled = self.callOptions.isEnableVideo
+            self.muteVideoBtn.isEnabled = self.callOptions.isEnableVideo
+            self.muteAudioBtn.isEnabled = self.callOptions.isEnableAudio
+            self.chatBtn.isEnabled = self.callOptions.isEnableDataChannel
         }
-
-        self.flipCameraBtn.isEnabled = self.callOptions.isEnableVideo
-        self.muteVideoBtn.isEnabled = self.callOptions.isEnableVideo
-
-        self.muteAudioBtn.isEnabled = self.callOptions.isEnableAudio
-        self.chatBtn.isEnabled = self.callOptions.isEnableDataChannel
     }
 
     @IBAction func onBack(_ sender: Any) {
