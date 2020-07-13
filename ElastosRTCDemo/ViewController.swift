@@ -223,6 +223,9 @@ extension ViewController: UITextFieldDelegate {
 }
 
 extension ViewController: CallingDelegate {
+    func carrierInstance() -> Carrier {
+        self.carrier
+    }
 
     func getClient() -> WebRtcClient {
         return self.rtcClient

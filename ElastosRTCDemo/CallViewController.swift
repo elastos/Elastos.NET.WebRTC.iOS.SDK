@@ -15,6 +15,8 @@ import AVKit
 protocol CallingDelegate: NSObject {
     
     func getClient() -> WebRtcClient
+
+    func carrierInstance() -> Carrier
 }
 
 enum CallDirection {
@@ -105,6 +107,8 @@ class CallViewController: UIViewController {
                                                target: self,
                                                selector: #selector(toggleVideo(_:)))
 
+    private lazy var chatBtn = makeButton(image: UIImage(named: "conversation"), target: self, selector: #selector(didPressConversation(_:)))
+
     private lazy var stackView: UIStackView = {
         let view = UIStackView(arrangedSubviews: [acceptBtn, rejectBtn, endBtn, cancelBtn])
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -150,6 +154,9 @@ class CallViewController: UIViewController {
         view.addSubview(nameLabel)
         view.addSubview(stackView)
         view.addSubview(toolStack)
+        view.addSubview(chatBtn)
+
+        chatBtn.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             view.centerXAnchor.constraint(equalTo: nameLabel.centerXAnchor),
@@ -158,6 +165,9 @@ class CallViewController: UIViewController {
             toolStack.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 20),
             view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: toolStack.bottomAnchor, constant: 20),
             view.centerXAnchor.constraint(equalTo: toolStack.centerXAnchor),
+
+            chatBtn.centerYAnchor.constraint(equalTo: nameLabel.centerYAnchor),
+            chatBtn.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 20),
         ])
         updateUI()
         NotificationCenter.default.addObserver(self, selector: #selector(iceDidConnected), name: .iceConnected, object: nil)
@@ -224,6 +234,7 @@ class CallViewController: UIViewController {
         self.muteVideoBtn.isEnabled = self.callOptions.isEnableVideo
 
         self.muteAudioBtn.isEnabled = self.callOptions.isEnableAudio
+        self.chatBtn.isEnabled = self.callOptions.isEnableDataChannel
     }
 
     @IBAction func onBack(_ sender: Any) {
@@ -266,6 +277,13 @@ extension CallViewController {
     @objc func didPressAccept(_ sender: UIButton) {
         state = .connecting
         closure?(true)
+    }
+
+    @objc func didPressConversation(_ sender: UIButton) {
+        guard let userId = self.weakDataSource?.carrierInstance().getAddress(),
+            let name = try? self.weakDataSource?.carrierInstance().getSelfUserInfo() else { return }
+        let chat = ChatViewController(sender: MockUser(senderId: userId, displayName: name.name ?? "No Name"))
+        showDetailViewController(chat, sender: nil)
     }
 
     @objc func toggleAudio(_ sender: UIButton) {
