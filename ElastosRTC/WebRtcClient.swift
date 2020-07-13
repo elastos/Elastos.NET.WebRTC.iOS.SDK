@@ -209,7 +209,7 @@ public extension WebRtcClient {
 
     func sendData(_ data: Data, isBinary: Bool) throws -> Bool {
         let buffer = RTCDataBuffer(data: data, isBinary: isBinary)
-        guard let channel = dataChannel else { throw WebRtcError.dataChannelInitFailued }
+        guard let channel = dataChannel else { throw WebRtcError.dataChannelInitFailed }
         return channel.sendData(buffer) == true
     }
 }

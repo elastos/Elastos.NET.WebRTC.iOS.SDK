@@ -11,6 +11,7 @@ target 'ElastosRTC' do
 
   target 'ElastosRTCDemo' do
     pod 'EFQRCode'
+    pod 'MessageKit'
     pod 'ElastosWebRtc', :path => './'
     inherit! :search_paths
   end
