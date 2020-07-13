@@ -239,13 +239,14 @@ extension ViewController: WebRtcDelegate {
         NotificationCenter.default.post(name: .receiveMessage, object: nil, userInfo: ["data": data, "isBinary": isBinary, "userId": channelId])
     }
 
-    func onInvite(friendId: String, completion: @escaping (Bool) -> Void) {
+    func onInvite(friendId: String, mediaOption: MediaOptions, completion: @escaping (Bool) -> Void) {
         print("reject or accept")
         DispatchQueue.main.async {
             let sb = UIStoryboard(name: "Main", bundle: nil)
             let callVc = sb.instantiateViewController(withIdentifier: "call_page") as! CallViewController
             callVc.closure = completion
             callVc.state = .receiving
+            callVc.callOptions = mediaOption
             callVc.weakDataSource = self
             self.present(callVc, animated: true, completion: nil)
         }

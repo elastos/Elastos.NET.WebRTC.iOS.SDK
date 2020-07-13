@@ -12,7 +12,7 @@ public protocol WebRtcDelegate: class {
     /// fired when receive invite from your friends
     /// - Parameter friendId: who is calling you
     /// - Parameter completion: reject or accept
-    func onInvite(friendId: String, completion: @escaping (Bool) -> Void)
+    func onInvite(friendId: String, mediaOption: MediaOptions, completion: @escaping (Bool) -> Void)
 
     func onAnswer();
 
