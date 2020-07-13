@@ -84,8 +84,8 @@ class CallViewController: UIViewController {
     
     private lazy var rejectBtn = makeButton(image: UIImage(named: "hangup"), target: self, selector: #selector(didPressReject(_:)))
     private lazy var acceptBtn = makeButton(image: UIImage(named: "accept"), target: self, selector: #selector(didPressAccept(_:)))
-    private lazy var endBtn = makeButton(title: "End", target: self, selector: #selector(didPressEndup(_:)))
-    private lazy var cancelBtn = makeButton(title: "Cancel", target: self, selector: #selector(didPressCancel(_:)))
+    private lazy var endBtn = makeButton(image: UIImage(named: "end-call"), target: self, selector: #selector(didPressEndup(_:)))
+    private lazy var cancelBtn = makeButton(image: UIImage(named: "end-call"), target: self, selector: #selector(didPressCancel(_:)))
 
     private lazy var flipCameraBtn = makeButton(image: UIImage(named: "video-switch-camera-unselected"),
                                                 target: self,
@@ -219,6 +219,11 @@ class CallViewController: UIViewController {
             }
             self.nameLabel.text = self.state.title
         }
+
+        self.flipCameraBtn.isEnabled = self.callOptions.isEnableVideo
+        self.muteVideoBtn.isEnabled = self.callOptions.isEnableVideo
+
+        self.muteAudioBtn.isEnabled = self.callOptions.isEnableAudio
     }
 
     @IBAction func onBack(_ sender: Any) {

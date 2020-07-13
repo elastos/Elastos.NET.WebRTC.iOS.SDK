@@ -38,9 +38,9 @@ extension WebRtcClient {
     func send(json: String) {
         guard let friendId = self.friendId else { return assertionFailure("friendId is null") }
         do {
-            Log.d(TAG, "[SEND]: \(friendId), \n content = \(json)")
+            Log.d(TAG, "[SEND]: %@, \n data: %@", friendId, json)
             try carrier.sendInviteFriendRequest(to: friendId, withData: json, { (carrier, arg1, arg2, arg3, arg4) in
-                Log.d(TAG, "[RECE]: \(arg1), \(arg2), \(String(describing: arg3)), \(String(describing: arg4))")
+                Log.d(TAG, "[RECV]: %@, arg1: %d, arg2: %@, arg3: %@, arg4: %@", friendId, arg1, arg2, arg3 ?? "", arg4 ?? "")
             })
         } catch {
             delegate?.onConnectionError(error: error)
@@ -81,7 +81,7 @@ extension WebRtcClient {
                 guard let candidate = message.candidate, from == self.friendId else { return }
                 receive(candidate: RTCIceCandidate(sdp: candidate.sdp, sdpMLineIndex: candidate.sdpMLineIndex, sdpMid: candidate.sdpMid))
             case .prAnswer:
-                Log.e(TAG, "not support prAnswer")
+                fatalError("not support prAnswer now")
             case .removeCandiate:
                 guard let candiates = message.removeCandidates, from == self.friendId else { return }
                 receive(removal: candiates)
@@ -90,7 +90,7 @@ extension WebRtcClient {
                 self.cleanup()
             }
         } catch {
-            Log.e(TAG, "signal message decode error, due to \(error)")
+            Log.e(TAG, "signal message decode error, due to ", error as CVarArg)
         }
         drainMessageQueueIfReady()
     }
@@ -98,7 +98,7 @@ extension WebRtcClient {
     func registerCarrierCallback() {
         do {
             try self.carrier.registerExtension { [weak self] (carrier, friendId, message) in
-                Log.d(TAG, "[RECV]: \(friendId), \n \(message ?? "no value")")
+                Log.d(TAG, "[RECV]: %@, data: %@", friendId, message ?? "empty content")
                 guard let data = message, let self = self else { return }
                 self.receive(from: friendId, data: data)
             }

@@ -23,6 +23,10 @@ public enum CallState {
     case remoteBusy
 }
 
+public enum WebRtcError: Error {
+    case dataChannelInitFailued
+}
+
 public class MediaOptions: ExpressibleByArrayLiteral, Codable, Equatable, CustomDebugStringConvertible {
 
     public typealias ArrayLiteralElement = MediaOptionItem
@@ -176,6 +180,32 @@ extension RTCDataChannelState {
             return "connecting"
         case .open:
             return "open"
+        @unknown default:
+            return "unknown"
+        }
+    }
+}
+
+extension RTCIceConnectionState {
+
+    var state: String {
+        switch self {
+        case .checking:
+            return "checking"
+        case .closed:
+            return "closed"
+        case .completed:
+            return "completed"
+        case .connected:
+            return "connected"
+        case .count:
+            return "count"
+        case .disconnected:
+            return "disconnected"
+        case .failed:
+            return "failed"
+        case .new:
+            return "new"
         @unknown default:
             return "unknown"
         }

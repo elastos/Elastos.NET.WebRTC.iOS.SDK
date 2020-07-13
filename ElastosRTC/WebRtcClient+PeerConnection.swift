@@ -13,21 +13,22 @@ extension WebRtcClient {
     /// - Parameter closure: callback was called when both create offer and set local sdp successfully
     func createOffer(closure: @escaping (RTCSessionDescription) -> Void) {
         let constraints = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil)
-        print("create offer ✅")
         peerConnection.offer(for: constraints) { [weak self] (desc, error) in
             guard let self = self else { return }
             if let error = error {
-                return assertionFailure("failed to create offer, due to \(error)")
+                self.delegate?.onConnectionError(error: error)
+                return Log.e(TAG, "failed to create offer, due to %@", error as CVarArg)
             } else if let desc = desc {
                 self.peerConnection.setLocalDescription(desc) { error in
                     if let error = error {
-                        return assertionFailure("failed to set local sdp, due to \(error)")
+                        self.delegate?.onConnectionError(error: error)
+                        return Log.e(TAG, "failed to set local sdp into peerconnection, due to %@", error as CVarArg)
                     } else {
                         closure(desc)
                     }
                 }
             } else {
-                assertionFailure("could not happen here")
+                fatalError("could not happen here")
             }
         }
     }
@@ -39,16 +40,18 @@ extension WebRtcClient {
         peerConnection.answer(for: constraints) { [weak self] (desc, error) in
             guard let self = self else { return }
             if let error = error {
-                return assertionFailure("failed to create local answer sdp, due to \(error)")
+                self.delegate?.onConnectionError(error: error)
+                return Log.e(TAG, "failed to create local answer sdp, due to %@", error as CVarArg)
             } else if let desc = desc {
                 self.peerConnection.setLocalDescription(desc) { error in
                     if let error = error {
-                        return assertionFailure("failed to set local answer sdp, due to \(error)")
+                        self.delegate?.onConnectionError(error: error)
+                        return Log.e(TAG, "failed to set local answer sdp, due to %@", error as CVarArg)
                     }
                     closure(desc)
                 }
             } else {
-                assertionFailure("could not happen here")
+                fatalError("could not happen here")
             }
         }
     }
@@ -65,7 +68,7 @@ extension WebRtcClient {
         peerConnection.setRemoteDescription(sdp) { [weak self] error in
             guard let self = self else { return }
             if let error = error {
-                return assertionFailure("failed to set remote offer sdp, due to \(error)")
+                return Log.e(TAG, "failed to set remote offer sdp into peerconnection, due to %@", error as CVarArg)
             }
             self.createAnswer(closure: closure)
         }
@@ -77,7 +80,7 @@ extension WebRtcClient {
         hasReceivedSdp = true
         peerConnection.setRemoteDescription(sdp) { error in
             if let error = error {
-                return assertionFailure("failed to set remote answer sdp, due to \(error)")
+                return Log.e(TAG, "failed to set remote offer sdp into peerconnection, due to %@", error as CVarArg)
             }
         }
     }
@@ -101,7 +104,7 @@ extension WebRtcClient: RTCPeerConnectionDelegate {
 
     public func peerConnection(_ peerConnection: RTCPeerConnection, didAdd stream: RTCMediaStream) {
         self.remoteStream = stream
-        DispatchQueue.main.async {
+        RTCDispatcher.dispatchAsync(on: .typeMain) {
             if let track = stream.videoTracks.first {
                 track.add(self.remoteRenderView)
             }
@@ -109,22 +112,16 @@ extension WebRtcClient: RTCPeerConnectionDelegate {
                 track.source.volume = 8
             }
         }
-        print("peer connection receive stream: \(stream.videoTracks), \(stream.audioTracks)")
     }
 
     public func peerConnection(_ peerConnection: RTCPeerConnection, didRemove stream: RTCMediaStream) {
-        print("\(#function) stream = \(stream)")
-        if stream.videoTracks.isEmpty {
-            Log.d(TAG, "peerconnection remove video track")
-        }
-        if stream.audioTracks.isEmpty {
-            Log.d(TAG, "peerconnection remove audio track")
-        }
+        Log.d(TAG, "peerconnection did remove stream with id: , %@", stream.streamId)
     }
 
     public func peerConnectionShouldNegotiate(_ peerConnection: RTCPeerConnection) { }
 
     public func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceConnectionState) {
+        Log.d(TAG, "peerconnection did change state: ", newState.state)
         switch newState {
         case .connected:
             self.delegate?.onIceConnected()
@@ -148,8 +145,7 @@ extension WebRtcClient: RTCPeerConnectionDelegate {
     }
 
     public func peerConnection(_ peerConnection: RTCPeerConnection, didOpen dataChannel: RTCDataChannel) {
-        Log.d(TAG, "DataChannelDidOpen ✅")
-        print("DataChannelDidOpen ✅")
+        Log.d(TAG, "peerconnection did open data-channel")
         self.dataChannel = dataChannel
         self.dataChannel?.delegate = self
     }
