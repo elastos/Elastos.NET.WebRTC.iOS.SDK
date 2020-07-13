@@ -8,14 +8,13 @@
 
 import UIKit
 import ElastosCarrierSDK
-import ElastosRTC
+import ElastosWebRtc
 import AVFoundation
 import AVKit
 
 protocol CallingDelegate: NSObject {
     
     func getClient() -> WebRtcClient
-
     func carrierInstance() -> Carrier
 }
 
@@ -281,8 +280,8 @@ extension CallViewController {
 
     @objc func didPressConversation(_ sender: UIButton) {
         guard let userId = self.weakDataSource?.carrierInstance().getAddress(),
-            let name = try? self.weakDataSource?.carrierInstance().getSelfUserInfo() else { return }
-        let chat = ChatViewController(sender: MockUser(senderId: userId, displayName: name.name ?? "No Name"))
+            let name = try? self.weakDataSource?.carrierInstance().getSelfUserInfo(), let client = client else { return }
+        let chat = ChatViewController(sender: MockUser(senderId: userId, displayName: name.name ?? "No Name"), client: client)
         showDetailViewController(chat, sender: nil)
     }
 

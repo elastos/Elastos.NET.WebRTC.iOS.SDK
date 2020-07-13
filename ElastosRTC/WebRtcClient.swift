@@ -207,6 +207,7 @@ public extension WebRtcClient {
         videoSource.stopCapture()
     }
 
+    @discardableResult
     func sendData(_ data: Data, isBinary: Bool) throws -> Bool {
         let buffer = RTCDataBuffer(data: data, isBinary: isBinary)
         guard let channel = dataChannel else { throw WebRtcError.dataChannelInitFailed }

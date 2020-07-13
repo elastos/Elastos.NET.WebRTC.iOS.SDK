@@ -7,6 +7,7 @@
 //
 
 import MessageKit
+import ElastosWebRtc
 import InputBarAccessoryView
 
 struct ImageMediaItem: MediaItem {
@@ -59,15 +60,13 @@ struct MockMessage: MessageType {
 class ChatViewController: MessagesViewController, MessagesDataSource {
 
     let sender: MockUser
-
+    let client: WebRtcClient
     var messages: [MockMessage] = []
 
-    init(sender: MockUser) {
+    init(sender: MockUser, client: WebRtcClient) {
         self.sender = sender
+        self.client = client
         super.init(nibName: nil, bundle: nil)
-
-        self.messages = [.init(text: "111", user: sender, messageId: "111", date: Date()),
-                         .init(text: "222", user: sender, messageId: "111", date: Date())]
     }
 
     required init?(coder: NSCoder) {
@@ -78,6 +77,8 @@ class ChatViewController: MessagesViewController, MessagesDataSource {
         super.viewDidLoad()
         configureMessageInputBar()
         configureMessageCollectionView()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveMessageFromDataChannel(_:)), name: .receiveMessage, object: nil)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -95,6 +96,20 @@ class ChatViewController: MessagesViewController, MessagesDataSource {
 
     func numberOfSections(in messagesCollectionView: MessagesCollectionView) -> Int {
         messages.count
+    }
+
+    @objc func didReceiveMessageFromDataChannel(_ notification: Notification) {
+        if let userInfo = notification.userInfo, let data = userInfo["data"] as? Data,
+            let isBinary = userInfo["isBinary"] as? Bool,
+            let id = userInfo["userId"] as? String {
+            if isBinary, let img = UIImage(data: data) {
+                let message = MockMessage(image: img, user: MockUser(senderId: id, displayName: ""), messageId: UUID().uuidString, date: Date())
+                insertMessage(message)
+            } else if let str = String(data: data, encoding: .utf8) {
+                let message = MockMessage(text: str, user: MockUser(senderId: id, displayName: ""), messageId: UUID().uuidString, date: Date())
+                insertMessage(message)
+            }
+        }
     }
 }
 
@@ -149,15 +164,6 @@ extension ChatViewController {
 extension ChatViewController: InputBarAccessoryViewDelegate {
 
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
-        let attributedText = messageInputBar.inputTextView.attributedText!
-        let range = NSRange(location: 0, length: attributedText.length)
-        attributedText.enumerateAttribute(.autocompleted, in: range, options: []) { (_, range, _) in
-
-            let substring = attributedText.attributedSubstring(from: range)
-            let context = substring.attribute(.autocompletedContext, at: 0, effectiveRange: nil)
-            print("Autocompleted: `", substring, "` with context: ", context ?? [])
-        }
-
         let components = inputBar.inputTextView.components
         messageInputBar.inputTextView.text = String()
         messageInputBar.invalidatePlugins()
@@ -165,15 +171,21 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         // Send button activity animation
         messageInputBar.sendButton.startAnimating()
         messageInputBar.inputTextView.placeholder = "Sending..."
-        DispatchQueue.global(qos: .default).async {
-            // fake send request task
-            sleep(1)
-            DispatchQueue.main.async { [weak self] in
-                self?.messageInputBar.sendButton.stopAnimating()
-                self?.messageInputBar.inputTextView.placeholder = "Aa"
-                self?.insertMessages(components)
-                self?.messagesCollectionView.scrollToBottom(animated: true)
+
+        for component in components {
+            if let str = component as? String, let data = str.data(using: .utf8) {
+                let result = try? self.client.sendData(data, isBinary: false)
+                print("[SEND]: String %@", result == true ? "data-channel sent success" : "data-channel sent failure")
+            } else if let img = component as? UIImage, let data = img.pngData() {
+                let result = try? self.client.sendData(data, isBinary: true)
+                print("[SEND]: Image %@", result == true ? "data-channel sent success" : "data-channel sent failure")
             }
+        }
+        DispatchQueue.main.async {
+            self.messageInputBar.sendButton.stopAnimating()
+            self.messageInputBar.inputTextView.placeholder = "Aa"
+            self.insertMessages(components)
+            self.messagesCollectionView.scrollToBottom(animated: true)
         }
     }
 

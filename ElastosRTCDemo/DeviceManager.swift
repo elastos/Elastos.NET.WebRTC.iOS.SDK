@@ -16,6 +16,8 @@ extension Notification.Name {
     static let iceDisconnected = Notification.Name("ice_did_disconnected")
     static let reject = NSNotification.Name("ice_reject")
 
+    static let receiveMessage = NSNotification.Name("data-channel-receive-message")
+
 }
 var transferFrientId = ""
 class DeviceManager : NSObject {
