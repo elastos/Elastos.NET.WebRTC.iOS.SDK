@@ -42,14 +42,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		745CB73E24965D7D00E7D308 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F9A8D09E2486A9C100FFDFD2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = F9A8D0A62486A9C100FFDFD2;
-			remoteInfo = ElastosRTC;
-		};
-		745CB74224965D8400E7D308 /* PBXContainerItemProxy */ = {
+		804CA62C24BDD39000C993BC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F9A8D09E2486A9C100FFDFD2 /* Project object */;
 			proxyType = 1;
@@ -313,7 +306,7 @@
 				F9A8D0AC2486A9C100FFDFD2 /* Sources */,
 				F9A8D0AD2486A9C100FFDFD2 /* Frameworks */,
 				F9A8D0AE2486A9C100FFDFD2 /* Resources */,
-				E17F513BE9C94E5A89206FF1 /* [CP] Embed Pods Frameworks */,
+				A928EBA0AD8B931B981EA8B6 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -339,8 +332,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				745CB73F24965D7D00E7D308 /* PBXTargetDependency */,
-				745CB74324965D8400E7D308 /* PBXTargetDependency */,
+				804CA62D24BDD39000C993BC /* PBXTargetDependency */,
 			);
 			name = ElastosRTCDemo;
 			productName = ElastosRTCDemo;
@@ -499,7 +491,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E17F513BE9C94E5A89206FF1 /* [CP] Embed Pods Frameworks */ = {
+		A928EBA0AD8B931B981EA8B6 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -562,15 +554,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		745CB73F24965D7D00E7D308 /* PBXTargetDependency */ = {
+		804CA62D24BDD39000C993BC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F9A8D0A62486A9C100FFDFD2 /* ElastosRTC */;
-			targetProxy = 745CB73E24965D7D00E7D308 /* PBXContainerItemProxy */;
-		};
-		745CB74324965D8400E7D308 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = F9A8D0A62486A9C100FFDFD2 /* ElastosRTC */;
-			targetProxy = 745CB74224965D8400E7D308 /* PBXContainerItemProxy */;
+			targetProxy = 804CA62C24BDD39000C993BC /* PBXContainerItemProxy */;
 		};
 		F9A8D0B32486A9C100FFDFD2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

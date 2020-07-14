@@ -175,10 +175,10 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         for component in components {
             if let str = component as? String, let data = str.data(using: .utf8) {
                 let result = try? self.client.sendData(data, isBinary: false)
-                print("[SEND]: String %@", result == true ? "data-channel sent success" : "data-channel sent failure")
+                print("[SEND]: " + "<" + str + "> " + (result == true ? "data-channel sent success" : "data-channel sent failure"))
             } else if let img = component as? UIImage, let data = img.pngData() {
                 let result = try? self.client.sendData(data, isBinary: true)
-                print("[SEND]: Image %@", result == true ? "data-channel sent success" : "data-channel sent failure")
+                print("[SEND]: <image>" + (result == true ? "data-channel sent success" : "data-channel sent failure"))
             }
         }
         DispatchQueue.main.async {

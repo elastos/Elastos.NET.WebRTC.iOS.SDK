@@ -148,5 +148,7 @@ extension WebRtcClient: RTCPeerConnectionDelegate {
         Log.d(TAG, "peerconnection did open data-channel")
         self.dataChannel = dataChannel
         self.dataChannel?.delegate = self
+
+        print("✅ peerconnection did open data-channel")
     }
 }
