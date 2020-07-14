@@ -63,7 +63,7 @@ extension WebRtcClient {
                 }
 
                 if let delegate = self.delegate {
-                    delegate.onInvite(friendId: from) { [weak self] result in
+                    delegate.onInvite(friendId: from, mediaOption: options) { [weak self] result in
                         if result {
                             closureAfterAccepted()
                         } else {
