@@ -143,20 +143,21 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
             callVc.callOptions = [.audio]
             self?.present(callVc, animated: true, completion: nil)
         }))
-        alert.addAction(UIAlertAction(title: "Audio + Video", style: .destructive, handler: { [weak self] _ in
+
+        alert.addAction(UIAlertAction(title: "Data", style: .default, handler: { [weak self] _ in
+             callVc.callOptions = [.dataChannel]
+             self?.present(callVc, animated: true, completion: nil)
+         }))
+
+        alert.addAction(UIAlertAction(title: "Audio + Video", style: .default, handler: { [weak self] _ in
             callVc.callOptions = [.audio, .video]
             self?.present(callVc, animated: true, completion: nil)
         }))
 
-        alert.addAction(UIAlertAction(title: "Audio + Video + Data", style: .destructive, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: "Audio + Video + Data", style: .default, handler: { [weak self] _ in
             callVc.callOptions = [.audio, .video, .dataChannel]
             self?.present(callVc, animated: true, completion: nil)
         }))
-
-        alert.addAction(UIAlertAction(title: "Data", style: .destructive, handler: { [weak self] _ in
-             callVc.callOptions = [.dataChannel]
-             self?.present(callVc, animated: true, completion: nil)
-         }))
 
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         alert.modalPresentationStyle = .popover
