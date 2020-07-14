@@ -7,7 +7,6 @@
 //
 
 import MessageKit
-import ElastosWebRtc
 import InputBarAccessoryView
 
 struct ImageMediaItem: MediaItem {
@@ -101,12 +100,12 @@ class ChatViewController: MessagesViewController, MessagesDataSource {
     @objc func didReceiveMessageFromDataChannel(_ notification: Notification) {
         if let userInfo = notification.userInfo, let data = userInfo["data"] as? Data,
             let isBinary = userInfo["isBinary"] as? Bool,
-            let id = userInfo["userId"] as? String {
+            let id = userInfo["userId"] as? Int {
             if isBinary, let img = UIImage(data: data) {
-                let message = MockMessage(image: img, user: MockUser(senderId: id, displayName: ""), messageId: UUID().uuidString, date: Date())
+                let message = MockMessage(image: img, user: MockUser(senderId: String(id), displayName: ""), messageId: UUID().uuidString, date: Date())
                 insertMessage(message)
             } else if let str = String(data: data, encoding: .utf8) {
-                let message = MockMessage(text: str, user: MockUser(senderId: id, displayName: ""), messageId: UUID().uuidString, date: Date())
+                let message = MockMessage(text: str, user: MockUser(senderId: String(id), displayName: ""), messageId: UUID().uuidString, date: Date())
                 insertMessage(message)
             }
         }

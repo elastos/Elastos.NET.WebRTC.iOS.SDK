@@ -1,7 +1,6 @@
 import Foundation
 import AVFoundation
 import MediaPlayer
-import ElastosCarrierSDK
 
 extension Notification.Name {
     static let didBecomeReady = Notification.Name("didBecomeReady")

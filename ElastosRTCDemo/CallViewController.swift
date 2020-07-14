@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import ElastosCarrierSDK
-import ElastosWebRtc
 import AVFoundation
 import AVKit
 

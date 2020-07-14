@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ElastosCarrierSDK
 import AVFoundation
 
 extension CarrierConnectionStatus {

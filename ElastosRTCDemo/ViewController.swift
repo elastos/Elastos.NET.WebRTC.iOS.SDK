@@ -8,8 +8,6 @@
 
 import UIKit
 import EFQRCode
-import ElastosCarrierSDK
-import ElastosWebRtc
 import AVFoundation
 
 class ViewController: UIViewController, CarrierDelegate {
@@ -236,8 +234,10 @@ extension ViewController: CallingDelegate {
 extension ViewController: WebRtcDelegate {
 
     func onReceiveMessage(_ data: Data, isBinary: Bool, channelId: Int) {
-        print("receive message from datachannnel: \(String(describing: String(data: data, encoding: .utf8)))")
-        NotificationCenter.default.post(name: .receiveMessage, object: nil, userInfo: ["data": data, "isBinary": isBinary, "userId": channelId])
+        print("✅ [RECV]: \(String(describing: String(data: data, encoding: .utf8)))")
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .receiveMessage, object: nil, userInfo: ["data": data, "isBinary": isBinary, "userId": channelId])
+        }
     }
 
     func onInvite(friendId: String, mediaOption: MediaOptions, completion: @escaping (Bool) -> Void) {

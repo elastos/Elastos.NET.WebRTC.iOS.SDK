@@ -9,6 +9,9 @@
 import UIKit
 import AVFoundation
 
+@_exported import ElastosRTC
+@_exported import ElastosCarrierSDK
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
