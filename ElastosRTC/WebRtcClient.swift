@@ -151,21 +151,19 @@ public extension WebRtcClient {
 
     var isEnableAudio: Bool {
         get {
-            peerConnection.localStreams.first?.audioTracks.first?.isEnabled == true
+            localAudioTrack.isEnabled
         }
         set {
-            guard let audioTrack = peerConnection.localStreams.first?.audioTracks.first else { return }
-            audioTrack.isEnabled = newValue
+            localAudioTrack.isEnabled = newValue
         }
     }
 
     var isEnableVideo: Bool {
         get {
-            peerConnection.localStreams.first?.videoTracks.first?.isEnabled == true
+            localVideoTrack.isEnabled == true
         }
         set {
-            guard let videoTrack = peerConnection.localStreams.first?.videoTracks.first else { return }
-            videoTrack.isEnabled = newValue
+            localVideoTrack.isEnabled = newValue
         }
     }
 

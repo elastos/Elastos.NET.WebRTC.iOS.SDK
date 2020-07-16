@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "video-mute-selected.png",
+      "filename" : "video-mute-unselected.png",
       "idiom" : "universal",
       "scale" : "1x"
     },

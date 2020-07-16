@@ -99,8 +99,8 @@ class CallViewController: UIViewController {
                                                target: self,
                                                selector: #selector(toggleAudio(_:)))
 
-    private lazy var muteVideoBtn = makeButton(image: UIImage(named: "video-video-selected"),
-                                               selected: UIImage(named: "video-video-unselected"),
+    private lazy var muteVideoBtn = makeButton(image: UIImage(named: "video-video-unselected"),
+                                               selected: UIImage(named: "video-video-selected"),
                                                target: self,
                                                selector: #selector(toggleVideo(_:)))
 
@@ -229,6 +229,9 @@ class CallViewController: UIViewController {
             self.muteVideoBtn.isEnabled = self.callOptions.isEnableVideo
             self.muteAudioBtn.isEnabled = self.callOptions.isEnableAudio
             self.chatBtn.isEnabled = self.callOptions.isEnableDataChannel
+
+            self.muteVideoBtn.isSelected = self.client?.isEnableVideo == false
+            self.muteAudioBtn.isSelected = self.client?.isEnableAudio == false
         }
     }
 
@@ -283,11 +286,11 @@ extension CallViewController {
 
     @objc func toggleAudio(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
-        client?.isEnableAudio = sender.isSelected
+        client?.isEnableAudio = !sender.isSelected
     }
 
     @objc func toggleVideo(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
-        client?.isEnableVideo = sender.isSelected
+        client?.isEnableVideo = !sender.isSelected
     }
 }
