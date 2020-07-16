@@ -42,7 +42,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		804CA62C24BDD39000C993BC /* PBXContainerItemProxy */ = {
+		F9034FAE24C0AFFC00804A3D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F9A8D09E2486A9C100FFDFD2 /* Project object */;
 			proxyType = 1;
@@ -306,7 +306,7 @@
 				F9A8D0AC2486A9C100FFDFD2 /* Sources */,
 				F9A8D0AD2486A9C100FFDFD2 /* Frameworks */,
 				F9A8D0AE2486A9C100FFDFD2 /* Resources */,
-				A928EBA0AD8B931B981EA8B6 /* [CP] Embed Pods Frameworks */,
+				D015B2D8E79E4FF01470FC4C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -332,7 +332,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				804CA62D24BDD39000C993BC /* PBXTargetDependency */,
+				F9034FAF24C0AFFC00804A3D /* PBXTargetDependency */,
 			);
 			name = ElastosRTCDemo;
 			productName = ElastosRTCDemo;
@@ -491,7 +491,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A928EBA0AD8B931B981EA8B6 /* [CP] Embed Pods Frameworks */ = {
+		D015B2D8E79E4FF01470FC4C /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -554,10 +554,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		804CA62D24BDD39000C993BC /* PBXTargetDependency */ = {
+		F9034FAF24C0AFFC00804A3D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F9A8D0A62486A9C100FFDFD2 /* ElastosRTC */;
-			targetProxy = 804CA62C24BDD39000C993BC /* PBXContainerItemProxy */;
+			targetProxy = F9034FAE24C0AFFC00804A3D /* PBXContainerItemProxy */;
 		};
 		F9A8D0B32486A9C100FFDFD2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
