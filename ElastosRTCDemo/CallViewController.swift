@@ -255,6 +255,7 @@ extension CallViewController {
 
     @objc func didPressLoudSpeaker(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
+        client?.isLoudSpeaker = sender.isSelected
     }
 
     @objc func didPressReject(_ sender: UIButton) {

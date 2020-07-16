@@ -168,7 +168,21 @@ public extension WebRtcClient {
     }
 
     var isLoudSpeaker: Bool {
-        true//todo
+        get {
+            true //TODO
+        }
+        set {
+            let session = AVAudioSession.sharedInstance()
+            var _: Error?
+            try? session.setCategory(.playAndRecord)
+            try? session.setMode(.voiceChat)
+            if newValue {
+                try? session.overrideOutputAudioPort(.speaker)
+            } else {
+                try? session.overrideOutputAudioPort(.none)
+            }
+            try? session.setActive(true)
+        }
     }
 
     func inviteCall(friendId: String, options: MediaOptions) {
