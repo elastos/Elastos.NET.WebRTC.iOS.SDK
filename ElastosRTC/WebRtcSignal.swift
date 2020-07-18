@@ -12,6 +12,11 @@ public enum MediaOptionItem: String, Equatable, Codable {
     case dataChannel = "data"
 }
 
+enum CallDirection {
+    case outgoing
+    case incoming
+}
+
 public enum CallState {
     case idle
     case dialing
