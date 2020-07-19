@@ -53,7 +53,7 @@ class FriendCell: UITableViewCell {
         return view
     }()
 
-    private let statusLabel: UILabel = {
+    private let idLabel: UILabel = {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -72,25 +72,26 @@ class FriendCell: UITableViewCell {
     private func setupSubviews() {
         contentView.addSubview(nameLabel)
         contentView.addSubview(avatar)
-        contentView.addSubview(statusLabel)
+        contentView.addSubview(idLabel)
     }
 
     private func setupConstrants() {
-        let views = ["avatar": avatar, "name": nameLabel, "status": statusLabel]
+        let views = ["avatar": avatar, "name": nameLabel, "id": idLabel]
         var constraints: [NSLayoutConstraint] = []
         constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-[avatar(40)]-[name]-|", options: [], metrics: nil, views: views)
-        constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-[name]-[status]-|", options: [], metrics: nil, views: views)
-        constraints.append(nameLabel.leadingAnchor.constraint(equalTo: statusLabel.leadingAnchor))
+        constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-[name]-[id]-|", options: [], metrics: nil, views: views)
+        constraints.append(nameLabel.leadingAnchor.constraint(equalTo: idLabel.leadingAnchor))
         constraints.append(avatar.heightAnchor.constraint(equalTo: avatar.widthAnchor))
         constraints.append(avatar.centerYAnchor.constraint(equalTo: contentView.centerYAnchor))
-        constraints.append(statusLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor))
+        constraints.append(idLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor))
         constraints.forEach { $0.priority = .required - 1 }
         NSLayoutConstraint.activate(constraints)
     }
 
     func update(_ friend: FriendCellModel) {
-        nameLabel.text = "[" + friend.name + "]" + friend.id
-        statusLabel.text = friend.status.rawValue
-        statusLabel.textColor = friend.status.textColor
+        nameLabel.text = "[" + friend.name + "]"
+        idLabel.text = friend.id
+        nameLabel.textColor = friend.status.textColor
+        idLabel.textColor = friend.status.textColor
     }
 }
