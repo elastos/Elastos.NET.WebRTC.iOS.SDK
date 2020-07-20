@@ -56,6 +56,7 @@ public class WebRtcClient: NSObject {
     var videoCapturer: RTCVideoCapturer?
     var remoteStream: RTCMediaStream?
     var isUsingFrontCamera: Bool = true
+    var callDirection: CallDirection = .incoming
 
     var messageQueue: [RtcSignal] = []
     var hasReceivedSdp: Bool = false {
@@ -191,6 +192,7 @@ public extension WebRtcClient {
     }
 
     func inviteCall(friendId: String, options: MediaOptions) {
+        self.callDirection = .outgoing
         self.friendId = friendId
         self.options = options
         self.messageQueue = []

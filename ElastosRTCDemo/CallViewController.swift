@@ -16,11 +16,6 @@ protocol CallingDelegate: NSObject {
     func carrierInstance() -> Carrier
 }
 
-enum CallDirection {
-    case outgoing
-    case incoming
-}
-
 enum CallState: Equatable {
     case calling
     case receiving

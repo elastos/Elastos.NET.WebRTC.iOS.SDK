@@ -21,7 +21,6 @@ class ViewController: UIViewController, CarrierDelegate {
         return client
     }()
 
-    @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var tableView: UITableView!
 
     private var friends: [FriendCellModel] = []
@@ -30,10 +29,10 @@ class ViewController: UIViewController, CarrierDelegate {
         super.viewDidLoad()
         setupObserver()
         tableView.register(FriendCell.self, forCellReuseIdentifier: NSStringFromClass(FriendCell.self))
-        tableView.register(ProfileFooter.self, forHeaderFooterViewReuseIdentifier: NSStringFromClass(ProfileFooter.self))
-        tableView.sectionFooterHeight = UITableView.automaticDimension
         tableView.keyboardDismissMode = .onDrag
         DeviceManager.sharedInstance.start()
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Info", style: .done, target: self, action: #selector(openMyInfo))
 
         checkPermission()
     }
@@ -70,24 +69,18 @@ class ViewController: UIViewController, CarrierDelegate {
         present(vc, animated: true, completion: nil)
     }
 
-    @IBAction func addAsFriend(_ sender: Any) {
-        if textField.text?.isEmpty == false {
-            do {
-                try carrier.addFriend(with: textField.text!, withGreeting: "hi my friend.")
-            } catch {
-                print("add as friend error, due to \(error)")
-            }
-        }
-
-        self.view.endEditing(true)
-    }
-
     func setupObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleFriendStatusChanged(_:)), name: .friendStatusChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleFriendList(_:)), name: .friendList, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(newFriendAdded(_:)), name: .friendAdded, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(newFriendAdded(_:)), name: .friendInfoChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didBecomeReady), name: .didBecomeReady, object: nil)
+    }
+    
+    @objc func openMyInfo() {
+        let vc = MyProfileViewController()
+        vc.update(address: carrier.getAddress(), userId: carrier.getUserId(), carrier: self.carrier)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
@@ -110,17 +103,6 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         let friend = friends[indexPath.row]
         cell.update(FriendCellModel(id: friend.id, name: friend.name, avatar: nil, status: friend.status))
         return cell
-    }
-
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: NSStringFromClass(ProfileFooter.self)) as? ProfileFooter else { return nil }
-        print("userID: \(carrier.getUserId()), addressID: \(carrier.getAddress())")
-        view.update(userId: carrier.getUserId(), addressId: carrier.getAddress())
-        return view
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        return 100
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -210,14 +192,6 @@ extension ViewController {
 
     @objc func didBecomeReady() {
         print(self.rtcClient)
-    }
-}
-
-extension ViewController: UITextFieldDelegate {
-
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        addAsFriend(textField)
-        return true
     }
 }
 
