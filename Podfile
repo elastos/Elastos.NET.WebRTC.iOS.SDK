@@ -10,9 +10,9 @@ target 'ElastosRTC' do
   pod "ElastosCarrierSDKWebRTC"
 
   target 'ElastosRTCDemo' do
-    pod 'EFQRCode'
-    pod 'QRCodeReader.swift'
-    pod 'MessageKit'
+    pod 'EFQRCode', '5.1.6'
+    pod 'QRCodeReader.swift', '10.1.0'
+    pod 'MessageKit', '3.1.0'
     pod 'ElastosWebRtc', :path => './'
     inherit! :search_paths
   end
