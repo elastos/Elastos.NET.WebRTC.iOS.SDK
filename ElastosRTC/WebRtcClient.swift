@@ -71,9 +71,12 @@ public class WebRtcClient: NSObject {
         if _peerConnection == nil {
             let config = RTCConfiguration()
             let constraints = RTCMediaConstraints.init(mandatoryConstraints: nil, optionalConstraints: nil)
-            config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"]),
-                                 RTCIceServer(urlStrings: ["stun:gfax.net:3478"]),
-                                 RTCIceServer(urlStrings: ["turn:gfax.net:3478"], username: "allcom", credential: "allcompass")]
+            config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"])]
+            if let turn = self.turnInfo {
+                config.iceServers.append(turn.iceServer)
+            } else {
+                assertionFailure("turn server is null")
+            }
             _peerConnection = peerConnectionFactory.peerConnection(with: config, constraints: constraints, delegate: self)
         }
         return _peerConnection!
@@ -117,6 +120,8 @@ public class WebRtcClient: NSObject {
     }()
 
     var dataChannel: RTCDataChannel?
+
+    var turnInfo: TurnServerInfo?
 
     func createDataChannel() -> RTCDataChannel? {
         let config = RTCDataChannelConfiguration()
@@ -222,7 +227,8 @@ public extension WebRtcClient {
     @discardableResult
     func sendData(_ data: Data, isBinary: Bool) throws -> Bool {
         let buffer = RTCDataBuffer(data: data, isBinary: isBinary)
-        guard let channel = dataChannel, channel.readyState == .open else { throw WebRtcError.dataChannelInitFailed }
+        guard let channel = dataChannel else { throw WebRtcError.dataChannelInitFailed }
+        guard channel.readyState == .open else { throw WebRtcError.dataChannelStateIsNotOpen }
         return channel.sendData(buffer) == true
     }
 }

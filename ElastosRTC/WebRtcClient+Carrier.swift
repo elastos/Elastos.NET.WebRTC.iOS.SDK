@@ -103,7 +103,14 @@ extension WebRtcClient {
                 self.receive(from: friendId, data: data)
             }
         } catch {
-            assertionFailure("register extension error, due to \(error)")
+            fatalError("register extension error, due to \(error)")
+        }
+
+        do {
+            self.turnInfo = try self.carrier.turnServerInfo()
+            print(self.turnInfo?.server, self.turnInfo?.password, self.turnInfo?.port)
+        } catch {
+            fatalError("get turn server info failued, due to \(error)")
         }
     }
 

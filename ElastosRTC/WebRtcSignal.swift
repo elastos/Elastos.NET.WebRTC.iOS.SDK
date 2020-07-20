@@ -23,8 +23,22 @@ public enum CallState {
     case remoteBusy
 }
 
-public enum WebRtcError: Error {
+public enum WebRtcError: Error, CustomDebugStringConvertible {
+
     case dataChannelInitFailed
+    case dataChannelStateIsNotOpen
+    case turnServerIsNil
+
+    public var debugDescription: String {
+        switch self {
+        case .dataChannelInitFailed:
+            return "data channel init failure"
+        case .dataChannelStateIsNotOpen:
+            return "data channel state is not open now"
+        case .turnServerIsNil:
+            return "cannot fetch turn server now"
+        }
+    }
 }
 
 public class MediaOptions: ExpressibleByArrayLiteral, Codable, Equatable, CustomDebugStringConvertible {
