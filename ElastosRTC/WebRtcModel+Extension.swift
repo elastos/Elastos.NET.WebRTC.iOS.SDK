@@ -81,3 +81,10 @@ extension RTCIceConnectionState {
         }
     }
 }
+
+extension TurnServerInfo {
+
+    var iceServer: RTCIceServer {
+        RTCIceServer(urlStrings: ["turn:\(server):\(port)"], username: username, credential: password)
+    }
+}

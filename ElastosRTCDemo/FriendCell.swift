@@ -17,7 +17,7 @@ enum Status: String {
         case .online:
             return .systemGreen
         case .offline:
-            return .lightGray
+            return .darkGray
         }
     }
 }
@@ -56,6 +56,8 @@ class FriendCell: UITableViewCell {
     private let idLabel: UILabel = {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.lineBreakMode = .byCharWrapping
+        view.numberOfLines = 0
         return view
     }()
 
