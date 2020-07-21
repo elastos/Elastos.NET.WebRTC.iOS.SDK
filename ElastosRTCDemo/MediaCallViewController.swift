@@ -98,6 +98,8 @@ class MediaCallViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setImage(UIImage(named: "loud-speaker-active"), for: .normal)
         view.setImage(UIImage(named: "loud-speaker-inactive"), for: .selected)
+        view.isEnabled = UIDevice.current.userInterfaceIdiom == .phone
+        view.isSelected = UIDevice.current.userInterfaceIdiom == .phone
         view.addTarget(self, action: #selector(didPressLoudSpeakerControl(_:)), for: .touchUpInside)
         return view
     }()
