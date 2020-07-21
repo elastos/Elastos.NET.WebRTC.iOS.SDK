@@ -27,6 +27,19 @@ enum MeidaCallState {
     case connected
     case hangup
     case cancel
+
+    var state: String {
+        switch self {
+        case .connecting:
+            return "Connecting"
+        case .connected:
+            return "Connected"
+        case .hangup:
+            return "Hangup"
+        case .cancel:
+            return "Cancel"
+        }
+    }
 }
 
 enum MediaCallDirection {
@@ -45,10 +58,11 @@ class MediaCallViewController: UIViewController {
     var callState: MeidaCallState = .connecting {
         didSet {
             updateToolsStack()
+            nameLabel.text = callState.state
         }
     }
 
-    var callDirection: MediaCallDirection = .incoming {
+    var callDirection: MediaCallDirection {
         didSet {
             updateToolsStack()
         }
@@ -122,15 +136,40 @@ class MediaCallViewController: UIViewController {
         return view
     }()
 
+    private let nameLabel: UILabel = {
+        let view = UILabel()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.textColor = .blue
+        view.textAlignment = .center
+        return view
+    }()
+
+    let client: WebRtcClient
+    init(direction: MediaCallDirection, type: MediaCallType, client: WebRtcClient) {
+        self.callDirection = direction
+        self.callType = type
+        self.client = client
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = callType.title
 
+        view.addSubview(nameLabel)
         view.addSubview(toolStack)
+
         NSLayoutConstraint.activate([
             toolStack.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
-            toolStack.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            toolStack.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor)
+            toolStack.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            toolStack.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+
+            nameLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 30),
+            nameLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
         ])
     }
 
