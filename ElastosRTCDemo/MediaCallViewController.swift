@@ -128,7 +128,7 @@ class MediaCallViewController: UIViewController {
     }()
 
     private lazy var toolStack: UIStackView = {
-        let view = UIStackView(arrangedSubviews: [self.audioMuteBtn, self.videoMuteBtn, self.loudSpeakerBtn, self.flipCameraBtn, self.chatBtn, self.acceptBtn, self.endBtn])
+        let view = UIStackView(arrangedSubviews: [audioMuteBtn, videoMuteBtn, loudSpeakerBtn, flipCameraBtn, chatBtn, acceptBtn, endBtn])
         view.translatesAutoresizingMaskIntoConstraints = false
         view.axis = .horizontal
         view.distribution = .equalSpacing
@@ -164,12 +164,12 @@ class MediaCallViewController: UIViewController {
         view.addSubview(toolStack)
 
         NSLayoutConstraint.activate([
-            toolStack.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
-            toolStack.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            toolStack.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            toolStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            toolStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            toolStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
 
-            nameLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 30),
-            nameLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+            nameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
+            nameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
 
@@ -184,18 +184,18 @@ class MediaCallViewController: UIViewController {
         case .audio:
             switch state {
             case .connecting:
-                return direction == .incoming ? [self.acceptBtn, self.endBtn] : [self.endBtn]
+                return direction == .incoming ? [acceptBtn, endBtn] : [endBtn]
             case .connected:
-                return [self.audioMuteBtn, self.loudSpeakerBtn, self.chatBtn, self.endBtn]
+                return [audioMuteBtn, loudSpeakerBtn, chatBtn, endBtn]
             default:
                 return []
             }
         case .video:
             switch state {
             case .connecting:
-                return direction == .incoming ? [self.acceptBtn, self.endBtn] : [self.endBtn]
+                return direction == .incoming ? [acceptBtn, endBtn] : [endBtn]
             case .connected:
-                return [self.audioMuteBtn, self.videoMuteBtn, self.loudSpeakerBtn, self.flipCameraBtn, self.chatBtn, self.endBtn]
+                return [audioMuteBtn, videoMuteBtn, loudSpeakerBtn, flipCameraBtn, chatBtn, endBtn]
             default:
                 return []
             }
