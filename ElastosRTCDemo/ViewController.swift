@@ -21,7 +21,6 @@ class ViewController: UIViewController, CarrierDelegate {
         return client
     }()
 
-    @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var tableView: UITableView!
 
     private var friends: [FriendCellModel] = []
@@ -30,10 +29,10 @@ class ViewController: UIViewController, CarrierDelegate {
         super.viewDidLoad()
         setupObserver()
         tableView.register(FriendCell.self, forCellReuseIdentifier: NSStringFromClass(FriendCell.self))
-        tableView.register(ProfileFooter.self, forHeaderFooterViewReuseIdentifier: NSStringFromClass(ProfileFooter.self))
-        tableView.sectionFooterHeight = UITableView.automaticDimension
         tableView.keyboardDismissMode = .onDrag
         DeviceManager.sharedInstance.start()
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Info", style: .done, target: self, action: #selector(openMyInfo))
 
         checkPermission()
     }
@@ -70,24 +69,18 @@ class ViewController: UIViewController, CarrierDelegate {
         present(vc, animated: true, completion: nil)
     }
 
-    @IBAction func addAsFriend(_ sender: Any) {
-        if textField.text?.isEmpty == false {
-            do {
-                try carrier.addFriend(with: textField.text!, withGreeting: "hi my friend.")
-            } catch {
-                print("add as friend error, due to \(error)")
-            }
-        }
-
-        self.view.endEditing(true)
-    }
-
     func setupObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleFriendStatusChanged(_:)), name: .friendStatusChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleFriendList(_:)), name: .friendList, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(newFriendAdded(_:)), name: .friendAdded, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(newFriendAdded(_:)), name: .friendInfoChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didBecomeReady), name: .didBecomeReady, object: nil)
+    }
+    
+    @objc func openMyInfo() {
+        let vc = MyProfileViewController()
+        vc.update(address: carrier.getAddress(), userId: carrier.getUserId(), carrier: self.carrier)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
@@ -112,56 +105,40 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
 
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: NSStringFromClass(ProfileFooter.self)) as? ProfileFooter else { return nil }
-        print("userID: \(carrier.getUserId()), addressID: \(carrier.getAddress())")
-        view.update(userId: carrier.getUserId(), addressId: carrier.getAddress())
-        return view
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        return 100
-    }
-
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let friend = friends[indexPath.row]
-        call(friendId: friend.id)
-    }
-
-    func call(friendId: String) {
-        let sb = UIStoryboard(name: "Main", bundle: nil)
-        let callVc = sb.instantiateViewController(withIdentifier: "call_page") as! CallViewController
-        callVc.state = .calling
-        callVc.friendId = friendId
-        callVc.weakDataSource = self
-
+        
+        let callViewController = MediaCallViewController(direction: .outgoing, type: .audio, client: self.rtcClient, friendId: friend.id)
+        callViewController.modalPresentationStyle = .fullScreen
         let alert = UIAlertController(title: "选择通话类型", message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Audio", style: .default, handler: { [weak self] _ in
-            callVc.callOptions = [.audio]
-            self?.present(callVc, animated: true, completion: nil)
+            callViewController.callType = .audio
+            self?.present(callViewController, animated: true, completion: nil)
         }))
 
         alert.addAction(UIAlertAction(title: "Data", style: .default, handler: { [weak self] _ in
-             callVc.callOptions = [.dataChannel]
-             self?.present(callVc, animated: true, completion: nil)
+            guard let self = self else { return }
+            let userId = self.carrier.getUserId()
+            let mock = MockUser(senderId: userId, displayName: "")
+            let chatViewController = ChatViewController(sender: mock, client: self.rtcClient, state: .connecting)
+            let navigationController = UINavigationController(rootViewController: chatViewController)
+            navigationController.modalPresentationStyle = .fullScreen
+            self.present(navigationController, animated: true) {
+                self.rtcClient.inviteCall(friendId: friend.id, options: [.dataChannel])
+            }
          }))
 
-        alert.addAction(UIAlertAction(title: "Audio + Video", style: .default, handler: { [weak self] _ in
-            callVc.callOptions = [.audio, .video]
-            self?.present(callVc, animated: true, completion: nil)
-        }))
-
         alert.addAction(UIAlertAction(title: "Audio + Video + Data", style: .default, handler: { [weak self] _ in
-            callVc.callOptions = [.audio, .video, .dataChannel]
-            self?.present(callVc, animated: true, completion: nil)
+            callViewController.callType = .video
+            self?.present(callViewController, animated: true, completion: nil)
         }))
 
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         alert.modalPresentationStyle = .popover
         if let presenter = alert.popoverPresentationController {
-            presenter.sourceView = tableView;
-            presenter.sourceRect = tableView.bounds;
+            presenter.sourceView = tableView
+            presenter.sourceRect = tableView.rectForRow(at: indexPath)
         }
         present(alert, animated: true, completion: nil)
     }
@@ -213,24 +190,6 @@ extension ViewController {
     }
 }
 
-extension ViewController: UITextFieldDelegate {
-
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        addAsFriend(textField)
-        return true
-    }
-}
-
-extension ViewController: CallingDelegate {
-    func carrierInstance() -> Carrier {
-        self.carrier
-    }
-
-    func getClient() -> WebRtcClient {
-        return self.rtcClient
-    }
-}
-
 extension ViewController: WebRtcDelegate {
 
     func onReceiveMessage(_ data: Data, isBinary: Bool, channelId: Int) {
@@ -243,13 +202,14 @@ extension ViewController: WebRtcDelegate {
     func onInvite(friendId: String, mediaOption: MediaOptions, completion: @escaping (Bool) -> Void) {
         print("reject or accept")
         DispatchQueue.main.async {
-            let sb = UIStoryboard(name: "Main", bundle: nil)
-            let callVc = sb.instantiateViewController(withIdentifier: "call_page") as! CallViewController
-            callVc.closure = completion
-            callVc.state = .receiving
-            callVc.callOptions = mediaOption
-            callVc.weakDataSource = self
-            self.present(callVc, animated: true, completion: nil)
+            let av = mediaOption.isEnableAudio && mediaOption.isEnableVideo
+            let callViewController = MediaCallViewController(direction: .incoming,
+                                                             type: av ? .video : .audio,
+                                                             client: self.rtcClient,
+                                                             friendId: friendId,
+                                                             closure: completion)
+            callViewController.modalPresentationStyle = .fullScreen
+            self.present(callViewController, animated: true, completion: nil)
         }
     }
 
@@ -262,15 +222,21 @@ extension ViewController: WebRtcDelegate {
     }
 
     func onEndCall(reason: CallReason) {
-        NotificationCenter.default.post(name: .reject, object: reason)
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .reject, object: reason)
+        }
     }
 
     func onIceConnected() {
-        NotificationCenter.default.post(name: .iceConnected, object: nil)
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .iceConnected, object: nil)
+        }
     }
 
     func onIceDisconnected() {
-        NotificationCenter.default.post(name: .iceDisconnected, object: nil)
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .iceDisconnected, object: nil)
+        }
     }
 
     func onConnectionError(error: Error) {

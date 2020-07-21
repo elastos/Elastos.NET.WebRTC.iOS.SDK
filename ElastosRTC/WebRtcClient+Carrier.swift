@@ -104,7 +104,7 @@ extension WebRtcClient {
                 self.receive(from: friendId, data: data)
             }
         } catch {
-            assertionFailure("register extension error, due to \(error)")
+            fatalError("register extension error, due to \(error)")
         }
     }
 

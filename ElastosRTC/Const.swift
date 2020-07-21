@@ -11,4 +11,4 @@ import Foundation
 @_exported import WebRTC
 @_exported import ElastosCarrierSDK
 
-let TAG = "CarrierWebRtc"
+let TAG = "CarrierWebRtcSDK"
