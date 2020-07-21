@@ -73,7 +73,7 @@ public class WebRtcClient: NSObject {
             let config = RTCConfiguration()
             let constraints = RTCMediaConstraints.init(mandatoryConstraints: nil, optionalConstraints: nil)
             config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"])]
-            if let turn = self.turnInfo {
+            if let turn = try? self.carrier.turnServerInfo() {
                 config.iceServers.append(turn.iceServer)
             } else {
                 assertionFailure("turn server is null")
@@ -121,8 +121,6 @@ public class WebRtcClient: NSObject {
     }()
 
     var dataChannel: RTCDataChannel?
-
-    var turnInfo: TurnServerInfo?
 
     func createDataChannel() -> RTCDataChannel? {
         let config = RTCDataChannelConfiguration()
@@ -206,7 +204,7 @@ public extension WebRtcClient {
         }
     }
 
-    func endCall(friendId: String) {
+    func endCall() {
         send(signal: RtcSignal(type: .bye))
         cleanup()
     }

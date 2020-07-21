@@ -51,36 +51,15 @@
                         <viewLayoutGuide key="safeArea" id="iBU-IX-cIA"/>
                     </view>
                     <navigationItem key="navigationItem" title="WebRTC Demo" id="z5x-Yd-JNB">
-                        <barButtonItem key="rightBarButtonItem" title="Item" image="setting" id="ILd-oi-Nc3">
-                            <connections>
-                                <segue destination="etQ-22-FPQ" kind="show" identifier="setting" id="d6h-fE-Cja"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="setting" id="ILd-oi-Nc3"/>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="GIh-27-rfY" id="gNh-Rm-eHS"/>
-                        <segue destination="XUA-qp-Vee" kind="showDetail" identifier="calling" id="gXC-ZU-zuL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Zb-qb-Trh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-707.24637681159425" y="-56.25"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="1UA-MO-gv0">
-            <objects>
-                <navigationController id="XUA-qp-Vee" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="WgB-sC-9qd">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="j84-3R-fnE" kind="relationship" relationship="rootViewController" id="npr-Eg-m8Q"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hr2-wp-aSg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="116" y="-452"/>
         </scene>
         <!--session-->
         <scene sceneID="37R-ZK-bG9">
@@ -103,23 +82,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4HH-Xa-eTf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1062" y="-452"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="vDP-wy-yhC">
-            <objects>
-                <navigationController id="etQ-22-FPQ" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="c4Q-rE-AB6"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="GtO-oI-OVO">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="LeF-me-BSS" kind="relationship" relationship="rootViewController" id="l8T-fC-A3l"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="quq-21-knd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="116" y="212"/>
         </scene>
         <!--设置-->
         <scene sceneID="a1R-Xx-rE1">

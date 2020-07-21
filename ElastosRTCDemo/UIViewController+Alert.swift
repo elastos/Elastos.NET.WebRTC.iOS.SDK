@@ -10,9 +10,9 @@ import UIKit
 
 extension UIViewController {
     
-    func alert(title: String? = nil, message: String? = nil) {
+    func alert(title: String? = nil, message: String? = nil, closure: ((UIAlertAction) -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(.init(title: "OK", style: .cancel, handler: nil))
+        alert.addAction(.init(title: "OK", style: .cancel, handler: closure))
         present(alert, animated: true, completion: nil)
     }
 }

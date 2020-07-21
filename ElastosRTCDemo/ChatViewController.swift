@@ -61,10 +61,16 @@ class ChatViewController: MessagesViewController, MessagesDataSource {
     let sender: MockUser
     let client: WebRtcClient
     var messages: [MockMessage] = []
+    var callState: MediaCallState {
+        didSet {
+            self.title = callState.state
+        }
+    }
 
-    init(sender: MockUser, client: WebRtcClient) {
+    init(sender: MockUser ,client: WebRtcClient, state: MediaCallState) {
         self.sender = sender
         self.client = client
+        self.callState = state
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -76,7 +82,16 @@ class ChatViewController: MessagesViewController, MessagesDataSource {
         super.viewDidLoad()
         configureMessageInputBar()
         configureMessageCollectionView()
-
+        self.title = callState.state
+        setupObserver()
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "结束", style: .done, target: self, action: #selector(endChat))
+    }
+    
+    func setupObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(connected(_:)), name: .iceConnected, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reject(_:)), name: .reject, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(disconnected(_:)), name: .iceDisconnected, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveMessageFromDataChannel(_:)), name: .receiveMessage, object: nil)
     }
 
@@ -97,6 +112,7 @@ class ChatViewController: MessagesViewController, MessagesDataSource {
         messages.count
     }
 
+    //TODO: 检查消息是否属于当前的会话？丢弃如果不属于当前会话
     @objc func didReceiveMessageFromDataChannel(_ notification: Notification) {
         if let userInfo = notification.userInfo, let data = userInfo["data"] as? Data,
             let isBinary = userInfo["isBinary"] as? Bool,
@@ -203,6 +219,40 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
 }
 
 extension ChatViewController: MessagesLayoutDelegate, MessagesDisplayDelegate { }
+
+extension ChatViewController {
+
+    @objc func connected(_ notification: NSNotification) {
+        self.callState = .connected
+    }
+
+    @objc func disconnected(_ notification: NSNotification) {
+        self.callState = .hangup
+        alert(title: "聊天室挂断") { _ in
+             DispatchQueue.main.async {
+                 self.dismiss(animated: true, completion: nil)
+             }
+         }
+    }
+
+    @objc func reject(_ notification: NSNotification) {
+        self.callState = .reject
+        alert(title: "对方拒绝加入聊天室") { _ in
+            DispatchQueue.main.async {
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
+
+    @objc func endChat() {
+        alert(title: "结束会话？") { _ in
+            self.client.endCall()
+            DispatchQueue.main.async {
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
+}
 
 extension UIColor {
     static let primaryColor = UIColor(red: 69/255, green: 193/255, blue: 89/255, alpha: 1)
