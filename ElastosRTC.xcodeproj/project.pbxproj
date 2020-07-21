@@ -23,6 +23,8 @@
 		808AE2CC24A8C3C3002DF9C9 /* mock_answer.json in Resources */ = {isa = PBXBuildFile; fileRef = 808AE2CB24A8C3C3002DF9C9 /* mock_answer.json */; };
 		808D141824BC402C00BA0DCE /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808D141724BC402C00BA0DCE /* ChatViewController.swift */; };
 		80BEB5E124AF2BE600FC850F /* WebRtcClient+DataChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BEB5E024AF2BE600FC850F /* WebRtcClient+DataChannel.swift */; };
+		80E3481524C557FB0009B998 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3481424C557FB0009B998 /* DataManager.swift */; };
+		80E3481724C558D30009B998 /* MediaCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3481624C558D30009B998 /* MediaCallViewController.swift */; };
 		80E6940524BC179D008F1DE2 /* WebRtcModel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E6940424BC179D008F1DE2 /* WebRtcModel+Extension.swift */; };
 		83751758AB9C042ECF924374 /* Pods_ElastosRTCTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9433CAE98CBBF62000E449C2 /* Pods_ElastosRTCTests.framework */; };
 		8C3285D5CB4A9871CAD13993 /* Pods_ElastosRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D89F702DD67FA45DCC3E3EF5 /* Pods_ElastosRTC.framework */; };
@@ -92,6 +94,8 @@
 		808AE2CB24A8C3C3002DF9C9 /* mock_answer.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = mock_answer.json; sourceTree = "<group>"; };
 		808D141724BC402C00BA0DCE /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		80BEB5E024AF2BE600FC850F /* WebRtcClient+DataChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebRtcClient+DataChannel.swift"; sourceTree = "<group>"; };
+		80E3481424C557FB0009B998 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		80E3481624C558D30009B998 /* MediaCallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCallViewController.swift; sourceTree = "<group>"; };
 		80E6940424BC179D008F1DE2 /* WebRtcModel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebRtcModel+Extension.swift"; sourceTree = "<group>"; };
 		9433CAE98CBBF62000E449C2 /* Pods_ElastosRTCTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ElastosRTCTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D106126C256D19CEF427196A /* Pods-ElastosRTCDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosRTCDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ElastosRTCDemo/Pods-ElastosRTCDemo.debug.xcconfig"; sourceTree = "<group>"; };
@@ -257,7 +261,9 @@
 				F928409224927AEB00A89EC0 /* CallViewController.swift */,
 				745CB72D2494668A00E7D308 /* Carrier+Util.swift */,
 				808D141724BC402C00BA0DCE /* ChatViewController.swift */,
+				80E3481424C557FB0009B998 /* DataManager.swift */,
 				743AC316248D33EA00A04AD0 /* DeviceManager.swift */,
+				80E3481624C558D30009B998 /* MediaCallViewController.swift */,
 				746250DA24C48C9A00CC97BB /* MyProfileViewController.swift */,
 				746250DE24C4A65800CC97BB /* UIViewController+Alert.swift */,
 				F9870082248FE1DB005758F3 /* FriendCell.swift */,
@@ -550,8 +556,10 @@
 				F9A8D0CC2486AA1C00FFDFD2 /* ViewController.swift in Sources */,
 				745CB73B249652E500E7D308 /* SettingViewController.swift in Sources */,
 				745CB72E2494668A00E7D308 /* Carrier+Util.swift in Sources */,
+				80E3481524C557FB0009B998 /* DataManager.swift in Sources */,
 				808D141824BC402C00BA0DCE /* ChatViewController.swift in Sources */,
 				F9870083248FE1DB005758F3 /* FriendCell.swift in Sources */,
+				80E3481724C558D30009B998 /* MediaCallViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
