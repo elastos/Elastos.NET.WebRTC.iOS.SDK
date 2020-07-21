@@ -114,7 +114,9 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         let alert = UIAlertController(title: "选择通话类型", message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Audio", style: .default, handler: { [weak self] _ in
             callViewController.callType = .audio
-            self?.present(callViewController, animated: true, completion: nil)
+            let navigationController = UINavigationController(rootViewController: callViewController)
+            navigationController.modalPresentationStyle = .fullScreen
+            self?.present(navigationController, animated: true, completion: nil)
         }))
 
         alert.addAction(UIAlertAction(title: "Data", style: .default, handler: { [weak self] _ in
@@ -131,7 +133,9 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
 
         alert.addAction(UIAlertAction(title: "Audio + Video + Data", style: .default, handler: { [weak self] _ in
             callViewController.callType = .video
-            self?.present(callViewController, animated: true, completion: nil)
+            let navigationController = UINavigationController(rootViewController: callViewController)
+            navigationController.modalPresentationStyle = .fullScreen
+            self?.present(navigationController, animated: true, completion: nil)
         }))
 
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
@@ -208,8 +212,9 @@ extension ViewController: WebRtcDelegate {
                                                              client: self.rtcClient,
                                                              friendId: friendId,
                                                              closure: completion)
-            callViewController.modalPresentationStyle = .fullScreen
-            self.present(callViewController, animated: true, completion: nil)
+            let nav = UINavigationController(rootViewController: callViewController)
+            nav.modalPresentationStyle = .fullScreen
+            self.present(nav, animated: true, completion: nil)
         }
     }
 

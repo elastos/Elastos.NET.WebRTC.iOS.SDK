@@ -300,6 +300,7 @@ extension MediaCallViewController {
 
     @objc func didPressChatControl(_ sender: UIButton) {
         let chatViewController = ChatViewController(sender: MockUser(senderId: "ABCD", displayName: ""), client: client, state: .connected)//TODO: Using mock user
+        chatViewController.modalPresentationStyle = .fullScreen
         self.navigationController?.pushViewController(chatViewController, animated: true)
     }
 }
