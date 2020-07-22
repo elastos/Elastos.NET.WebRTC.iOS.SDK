@@ -29,7 +29,6 @@ class ViewController: UIViewController, CarrierDelegate {
         super.viewDidLoad()
         setupObserver()
         tableView.register(FriendCell.self, forCellReuseIdentifier: NSStringFromClass(FriendCell.self))
-        tableView.keyboardDismissMode = .onDrag
         DeviceManager.sharedInstance.start()
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Info", style: .done, target: self, action: #selector(openMyInfo))

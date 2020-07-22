@@ -101,7 +101,6 @@
 		D89F702DD67FA45DCC3E3EF5 /* Pods_ElastosRTC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ElastosRTC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA2A2ECC557F86F530E0EAC5 /* Pods-ElastosRTC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosRTC.release.xcconfig"; path = "Pods/Target Support Files/Pods-ElastosRTC/Pods-ElastosRTC.release.xcconfig"; sourceTree = "<group>"; };
 		E083358915BD80DF61BBD546 /* Pods-ElastosRTC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosRTC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ElastosRTC/Pods-ElastosRTC.debug.xcconfig"; sourceTree = "<group>"; };
-		F928409224927AEB00A89EC0 /* CallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
 		F9870082248FE1DB005758F3 /* FriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCell.swift; sourceTree = "<group>"; };
 		F9A2817E2487F05A0032A2C0 /* WebRtcClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRtcClient.swift; sourceTree = "<group>"; };
 		F9A281802487F5230032A2C0 /* WebRtcClient+Carrier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebRtcClient+Carrier.swift"; sourceTree = "<group>"; };
@@ -257,7 +256,6 @@
 			isa = PBXGroup;
 			children = (
 				F9A8D0C72486AA1C00FFDFD2 /* AppDelegate.swift */,
-				F928409224927AEB00A89EC0 /* CallViewController.swift */,
 				745CB72D2494668A00E7D308 /* Carrier+Util.swift */,
 				808D141724BC402C00BA0DCE /* ChatViewController.swift */,
 				80E3481424C557FB0009B998 /* DataManager.swift */,
