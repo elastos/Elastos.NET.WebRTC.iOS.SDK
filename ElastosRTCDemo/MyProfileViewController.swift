@@ -17,6 +17,8 @@ class MyProfileViewController: UIViewController {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "Please enter a carrier address id, if the user is not your friend, please ad as friend"
+        view.lineBreakMode = .byWordWrapping
+        view.numberOfLines = 0
         return view
     }()
 

@@ -87,6 +87,7 @@ class MediaCallViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setImage(UIImage(named: "end-call"), for: .normal)
         view.addTarget(self, action: #selector(didPressEndCall(_:)), for: .touchUpInside)
+        view.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         return view
     }()
 
@@ -95,6 +96,7 @@ class MediaCallViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setImage(UIImage(named: "accept"), for: .normal)
         view.addTarget(self, action: #selector(didPressAcceptCall(_:)), for: .touchUpInside)
+        view.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         return view
     }()
 
@@ -104,6 +106,7 @@ class MediaCallViewController: UIViewController {
         view.setImage(UIImage(named: "audio-call-active"), for: .normal)
         view.setImage(UIImage(named: "audio-call-inactive"), for: .selected)
         view.addTarget(self, action: #selector(didPressAudioControl(_:)), for: .touchUpInside)
+        view.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         return view
     }()
 
@@ -116,6 +119,7 @@ class MediaCallViewController: UIViewController {
         view.isEnabled = UIDevice.current.userInterfaceIdiom == .phone
         view.isSelected = UIDevice.current.userInterfaceIdiom == .phone
         view.addTarget(self, action: #selector(didPressLoudSpeakerControl(_:)), for: .touchUpInside)
+        view.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         return view
     }()
 
@@ -125,6 +129,7 @@ class MediaCallViewController: UIViewController {
         view.setImage(UIImage(named: "video-active"), for: .normal)
         view.setImage(UIImage(named: "video-inactive"), for: .selected)
         view.addTarget(self, action: #selector(didPressVideoControl(_:)), for: .touchUpInside)
+        view.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         return view
     }()
 
@@ -133,6 +138,7 @@ class MediaCallViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setImage(UIImage(named: "video-switch-camera"), for: .normal)
         view.addTarget(self, action: #selector(didPressCameraControl(_:)), for: .touchUpInside)
+        view.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         return view
     }()
 
@@ -141,6 +147,7 @@ class MediaCallViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setImage(UIImage(named: "conversation"), for: .normal)
         view.addTarget(self, action: #selector(didPressChatControl(_:)), for: .touchUpInside)
+        view.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         return view
     }()
 
@@ -190,8 +197,8 @@ class MediaCallViewController: UIViewController {
         setupObserver()
         NSLayoutConstraint.activate([
             toolStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant:  -20),
-            toolStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            toolStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            toolStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            toolStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
 
             nameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
             nameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
@@ -239,7 +246,7 @@ class MediaCallViewController: UIViewController {
             case .connected:
                 return [audioMuteBtn, loudSpeakerBtn, chatBtn, endBtn]
             default:
-                return []
+                return [endBtn]
             }
         case .video:
             switch state {
@@ -248,7 +255,7 @@ class MediaCallViewController: UIViewController {
             case .connected:
                 return [audioMuteBtn, videoMuteBtn, loudSpeakerBtn, flipCameraBtn, chatBtn, endBtn]
             default:
-                return []
+                return [endBtn]
             }
         }
     }

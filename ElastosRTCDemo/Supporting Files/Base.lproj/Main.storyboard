@@ -34,7 +34,7 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="GIh-27-rfY">
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="VdH-7R-LkV" id="pu3-eT-2MZ"/>
                                     <outlet property="delegate" destination="VdH-7R-LkV" id="Ph3-Wv-PIw"/>
@@ -60,50 +60,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Zb-qb-Trh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-707.24637681159425" y="-56.25"/>
-        </scene>
-        <!--session-->
-        <scene sceneID="37R-ZK-bG9">
-            <objects>
-                <viewController storyboardIdentifier="call_page" id="j84-3R-fnE" customClass="CallViewController" customModule="ElastosRTCDemo" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="jXv-2t-LYh">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <viewLayoutGuide key="safeArea" id="MGs-ht-f0u"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="session" id="sWK-Pp-Cgj">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="zLX-zD-anR">
-                            <connections>
-                                <action selector="onBack:" destination="j84-3R-fnE" id="zbZ-tl-FZn"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="4HH-Xa-eTf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1062" y="-452"/>
-        </scene>
-        <!--设置-->
-        <scene sceneID="a1R-Xx-rE1">
-            <objects>
-                <viewController id="LeF-me-BSS" customClass="SettingViewController" customModule="ElastosRTCDemo" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="FeY-mS-zv4">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <viewLayoutGuide key="safeArea" id="DKX-gj-Y8q"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="设置" id="Gw1-SA-Aa9">
-                        <barButtonItem key="leftBarButtonItem" title="Close" id="L88-ES-acN">
-                            <connections>
-                                <action selector="dismiss:" destination="LeF-me-BSS" id="5uD-Gb-ODJ"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1oE-ge-7bW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="874" y="211"/>
         </scene>
     </scenes>
     <resources>
