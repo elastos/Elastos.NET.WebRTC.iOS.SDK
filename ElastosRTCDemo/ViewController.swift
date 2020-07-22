@@ -107,34 +107,43 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let friend = friends[indexPath.row]
-        
-        let callViewController = MediaCallViewController(direction: .outgoing, type: .audio, client: self.rtcClient, friendId: friend.id)
-        callViewController.modalPresentationStyle = .fullScreen
-        let alert = UIAlertController(title: "选择通话类型", message: nil, preferredStyle: .actionSheet)
+
+        let alert = UIAlertController(title: "Call Type", message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Audio", style: .default, handler: { [weak self] _ in
-            callViewController.callType = .audio
-            let navigationController = UINavigationController(rootViewController: callViewController)
-            navigationController.modalPresentationStyle = .fullScreen
-            self?.present(navigationController, animated: true, completion: nil)
+            guard let self = self else { return }
+            let nav: UINavigationController = {
+                let callVc = MediaCallViewController(direction: .outgoing, type: .audio, client: self.rtcClient, friendId: friend.id)
+                let nav = UINavigationController(rootViewController: callVc)
+                nav.modalPresentationStyle = .fullScreen
+                return nav
+            }()
+            self.present(nav, animated: true, completion: nil)
         }))
 
         alert.addAction(UIAlertAction(title: "Data", style: .default, handler: { [weak self] _ in
             guard let self = self else { return }
-            let userId = self.carrier.getUserId()
-            let mock = MockUser(senderId: userId, displayName: "")
-            let chatViewController = ChatViewController(sender: mock, client: self.rtcClient, state: .connecting)
-            let navigationController = UINavigationController(rootViewController: chatViewController)
-            navigationController.modalPresentationStyle = .fullScreen
-            self.present(navigationController, animated: true) {
+            let nav: UINavigationController = {
+                let mock = MockUser(senderId: self.carrier.getUserId(), displayName: "")
+                let chatVc = ChatViewController(sender: mock, client: self.rtcClient, state: .connecting)
+                let nav = UINavigationController(rootViewController: chatVc)
+                nav.modalPresentationStyle = .fullScreen
+                return nav
+            }()
+
+            self.present(nav, animated: true) {
                 self.rtcClient.inviteCall(friendId: friend.id, options: [.dataChannel])
             }
          }))
 
         alert.addAction(UIAlertAction(title: "Audio + Video + Data", style: .default, handler: { [weak self] _ in
-            callViewController.callType = .video
-            let navigationController = UINavigationController(rootViewController: callViewController)
-            navigationController.modalPresentationStyle = .fullScreen
-            self?.present(navigationController, animated: true, completion: nil)
+            guard let self = self else { return }
+            let nav: UINavigationController = {
+                let callVc = MediaCallViewController(direction: .outgoing, type: .video, client: self.rtcClient, friendId: friend.id)
+                let nav = UINavigationController(rootViewController: callVc)
+                nav.modalPresentationStyle = .fullScreen
+                return nav
+            }()
+            self.present(nav, animated: true, completion: nil)
         }))
 
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
