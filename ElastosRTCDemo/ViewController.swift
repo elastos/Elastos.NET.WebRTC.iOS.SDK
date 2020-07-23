@@ -130,9 +130,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
                 return nav
             }()
 
-            self.present(nav, animated: true) {
-                self.rtcClient.inviteCall(friendId: friend.id, options: [.dataChannel])
-            }
+            self.present(nav, animated: true) { self.rtcClient.inviteCall(friendId: friend.id, options: [.data]) }
          }))
 
         alert.addAction(UIAlertAction(title: "Audio + Video + Data", style: .default, handler: { [weak self] _ in
@@ -234,7 +232,7 @@ extension ViewController: WebRtcDelegate {
 
     }
 
-    func onEndCall(reason: CallReason) {
+    func onEndCall(reason: HangupType) {
         DispatchQueue.main.async {
             NotificationCenter.default.post(name: .reject, object: reason)
         }

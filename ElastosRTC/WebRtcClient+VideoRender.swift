@@ -22,8 +22,8 @@ extension WebRtcClient {
             }
         }
         if self.options.isEnableDataChannel {
-            self.dataChannel = createDataChannel()
-            self.dataChannel?.delegate = self
+            createDataChannel()
+            dataChannel?.delegate = self
             assert(self.dataChannel != nil, "create data channel failed")
             print("✅ enable data-channel")
         }

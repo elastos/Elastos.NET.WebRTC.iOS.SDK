@@ -9,15 +9,15 @@
 public enum MediaOptionItem: String, Equatable, Codable {
     case audio
     case video
-    case dataChannel = "data"
+    case data
 }
 
-enum CallDirection {
+enum WebRtcCallDirection {
     case outgoing
     case incoming
 }
 
-public enum CallState {
+public enum WebRtcCallState {
     case idle
     case dialing
     case answering
@@ -79,7 +79,7 @@ public class MediaOptions: ExpressibleByArrayLiteral, Codable, Equatable, Custom
     }
 
     public var isEnableDataChannel: Bool {
-        self.options.contains(.dataChannel)
+        self.options.contains(.data)
     }
 
     public static func == (lhs: MediaOptions, rhs: MediaOptions) -> Bool {
@@ -87,10 +87,10 @@ public class MediaOptions: ExpressibleByArrayLiteral, Codable, Equatable, Custom
     }
 }
 
-public enum CallReason: String, Codable {
-    case reject
-    case missing
-    case cancel
+public enum HangupType: String, Codable {
+    case declined // call was declined
+    case busy // call was declard busy
+    case normal // call was hangup normaly
     case unknown
     case close
 }
@@ -108,7 +108,7 @@ struct RtcSignal: Codable {
     let type: SdpType
     let sdp: String?
     let candidates: [RtcCandidateSignal]?
-    let reason: CallReason?
+    let reason: HangupType?
     let options: MediaOptions?
 
     enum CodingKeys: String, CodingKey {
@@ -119,7 +119,7 @@ struct RtcSignal: Codable {
         case options
     }
 
-    init(type: SdpType, sdp: String? = nil, candidates: [RtcCandidateSignal]? = nil, reason: CallReason? = nil, options: MediaOptions? = nil) {
+    init(type: SdpType, sdp: String? = nil, candidates: [RtcCandidateSignal]? = nil, reason: HangupType? = nil, options: MediaOptions? = nil) {
         self.type = type
         self.sdp = sdp
         self.candidates = candidates

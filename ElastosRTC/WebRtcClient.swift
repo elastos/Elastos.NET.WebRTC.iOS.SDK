@@ -18,7 +18,7 @@ public protocol WebRtcDelegate: class {
 
     func onActive()
 
-    func onEndCall(reason: CallReason)
+    func onEndCall(reason: HangupType)
 
     func onIceConnected()
 
@@ -56,7 +56,7 @@ public class WebRtcClient: NSObject {
     var videoCapturer: RTCVideoCapturer?
     var remoteStream: RTCMediaStream?
     var isUsingFrontCamera: Bool = true
-    var callDirection: CallDirection = .incoming
+    var callDirection: WebRtcCallDirection = .incoming
 
     var messageQueue: [RtcSignal] = []
     var hasReceivedSdp: Bool = false {
@@ -121,15 +121,14 @@ public class WebRtcClient: NSObject {
     }()
 
     var dataChannel: RTCDataChannel?
-
-    func createDataChannel() -> RTCDataChannel? {
+    func createDataChannel() {
         let config = RTCDataChannelConfiguration()
         config.isOrdered = true
         config.isNegotiated = false
         config.maxRetransmits = -1
         config.maxPacketLifeTime = -1
         config.channelId = 3
-        return self.peerConnection.dataChannel(forLabel: "message", configuration: config)
+        self.dataChannel = peerConnection.dataChannel(forLabel: "message", configuration: config)
     }
 
     public init(carrier: Carrier, delegate: WebRtcDelegate) {

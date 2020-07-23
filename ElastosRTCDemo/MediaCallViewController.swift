@@ -26,9 +26,9 @@ enum MediaCallType {
     var options: MediaOptions {
         switch self {
         case .audio:
-            return MediaOptions(arrayLiteral: .audio, .dataChannel)
+            return MediaOptions(arrayLiteral: .audio, .data)
         case .video:
-            return MediaOptions(arrayLiteral: .audio, .video, .dataChannel)
+            return MediaOptions(arrayLiteral: .audio, .video, .data)
         }
     }
 }

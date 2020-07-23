@@ -64,11 +64,11 @@ extension WebRtcClient {
                 }
 
                 if let delegate = self.delegate {
-                    delegate.onInvite(friendId: from, mediaOption: options) { [weak self] result in
-                        if result {
+                    delegate.onInvite(friendId: from, mediaOption: options) { [weak self] isAllow in
+                        if isAllow {
                             closureAfterAccepted()
                         } else {
-                            self?.rejectCall()
+                            self?.declinedCall()
                         }
                     }
                 } else {
@@ -115,8 +115,8 @@ extension WebRtcClient {
         }
     }
 
-    func rejectCall() {
-        send(signal: RtcSignal(type: .bye, reason: .reject))
-        delegate?.onEndCall(reason: .reject)
+    func declinedCall() {
+        send(signal: RtcSignal(type: .bye, reason: .declined))
+        delegate?.onEndCall(reason: .declined)
     }
 }
