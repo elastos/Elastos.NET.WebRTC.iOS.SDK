@@ -214,13 +214,15 @@ public extension WebRtcClient {
         }
     }
 
-    func switchCarmeraToPosition(_ position: AVCaptureDevice.Position, completion: (() -> Void)? = nil) {
+    func switchCamera(position: AVCaptureDevice.Position, completion: (() -> Void)? = nil) {
         setResolution(cameraPosition: position)
     }
 
     func stopCapture() {
-        guard let videoSource = self.videoCapturer as? RTCCameraVideoCapturer else { return }
-        videoSource.stopCapture()
+        RTCDispatcher.dispatchAsync(on: .typeCaptureSession) {
+            guard let videoSource = self.videoCapturer as? RTCCameraVideoCapturer else { return }
+            videoSource.stopCapture()
+        }
     }
 
     @discardableResult

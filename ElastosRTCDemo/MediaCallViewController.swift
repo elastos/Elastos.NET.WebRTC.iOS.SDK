@@ -302,7 +302,7 @@ extension MediaCallViewController {
     /// - Parameter sender: normal: front, selected: back camera
     @objc func didPressCameraControl(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
-        client.switchCarmeraToPosition(sender.isSelected ? .back : .front)
+        client.switchCamera(position: sender.isSelected ? .back : .front)
     }
 
     @objc func didPressChatControl(_ sender: UIButton) {
