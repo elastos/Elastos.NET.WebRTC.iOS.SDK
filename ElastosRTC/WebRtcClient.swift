@@ -175,16 +175,18 @@ public extension WebRtcClient {
             true //TODO
         }
         set {
-            let session = AVAudioSession.sharedInstance()
-            var _: Error?
-            try? session.setCategory(.playAndRecord)
-            try? session.setMode(.voiceChat)
-            if newValue {
-                try? session.overrideOutputAudioPort(.speaker)
-            } else {
-                try? session.overrideOutputAudioPort(.none)
+            RTCDispatcher.dispatchAsync(on: .typeAudioSession) {
+                let session = AVAudioSession.sharedInstance()
+                var _: Error?
+                try? session.setCategory(.playAndRecord)
+                try? session.setMode(.voiceChat)
+                if newValue {
+                    try? session.overrideOutputAudioPort(.speaker)
+                } else {
+                    try? session.overrideOutputAudioPort(.none)
+                }
+                try? session.setActive(true)
             }
-            try? session.setActive(true)
         }
     }
 

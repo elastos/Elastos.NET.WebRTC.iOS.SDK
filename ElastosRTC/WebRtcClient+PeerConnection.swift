@@ -108,9 +108,6 @@ extension WebRtcClient: RTCPeerConnectionDelegate {
             if let track = stream.videoTracks.first {
                 track.add(self.remoteRenderView)
             }
-            if let track = stream.audioTracks.first {
-                track.source.volume = 8
-            }
         }
     }
 
