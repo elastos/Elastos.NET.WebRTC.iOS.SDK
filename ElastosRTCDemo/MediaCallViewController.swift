@@ -8,27 +8,20 @@
 
 import UIKit
 
-typealias VoidClosure = (Bool) -> Void
+typealias VoidClosure = () -> Void
+typealias BoolClosure = (Bool) -> Void
 
-enum MediaCallType {
-    case audio
-    case video
+extension MediaOptions {
 
     var title: String {
-        switch self {
-        case .audio:
+        if self.isEnableVideo == true, self.isEnableAudio == true {
+            return "Audio + Video Call"
+        } else if self.isEnableAudio {
             return "Audio Call"
-        case .video:
+        } else if self.isEnableVideo {
             return "Video Call"
-        }
-    }
-    
-    var options: MediaOptions {
-        switch self {
-        case .audio:
-            return MediaOptions(arrayLiteral: .audio, .data)
-        case .video:
-            return MediaOptions(arrayLiteral: .audio, .video, .data)
+        } else {
+            fatalError("should not run here")
         }
     }
 }
@@ -63,7 +56,7 @@ enum MediaCallDirection {
 
 class MediaCallViewController: UIViewController {
 
-    var callType: MediaCallType = .audio {
+    var callOptions: MediaOptions {
         didSet {
             updateToolsStack()
         }
@@ -169,13 +162,15 @@ class MediaCallViewController: UIViewController {
 
     let client: WebRtcClient
     let friendId: String
-    let closure: VoidClosure?
-    init(direction: MediaCallDirection, type: MediaCallType, client: WebRtcClient, friendId: String, closure: VoidClosure? = nil) {
+    let myId: String
+    let closure: BoolClosure?
+    init(direction: MediaCallDirection, options: MediaOptions, client: WebRtcClient, friendId: String, myId: String, closure: BoolClosure? = nil) {
         self.callDirection = direction
-        self.callType = type
+        self.callOptions = options
         self.client = client
         self.friendId = friendId
         self.closure = closure
+        self.myId = myId
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -185,15 +180,12 @@ class MediaCallViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = callType.title
+        self.title = callOptions.title
         view.backgroundColor = .black
         view.addSubview(nameLabel)
         view.addSubview(toolStack)
         callState = .connecting
         
-        if callDirection == .outgoing {
-            self.client.inviteCall(friendId: self.friendId, options: self.callType.options)
-        }
         setupObserver()
         NSLayoutConstraint.activate([
             toolStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant:  -20),
@@ -233,22 +225,12 @@ class MediaCallViewController: UIViewController {
 
     func updateToolsStack() {
         toolStack.arrangedSubviews.forEach { $0.isHidden = true }
-        let views = tools(state: callState, direction: callDirection, type: callType)
+        let views = tools(state: callState, direction: callDirection, options: callOptions)
         views.forEach { $0.isHidden = false }
     }
 
-    func tools(state: MediaCallState, direction: MediaCallDirection, type: MediaCallType) -> [UIView] {
-        switch type {
-        case .audio:
-            switch state {
-            case .connecting:
-                return direction == .incoming ? [acceptBtn, endBtn] : [endBtn]
-            case .connected:
-                return [audioMuteBtn, loudSpeakerBtn, chatBtn, endBtn]
-            default:
-                return [endBtn]
-            }
-        case .video:
+    func tools(state: MediaCallState, direction: MediaCallDirection, options: MediaOptions) -> [UIView] {
+        if options.isEnableVideo, options.isEnableAudio {
             switch state {
             case .connecting:
                 return direction == .incoming ? [acceptBtn, endBtn] : [endBtn]
@@ -257,6 +239,26 @@ class MediaCallViewController: UIViewController {
             default:
                 return [endBtn]
             }
+        } else if options.isEnableAudio {
+            switch state {
+            case .connecting:
+                return direction == .incoming ? [acceptBtn, endBtn] : [endBtn]
+            case .connected:
+                return [audioMuteBtn, loudSpeakerBtn, chatBtn, endBtn]
+            default:
+                return [endBtn]
+            }
+        } else if options.isEnableVideo {
+            switch state {
+            case .connecting:
+                return direction == .incoming ? [acceptBtn, endBtn] : [endBtn]
+            case .connected:
+                return [videoMuteBtn, flipCameraBtn, chatBtn, endBtn]
+            default:
+                return [endBtn]
+            }
+        } else {
+            return []
         }
     }
 }
@@ -306,7 +308,7 @@ extension MediaCallViewController {
     }
 
     @objc func didPressChatControl(_ sender: UIButton) {
-        let chatViewController = ChatViewController(sender: MockUser(senderId: "ABCD", displayName: ""), client: client, state: .connected)//TODO: Using mock user
+        let chatViewController = ChatViewController(sender: myId, to: friendId, client: client, state: .connected)
         chatViewController.modalPresentationStyle = .fullScreen
         self.navigationController?.pushViewController(chatViewController, animated: true)
     }

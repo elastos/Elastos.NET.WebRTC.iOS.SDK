@@ -16,7 +16,7 @@ class DataManager {
     var me: String = ""
 
     func write(message: String, from: String, to: String, id: String = UUID().uuidString, date: Date = Date()) {
-        assert(me.isEmpty == true, "set me user id first")
+        assert(me.isEmpty == false, "set me user id first")
         let key: String = (from == me) ? (from + to) : (to + from)
         if history[key] == nil {
             history[key] = []
@@ -24,9 +24,9 @@ class DataManager {
         history[key]?.append(MockMessage(text: message, user: MockUser(senderId: from, displayName: from), messageId: id, date: date))
     }
 
-    func read(message: String, from: String, to: String) -> [MockMessage] {
-        assert(me.isEmpty == true, "set me user id first")
-        let key: String = (from == me) ? (from + to) : (to + from)
+    func read(from: String) -> [MockMessage] {
+        assert(me.isEmpty == false, "set me user id first")
+        let key: String = me + from
         return history[key] ?? []
     }
 }

@@ -59,6 +59,7 @@ struct MockMessage: MessageType {
 class ChatViewController: MessagesViewController, MessagesDataSource {
 
     let sender: MockUser
+    let other: MockUser
     let client: WebRtcClient
     var messages: [MockMessage] = []
     var callState: MediaCallState {
@@ -67,11 +68,14 @@ class ChatViewController: MessagesViewController, MessagesDataSource {
         }
     }
 
-    init(sender: MockUser ,client: WebRtcClient, state: MediaCallState) {
-        self.sender = sender
+    init(sender: String, to: String ,client: WebRtcClient, state: MediaCallState) {
+        self.sender = MockUser(senderId: sender, displayName: sender)
+        self.other = MockUser(senderId: to, displayName: sender)
         self.client = client
         self.callState = state
         super.init(nibName: nil, bundle: nil)
+        
+        self.messages = DataManager.shared.read(from: to)
     }
 
     required init?(coder: NSCoder) {
@@ -82,9 +86,8 @@ class ChatViewController: MessagesViewController, MessagesDataSource {
         super.viewDidLoad()
         configureMessageInputBar()
         configureMessageCollectionView()
-        self.title = callState.state
         setupObserver()
-        
+        self.title = callState.state
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "结束", style: .done, target: self, action: #selector(endChat))
     }
     
@@ -115,13 +118,12 @@ class ChatViewController: MessagesViewController, MessagesDataSource {
     //TODO: 检查消息是否属于当前的会话？丢弃如果不属于当前会话
     @objc func didReceiveMessageFromDataChannel(_ notification: Notification) {
         if let userInfo = notification.userInfo, let data = userInfo["data"] as? Data,
-            let isBinary = userInfo["isBinary"] as? Bool,
-            let id = userInfo["userId"] as? Int {
+            let isBinary = userInfo["isBinary"] as? Bool {
             if isBinary, let img = UIImage(data: data) {
-                let message = MockMessage(image: img, user: MockUser(senderId: String(id), displayName: ""), messageId: UUID().uuidString, date: Date())
+                let message = MockMessage(image: img, user: other, messageId: UUID().uuidString, date: Date())
                 insertMessage(message)
             } else if let str = String(data: data, encoding: .utf8) {
-                let message = MockMessage(text: str, user: MockUser(senderId: String(id), displayName: ""), messageId: UUID().uuidString, date: Date())
+                let message = MockMessage(text: str, user: other, messageId: UUID().uuidString, date: Date())
                 insertMessage(message)
             }
         }
@@ -210,6 +212,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
             if let str = component as? String {
                 let message = MockMessage(text: str, user: user, messageId: UUID().uuidString, date: Date())
                 insertMessage(message)
+                DataManager.shared.write(message: str, from: sender.senderId, to: other.senderId)
             } else if let img = component as? UIImage {
                 let message = MockMessage(image: img, user: user, messageId: UUID().uuidString, date: Date())
                 insertMessage(message)

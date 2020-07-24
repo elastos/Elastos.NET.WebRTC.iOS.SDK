@@ -31,6 +31,7 @@ class ViewController: UIViewController, CarrierDelegate {
         tableView.register(FriendCell.self, forCellReuseIdentifier: NSStringFromClass(FriendCell.self))
         DeviceManager.sharedInstance.start()
         
+        self.title = "WebRTC Demo(Not Ready)"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Info", style: .done, target: self, action: #selector(openMyInfo))
 
         checkPermission()
@@ -111,37 +112,17 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         let alert = UIAlertController(title: "Call Type", message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Audio", style: .default, handler: { [weak self] _ in
             guard let self = self else { return }
-            let nav: UINavigationController = {
-                let callVc = MediaCallViewController(direction: .outgoing, type: .audio, client: self.rtcClient, friendId: friend.id)
-                let nav = UINavigationController(rootViewController: callVc)
-                nav.modalPresentationStyle = .fullScreen
-                return nav
-            }()
-            self.present(nav, animated: true, completion: nil)
+            self.mediaCall(friendId: friend.id, options: [.audio, .data], direction: .outgoing)
         }))
 
         alert.addAction(UIAlertAction(title: "Data", style: .default, handler: { [weak self] _ in
             guard let self = self else { return }
-            let nav: UINavigationController = {
-                let mock = MockUser(senderId: self.carrier.getUserId(), displayName: "")
-                let chatVc = ChatViewController(sender: mock, client: self.rtcClient, state: .connecting)
-                let nav = UINavigationController(rootViewController: chatVc)
-                nav.modalPresentationStyle = .fullScreen
-                return nav
-            }()
-
-            self.present(nav, animated: true) { self.rtcClient.inviteCall(friendId: friend.id, options: [.data]) }
+            self.chat(friendId: friend.id, direction: .outgoing)
          }))
 
         alert.addAction(UIAlertAction(title: "Audio + Video + Data", style: .default, handler: { [weak self] _ in
             guard let self = self else { return }
-            let nav: UINavigationController = {
-                let callVc = MediaCallViewController(direction: .outgoing, type: .video, client: self.rtcClient, friendId: friend.id)
-                let nav = UINavigationController(rootViewController: callVc)
-                nav.modalPresentationStyle = .fullScreen
-                return nav
-            }()
-            self.present(nav, animated: true, completion: nil)
+            self.mediaCall(friendId: friend.id, options: [.audio, .video, .data], direction: .outgoing)
         }))
 
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
@@ -198,6 +179,9 @@ extension ViewController {
     @objc func didBecomeReady() {
         print(self.rtcClient)
         DataManager.shared.me = self.carrier.getUserId()
+        DispatchQueue.main.async {
+            self.title = "WebRTC Demo"
+        }
     }
 }
 
@@ -213,16 +197,22 @@ extension ViewController: WebRtcDelegate {
     }
 
     func onInvite(friendId: String, mediaOption: MediaOptions, completion: @escaping (Bool) -> Void) {
+        print("declined or accept: \(mediaOption)")
         DispatchQueue.main.async {
-            let av = mediaOption.isEnableAudio && mediaOption.isEnableVideo
-            let callViewController = MediaCallViewController(direction: .incoming,
-                                                             type: av ? .video : .audio,
-                                                             client: self.rtcClient,
-                                                             friendId: friendId,
-                                                             closure: completion)
-            let nav = UINavigationController(rootViewController: callViewController)
-            nav.modalPresentationStyle = .fullScreen
-            self.present(nav, animated: true, completion: nil)
+            if mediaOption.isEnableAudio == false, mediaOption.isEnableVideo == false, mediaOption.isEnableDataChannel {
+                let alert = UIAlertController(title: "Invite Chat", message: friendId, preferredStyle: .alert)
+                alert.addAction(.init(title: "Accept", style: .destructive, handler: { [weak self] _ in
+                    self?.chat(friendId: friendId, direction: .incoming)
+                    completion(true)
+                }))
+                alert.addAction(.init(title: "Declined", style: .default, handler: { _ in
+                    completion(false)
+                }))
+                self.present(alert, animated: true, completion: nil)
+                return
+            } else {
+                self.mediaCall(friendId: friendId, options: mediaOption, direction: .incoming, closure: completion)
+            }
         }
     }
 
@@ -258,5 +248,42 @@ extension ViewController: WebRtcDelegate {
 
     func onConnectionClosed() {
 
+    }
+}
+
+extension ViewController {
+    
+    func chat(friendId: String, direction: MediaCallDirection) {
+        let nav: UINavigationController = {
+            let chatVc = ChatViewController(sender: carrier.getUserId(), to: friendId, client: rtcClient, state: .connecting)
+            let nav = UINavigationController(rootViewController: chatVc)
+            nav.modalPresentationStyle = .fullScreen
+            return nav
+        }()
+
+        self.present(nav, animated: true) {
+            if direction == .outgoing {
+                self.rtcClient.inviteCall(friendId: friendId, options: [.data])
+            }
+        }
+    }
+    
+    func mediaCall(friendId: String, options: MediaOptions, direction: MediaCallDirection, closure: BoolClosure? = nil) {
+        let nav: UINavigationController = {
+            let callVc = MediaCallViewController(direction: direction,
+                                                 options: options,
+                                                 client: rtcClient,
+                                                 friendId: friendId,
+                                                 myId: carrier.getUserId(),
+                                                 closure: closure)
+            let nav = UINavigationController(rootViewController: callVc)
+            nav.modalPresentationStyle = .fullScreen
+            return nav
+        }()
+        self.present(nav, animated: true) { [weak self] in
+            if direction == .outgoing {
+                self?.rtcClient.inviteCall(friendId: friendId, options: options)
+            }
+        }
     }
 }
