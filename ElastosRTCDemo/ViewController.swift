@@ -197,6 +197,7 @@ extension ViewController {
 
     @objc func didBecomeReady() {
         print(self.rtcClient)
+        DataManager.shared.me = self.carrier.getUserId()
     }
 }
 
@@ -204,13 +205,14 @@ extension ViewController: WebRtcDelegate {
 
     func onReceiveMessage(_ data: Data, isBinary: Bool, channelId: Int) {
         print("✅ [RECV]: \(String(describing: String(data: data, encoding: .utf8)))")
+        let content = String(describing: String(data: data, encoding: .utf8))
+        DataManager.shared.write(message: content, from: self.rtcClient.friendId!, to: self.carrier.getUserId())
         DispatchQueue.main.async {
             NotificationCenter.default.post(name: .receiveMessage, object: nil, userInfo: ["data": data, "isBinary": isBinary, "userId": channelId])
         }
     }
 
     func onInvite(friendId: String, mediaOption: MediaOptions, completion: @escaping (Bool) -> Void) {
-        print("reject or accept")
         DispatchQueue.main.async {
             let av = mediaOption.isEnableAudio && mediaOption.isEnableVideo
             let callViewController = MediaCallViewController(direction: .incoming,

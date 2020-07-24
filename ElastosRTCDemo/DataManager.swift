@@ -13,16 +13,20 @@ class DataManager {
     static let shared = DataManager()
 
     private var history: [String: [MockMessage]] = [:]
-    private var me: String = ""
+    var me: String = ""
 
     func write(message: String, from: String, to: String, id: String = UUID().uuidString, date: Date = Date()) {
-        if from == me {
-
+        assert(me.isEmpty == true, "set me user id first")
+        let key: String = (from == me) ? (from + to) : (to + from)
+        if history[key] == nil {
+            history[key] = []
         }
-        history[from + to]?.append(MockMessage(text: message, user: MockUser(senderId: from, displayName: from), messageId: id, date: date))
+        history[key]?.append(MockMessage(text: message, user: MockUser(senderId: from, displayName: from), messageId: id, date: date))
     }
 
-    func read(message: String, other: String) {
-
+    func read(message: String, from: String, to: String) -> [MockMessage] {
+        assert(me.isEmpty == true, "set me user id first")
+        let key: String = (from == me) ? (from + to) : (to + from)
+        return history[key] ?? []
     }
 }
