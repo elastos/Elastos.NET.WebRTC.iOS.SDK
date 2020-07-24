@@ -2,7 +2,7 @@
 //  WebRtcClient+DataChannel.swift
 //  ElastosRTC
 //
-//  Created by tomas.shao on 2020/7/3.
+//  Created by ZeLiang on 2020/7/3.
 //  Copyright © 2020 Elastos Foundation. All rights reserved.
 //
 

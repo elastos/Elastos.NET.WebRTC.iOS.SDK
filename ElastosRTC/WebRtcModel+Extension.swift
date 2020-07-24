@@ -2,7 +2,7 @@
 //  WebRtcModel+Extension.swift
 //  ElastosRTC
 //
-//  Created by tomas.shao on 2020/7/13.
+//  Created by ZeLiang on 2020/7/13.
 //  Copyright © 2020 Elastos Foundation. All rights reserved.
 //
 

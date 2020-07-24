@@ -2,7 +2,7 @@
 //  MyProfileViewController.swift
 //  ElastosRTCDemo
 //
-//  Created by idanzhu on 2020/7/19.
+//  Created by ZeLiang on 2020/7/19.
 //  Copyright © 2020 Elastos Foundation. All rights reserved.
 //
 

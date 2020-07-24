@@ -2,7 +2,7 @@
 //  Carrier+Util.swift
 //  ElastosRTCDemo
 //
-//  Created by idanzhu on 2020/6/13.
+//  Created by ZeLiang on 2020/6/13.
 //  Copyright © 2020 Elastos Foundation. All rights reserved.
 //
 

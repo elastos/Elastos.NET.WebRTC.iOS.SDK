@@ -2,7 +2,7 @@
 //  MediaCallViewController.swift
 //  ElastosRTCDemo
 //
-//  Created by tomas.shao on 2020/7/20.
+//  Created by ZeLiang on 2020/7/20.
 //  Copyright © 2020 Elastos Foundation. All rights reserved.
 //
 

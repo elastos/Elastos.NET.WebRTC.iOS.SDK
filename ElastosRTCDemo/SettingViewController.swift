@@ -2,7 +2,7 @@
 //  SettingViewController.swift
 //  ElastosRTCDemo
 //
-//  Created by idanzhu on 2020/6/14.
+//  Created by ZeLiang on 2020/6/14.
 //  Copyright © 2020 Elastos Foundation. All rights reserved.
 //
 
