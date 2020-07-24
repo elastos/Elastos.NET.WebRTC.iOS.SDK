@@ -3,7 +3,7 @@ PODS:
     - EFQRCode/Core (= 5.1.6)
   - EFQRCode/Core (5.1.6)
   - ElastosCarrierSDK (5.6.3)
-  - ElastosWebRtc (0.0.1):
+  - ElastosRTC (0.0.1):
     - ElastosCarrierSDK (= 5.6.3)
     - GoogleWebRTC (= 1.1.29400)
   - GoogleWebRTC (1.1.29400)
@@ -17,7 +17,7 @@ PODS:
 DEPENDENCIES:
   - EFQRCode (= 5.1.6)
   - ElastosCarrierSDK
-  - ElastosWebRtc (from `./`)
+  - ElastosRTC (from `./`)
   - GoogleWebRTC
   - MessageKit (= 3.1.0)
   - QRCodeReader.swift (= 10.1.0)
@@ -32,18 +32,18 @@ SPEC REPOS:
     - QRCodeReader.swift
 
 EXTERNAL SOURCES:
-  ElastosWebRtc:
+  ElastosRTC:
     :path: "./"
 
 SPEC CHECKSUMS:
   EFQRCode: a7ea2e517912f5bf6ba258b631327a83cd8084a5
   ElastosCarrierSDK: de9c0536432cd5d14937dd638e18d693592818af
-  ElastosWebRtc: a448f134a6f7a0647f620c7d5a553fb184246143
+  ElastosRTC: 194941448e4167d0ff55ebf7049061b395fd98ca
   GoogleWebRTC: cfb83bc346435a17fe06bb05f04ad826b858a7fb
   InputBarAccessoryView: 7985d418040a05fe894bd4b8328dd43ab35517c3
   MessageKit: 3beb578737a5aa2bba25cc27c7b6d6faa09af5a7
   QRCodeReader.swift: 373a389fe9a22d513c879a32a6f647c58f4ef572
 
-PODFILE CHECKSUM: 2de4cc25d4d76cb69582e40586ef49fd15c0c0eb
+PODFILE CHECKSUM: 7d0b17cfa6411a879f362b980c7d39e52d52edb1
 
 COCOAPODS: 1.9.3

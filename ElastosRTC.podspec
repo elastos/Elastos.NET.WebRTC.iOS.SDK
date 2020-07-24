@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |spec|
 
-  spec.name         = "ElastosWebRtc"
+  spec.name         = "ElastosRTC"
   spec.version      = "0.0.1"
   spec.summary      = "A short description of ElastosWebRtc."
   spec.description  = "Using the Google WebRTC for iOS."
