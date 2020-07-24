@@ -32,6 +32,7 @@ enum MediaCallState {
     case hangup
     case cancel
     case reject
+    case newMessage
 
     var state: String {
         switch self {
@@ -45,6 +46,8 @@ enum MediaCallState {
             return "Cancel"
         case .reject:
             return "Reject"
+        case .newMessage:
+            return "Has New Message"
         }
     }
 }
@@ -221,6 +224,8 @@ class MediaCallViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(connected(_:)), name: .iceConnected, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reject(_:)), name: .reject, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(disconnected(_:)), name: .iceDisconnected, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveMessage(_:)), name: .receiveMessage, object: nil)
+
     }
 
     func updateToolsStack() {
@@ -332,5 +337,9 @@ extension MediaCallViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.dismiss(animated: true, completion: nil)
         }
+    }
+    
+    @objc func didReceiveMessage(_ notification: NSNotification) {
+        nameLabel.text = "Has New Message"
     }
 }
