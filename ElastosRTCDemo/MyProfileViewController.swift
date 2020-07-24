@@ -28,14 +28,14 @@ class MyProfileViewController: UIViewController {
         view.placeholder = "carrier address id"
         return view
     }()
-    
+
     private let line: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .lightGray
         return view
     }()
-    
+
     private let addBtn: UIButton = {
         let view = UIButton(type: .custom)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -43,14 +43,14 @@ class MyProfileViewController: UIViewController {
         view.backgroundColor = .red
         return view
     }()
-    
+
     private let qrCodeView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.contentMode = .scaleAspectFit
         return view
     }()
-    
+
     private let userLabel: UILabel = {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -59,7 +59,18 @@ class MyProfileViewController: UIViewController {
         view.lineBreakMode = .byCharWrapping
         return view
     }()
-    
+
+    private lazy var copyBtn: UIButton = {
+        let view = UIButton(type: .custom)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.setTitle("Copy Address", for: .normal)
+        view.setTitleColor(.black, for: .normal)
+        view.layer.borderColor = UIColor.black.cgColor
+        view.layer.borderWidth = 1.0
+        view.addTarget(self, action: #selector(copyCarrierUserAddress), for: .touchUpInside)
+        return view
+    }()
+
     lazy var readerVC: QRCodeReaderViewController = {
         let builder = QRCodeReaderViewControllerBuilder {
             $0.reader = QRCodeReader(metadataObjectTypes: [.qr], captureDevicePosition: .back)
@@ -74,7 +85,8 @@ class MyProfileViewController: UIViewController {
     }()
     
     var carrier: Carrier!
-    
+    private var userAddressId: String = ""
+
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "My Info"
@@ -92,12 +104,13 @@ class MyProfileViewController: UIViewController {
         view.addSubview(userLabel)
         view.addSubview(line)
         view.addSubview(titleLabel)
+        view.addSubview(copyBtn)
         
         addBtn.addTarget(self, action: #selector(addAsFriend), for: .touchUpInside)
     }
     
     func setupConstriants() {
-        let views = ["input": textField, "add": addBtn, "qr": qrCodeView, "user": userLabel, "line": line, "title": titleLabel]
+        let views = ["input": textField, "add": addBtn, "qr": qrCodeView, "user": userLabel, "line": line, "title": titleLabel, "copy": copyBtn]
         var constraints: [NSLayoutConstraint] = []
         constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[input]-[add(44)]-20-|", options: .alignAllCenterY, metrics: nil, views: views)
         constraints.append(textField.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor))
@@ -106,8 +119,10 @@ class MyProfileViewController: UIViewController {
         constraints.append(textField.trailingAnchor.constraint(equalTo: line.trailingAnchor))
         
         constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[user]-20-|", options: [], metrics: nil, views: views)
-        constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:[title]-[input(40)][line(1)]-40-[qr(200)]-10-[user]-(>=0)-|", options: [], metrics: nil, views: views)
+        constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:[title]-[input(40)][line(1)]-40-[qr(200)]-10-[user]-[copy(44)]-(>=0)-|", options: [], metrics: nil, views: views)
         constraints.append(qrCodeView.centerXAnchor.constraint(equalTo: view.centerXAnchor))
+        constraints.append(copyBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor))
+        constraints.append(copyBtn.widthAnchor.constraint(equalToConstant: 150))
         constraints.append(qrCodeView.widthAnchor.constraint(equalToConstant: 200))
         constraints.append(addBtn.heightAnchor.constraint(equalToConstant: 44))
         constraints.append(titleLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 40))
@@ -140,6 +155,7 @@ class MyProfileViewController: UIViewController {
     func update(address: String, userId: String, carrier: Carrier) {
         guard !address.isEmpty else { return }
         self.carrier = carrier
+        userAddressId = address
         qrCodeView.image = UIImage(cgImage: EFQRCode.generate(content: address)!)
         userLabel.text = userId
     }
@@ -147,6 +163,11 @@ class MyProfileViewController: UIViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         self.view.endEditing(true)
+    }
+
+    @objc func copyCarrierUserAddress() {
+        UIPasteboard.general.string = userAddressId
+        copyBtn.setTitle("Copy Success", for: .normal)
     }
 }
 
