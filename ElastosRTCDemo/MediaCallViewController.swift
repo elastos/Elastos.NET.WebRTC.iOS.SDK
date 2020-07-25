@@ -113,7 +113,7 @@ class MediaCallViewController: UIViewController {
         view.setImage(UIImage(named: "loud-speaker-inactive"), for: .selected)
         view.setImage(UIImage(named: "loud-speaker-active"), for: .disabled)
         view.isEnabled = UIDevice.current.userInterfaceIdiom == .phone
-        view.isSelected = UIDevice.current.userInterfaceIdiom == .phone
+        view.isSelected = UIDevice.current.userInterfaceIdiom == .pad
         view.addTarget(self, action: #selector(didPressLoudSpeakerControl(_:)), for: .touchUpInside)
         view.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         return view

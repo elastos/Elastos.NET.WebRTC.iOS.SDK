@@ -684,8 +684,10 @@
 			baseConfigurationReference = E083358915BD80DF61BBD546 /* Pods-ElastosRTC.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 68SKULU766;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -698,7 +700,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.elastos.ElastosRTC;
+				PRODUCT_BUNDLE_IDENTIFIER = org.elastos.ElastosRTC.framework;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -712,8 +714,10 @@
 			baseConfigurationReference = DA2A2ECC557F86F530E0EAC5 /* Pods-ElastosRTC.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 68SKULU766;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -726,7 +730,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.elastos.ElastosRTC;
+				PRODUCT_BUNDLE_IDENTIFIER = org.elastos.ElastosRTC.framework;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -781,7 +785,9 @@
 			baseConfigurationReference = D106126C256D19CEF427196A /* Pods-ElastosRTCDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 68SKULU766;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "ElastosRTCDemo/Supporting Files/Info.plist";
@@ -792,6 +798,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.elastos.ElastosRTC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -802,7 +809,9 @@
 			baseConfigurationReference = 7446E9EDE7D97C628741B805 /* Pods-ElastosRTCDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 68SKULU766;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "ElastosRTCDemo/Supporting Files/Info.plist";
@@ -813,6 +822,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.elastos.ElastosRTC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
