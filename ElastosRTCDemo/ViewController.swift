@@ -158,7 +158,7 @@ extension ViewController {
         guard let list = notification.userInfo?["friends"] as? [CarrierFriendInfo] else {
             return assertionFailure("missing data")
         }
-        friends = list.map { $0.convert() }
+        friends = list.map { $0.convert() }.sorted(by: { (m1, m2) -> Bool in m1.status.priority < m2.status.priority })
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
@@ -171,6 +171,7 @@ extension ViewController {
         } else {
             friends.append(friend)
         }
+        friends = friends.sorted(by: { (m1, m2) -> Bool in m1.status.priority < m2.status.priority })
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }

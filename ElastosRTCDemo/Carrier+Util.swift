@@ -24,10 +24,10 @@ extension CarrierConnectionStatus {
 extension CarrierFriendInfo {
 
     func convert() -> FriendCellModel {
-        FriendCellModel(id: self.userId ?? "no user id",
-                        name: (self.name?.isEmpty == true ? "unknown" : self.name)!,
+        FriendCellModel(id: userId ?? "no user id",
+                        name: (name?.isEmpty == true ? "unknown" : name)!,
                         avatar: nil,
-                        status: self.status.status)
+                        status: status.status)
     }
 }
 

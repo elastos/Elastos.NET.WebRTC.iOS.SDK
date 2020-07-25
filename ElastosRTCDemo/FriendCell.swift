@@ -20,6 +20,15 @@ enum Status: String {
             return .darkGray
         }
     }
+
+    var priority: Int {
+        switch self {
+        case .online:
+            return 1
+        case .offline:
+            return 2
+        }
+    }
 }
 
 struct FriendCellModel: Equatable, Hashable {
