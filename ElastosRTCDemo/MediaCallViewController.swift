@@ -162,6 +162,13 @@ class MediaCallViewController: UIViewController {
         view.textAlignment = .center
         return view
     }()
+    
+    private let newMessageTipLabel: UILabel = {
+        let view = UILabel()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.textColor = .red
+        return view
+    }()
 
     let client: WebRtcClient
     let friendId: String
@@ -186,9 +193,10 @@ class MediaCallViewController: UIViewController {
         self.title = callOptions.title
         view.backgroundColor = .black
         view.addSubview(nameLabel)
+        view.addSubview(newMessageTipLabel)
         view.addSubview(toolStack)
         callState = .connecting
-        
+
         setupObserver()
         NSLayoutConstraint.activate([
             toolStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant:  -20),
@@ -196,9 +204,11 @@ class MediaCallViewController: UIViewController {
             toolStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
 
             nameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
-            nameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            nameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            newMessageTipLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 20),
+            newMessageTipLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
-        
+
         guard let localVideo = client.getLocalVideoView(), let remoteVideo = client.getRemoteVideoView() else { return }
         self.view.addSubview(localVideo)
         self.view.addSubview(remoteVideo)
@@ -316,6 +326,7 @@ extension MediaCallViewController {
         let chatViewController = ChatViewController(sender: myId, to: friendId, client: client, state: .connected)
         chatViewController.modalPresentationStyle = .fullScreen
         self.navigationController?.pushViewController(chatViewController, animated: true)
+        newMessageTipLabel.text = ""
     }
 }
 
@@ -338,8 +349,14 @@ extension MediaCallViewController {
             self.dismiss(animated: true, completion: nil)
         }
     }
-    
+
     @objc func didReceiveMessage(_ notification: NSNotification) {
-        nameLabel.text = "Has New Message"
+        DispatchQueue.main.async {
+            self.newMessageTipLabel.alpha = 0
+            UIView.animate(withDuration: 0.3) {
+                self.newMessageTipLabel.alpha = 1
+                self.newMessageTipLabel.text = "Have a New Message"
+            }
+        }
     }
 }
