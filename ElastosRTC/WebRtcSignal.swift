@@ -17,17 +17,6 @@ enum WebRtcCallDirection {
     case incoming
 }
 
-public enum WebRtcCallState {
-    case idle
-    case dialing
-    case answering
-    case connected
-    case localFailure //set offer or answer local failure
-    case localHangup
-    case remoteHangup
-    case remoteBusy
-}
-
 public enum WebRtcError: Error, CustomDebugStringConvertible {
 
     case dataChannelInitFailed

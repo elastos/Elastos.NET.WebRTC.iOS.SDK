@@ -7,27 +7,33 @@
 //
 import AVFoundation
 
+public enum WebRtcCallState {
+    case connecting
+    case connected
+    case disconnected
+    case localFailure(error: Error) //set offer or answer local failure
+    case localHangup // hangup by me
+    case remoteHangup // hangup by other
+}
+
 public protocol WebRtcDelegate: class {
 
     /// fired when receive invite from your friends
     /// - Parameter friendId: who is calling you
     /// - Parameter completion: reject or accept
     func onInvite(friendId: String, mediaOption: MediaOptions, completion: @escaping (Bool) -> Void)
-
-    func onAnswer();
-
-    func onActive()
-
-    func onEndCall(reason: HangupType)
-
-    func onIceConnected()
-
-    func onIceDisconnected()
-
-    func onConnectionError(error: Error)
-
-    func onConnectionClosed()
-
+    
+    /// Fired when webrtc state did change
+    /// - Parameters:
+    ///   - client: the client
+    ///   - state: state of webrtc
+    func onWebRtc(_ client: WebRtcClient, didChangeState state: WebRtcCallState)
+    
+    /// Fired when receive data from webrtc data-channel
+    /// - Parameters:
+    ///   - data: the data that was received from data-channel
+    ///   - isBinary: Indicates whether |data| contains UTF-8 or binary data.
+    ///   - channelId: The identifier for this data channel
     func onReceiveMessage(_ data: Data, isBinary: Bool, channelId: Int)
 }
 
@@ -66,7 +72,10 @@ public class WebRtcClient: NSObject {
             }
         }
     }
-
+    private var videoWidth = 1280
+    private var videoHeight = 1280 * 16 / 9
+    private var videoFps = 30
+    
     private var _peerConnection: RTCPeerConnection?
     var peerConnection: RTCPeerConnection {
         if _peerConnection == nil {
@@ -157,7 +166,9 @@ public extension WebRtcClient {
             localAudioTrack.isEnabled
         }
         set {
-            localAudioTrack.isEnabled = newValue
+            RTCDispatcher.dispatchAsync(on: .typeAudioSession) {
+                self.localAudioTrack.isEnabled = newValue
+            }
         }
     }
 
@@ -166,7 +177,9 @@ public extension WebRtcClient {
             localVideoTrack.isEnabled == true
         }
         set {
-            localVideoTrack.isEnabled = newValue
+            RTCDispatcher.dispatchAsync(on: .typeCaptureSession) {
+                self.localVideoTrack.isEnabled = newValue
+            }
         }
     }
 
@@ -205,24 +218,32 @@ public extension WebRtcClient {
         }
     }
 
-    func endCall() {
-        send(signal: RtcSignal(type: .bye))
+    func endCall(type: HangupType) {
+        send(signal: RtcSignal(type: .bye, reason: type))
         cleanup()
     }
 
     func setResolution(cameraPosition: AVCaptureDevice.Position = .front, width: Int = 1280, height: Int = 1280 * 16 / 9, fps: Int = 30) {
+        self.videoWidth = width
+        self.videoHeight = height
+        self.videoFps = fps
         RTCDispatcher.dispatchAsync(on: .typeCaptureSession) {
             self.startCaptureLocalVideo(cameraPositon: cameraPosition, videoWidth: width, videoHeight: width, videoFps: fps)
         }
     }
 
     func switchCamera(position: AVCaptureDevice.Position, completion: (() -> Void)? = nil) {
-        setResolution(cameraPosition: position)
+        RTCDispatcher.dispatchAsync(on: .typeCaptureSession) {
+            self.startCaptureLocalVideo(cameraPositon: position,
+                                        videoWidth: self.videoWidth,
+                                        videoHeight: self.videoHeight,
+                                        videoFps: self.videoFps)
+        }
     }
 
     func stopCapture() {
+        guard let videoSource = self.videoCapturer as? RTCCameraVideoCapturer else { return }
         RTCDispatcher.dispatchAsync(on: .typeCaptureSession) {
-            guard let videoSource = self.videoCapturer as? RTCCameraVideoCapturer else { return }
             videoSource.stopCapture()
         }
     }

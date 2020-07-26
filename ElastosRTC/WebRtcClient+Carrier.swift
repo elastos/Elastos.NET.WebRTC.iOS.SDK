@@ -43,7 +43,7 @@ extension WebRtcClient {
                 Log.d(TAG, "[RECV]: %@, arg1: %d, arg2: %@, arg3: %@, arg4: %@", friendId, arg1, arg2, arg3 ?? "", arg4 ?? "")
             })
         } catch {
-            delegate?.onConnectionError(error: error)
+            assertionFailure(error.localizedDescription)
             Log.e(TAG, "send data failure, due to \(error)")
         }
     }
@@ -68,7 +68,7 @@ extension WebRtcClient {
                         if isAllow {
                             closureAfterAccepted()
                         } else {
-                            self?.declinedCall()
+                            self?.endCall(type: .declined)
                         }
                     }
                 } else {
@@ -87,7 +87,7 @@ extension WebRtcClient {
                 guard let candiates = message.removeCandidates, from == self.friendId else { return }
                 receive(removal: candiates)
             case .bye:
-                self.delegate?.onEndCall(reason: message.reason ?? .unknown)
+                self.delegate?.onWebRtc(self, didChangeState: .remoteHangup)
                 self.cleanup()
             }
         } catch {
@@ -113,10 +113,5 @@ extension WebRtcClient {
             messageQueue.forEach { self.send(signal: $0) }
             messageQueue.removeAll()
         }
-    }
-
-    func declinedCall() {
-        send(signal: RtcSignal(type: .bye, reason: .declined))
-        delegate?.onEndCall(reason: .declined)
     }
 }

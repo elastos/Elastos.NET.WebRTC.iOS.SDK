@@ -187,6 +187,12 @@ extension ViewController {
 }
 
 extension ViewController: WebRtcDelegate {
+    
+    func onWebRtc(_ client: WebRtcClient, didChangeState state: WebRtcCallState) {
+        DispatchQueue.main.sync {
+            NotificationCenter.default.post(name: .rtcStateChanged, object: nil, userInfo: ["state": state])
+        }
+    }
 
     func onReceiveMessage(_ data: Data, isBinary: Bool, channelId: Int) {
         print("✅ [RECV]: \(String(describing: String(data: data, encoding: .utf8)))")
@@ -202,11 +208,11 @@ extension ViewController: WebRtcDelegate {
         DispatchQueue.main.async {
             if mediaOption.isEnableAudio == false, mediaOption.isEnableVideo == false, mediaOption.isEnableDataChannel {
                 let alert = UIAlertController(title: "Invite Chat", message: friendId, preferredStyle: .alert)
-                alert.addAction(.init(title: "Accept", style: .destructive, handler: { [weak self] _ in
+                alert.addAction(.init(title: "Accept", style: .default, handler: { [weak self] _ in
                     self?.chat(friendId: friendId, direction: .incoming)
                     completion(true)
                 }))
-                alert.addAction(.init(title: "Declined", style: .default, handler: { _ in
+                alert.addAction(.init(title: "Declined", style: .destructive, handler: { _ in
                     completion(false)
                 }))
                 self.present(alert, animated: true, completion: nil)
@@ -215,40 +221,6 @@ extension ViewController: WebRtcDelegate {
                 self.mediaCall(friendId: friendId, options: mediaOption, direction: .incoming, closure: completion)
             }
         }
-    }
-
-    func onAnswer() {
-
-    }
-
-    func onActive() {
-
-    }
-
-    func onEndCall(reason: HangupType) {
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: .reject, object: reason)
-        }
-    }
-
-    func onIceConnected() {
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: .iceConnected, object: nil)
-        }
-    }
-
-    func onIceDisconnected() {
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: .iceDisconnected, object: nil)
-        }
-    }
-
-    func onConnectionError(error: Error) {
-
-    }
-
-    func onConnectionClosed() {
-
     }
 }
 
@@ -281,10 +253,6 @@ extension ViewController {
             nav.modalPresentationStyle = .fullScreen
             return nav
         }()
-        self.present(nav, animated: true) { [weak self] in
-            if direction == .outgoing {
-                self?.rtcClient.inviteCall(friendId: friendId, options: options)
-            }
-        }
+        self.present(nav, animated: true)
     }
 }

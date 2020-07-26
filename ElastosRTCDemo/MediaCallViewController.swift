@@ -208,6 +208,10 @@ class MediaCallViewController: UIViewController {
             newMessageTipLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 20),
             newMessageTipLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
+        
+        if callDirection == .outgoing {
+            client.inviteCall(friendId: friendId, options: callOptions)
+        }
 
         guard let localVideo = client.getLocalVideoView(), let remoteVideo = client.getRemoteVideoView() else { return }
         self.view.addSubview(localVideo)
@@ -231,9 +235,10 @@ class MediaCallViewController: UIViewController {
     }
     
     func setupObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(connected(_:)), name: .iceConnected, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(reject(_:)), name: .reject, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(disconnected(_:)), name: .iceDisconnected, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(connected(_:)), name: .iceConnected, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(reject(_:)), name: .reject, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(disconnected(_:)), name: .iceDisconnected, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(webrtcStateChanged(_:)), name: .rtcStateChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveMessage(_:)), name: .receiveMessage, object: nil)
 
     }
@@ -286,7 +291,7 @@ extension MediaCallViewController {
         if callDirection == .incoming, callState == .connecting {
             closure?(false)
         }
-        client.endCall()
+        client.endCall(type: .normal)
         dismiss(animated: true, completion: nil)
     }
 
@@ -331,22 +336,24 @@ extension MediaCallViewController {
 }
 
 extension MediaCallViewController {
-
-    @objc func connected(_ notification: NSNotification) {
-        self.callState = .connected
-    }
-
-    @objc func disconnected(_ notification: NSNotification) {
-        self.callState = .hangup
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            self.dismiss(animated: true, completion: nil)
-        }
-    }
-
-    @objc func reject(_ notification: NSNotification) {
-        self.callState = .reject
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            self.dismiss(animated: true, completion: nil)
+    
+    @objc func webrtcStateChanged(_ notification: NSNotification) {
+        guard let state = notification.userInfo?["state"] as? WebRtcCallState else { return }
+        switch state {
+        case .connecting:
+            self.callState = .connecting
+        case .connected:
+            self.callState = .connected
+        case .disconnected, .localFailure, .localHangup:
+            self.callState = .hangup
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                self.dismiss(animated: true, completion: nil)
+            }
+        case .remoteHangup:
+            self.callState = .reject
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                self.dismiss(animated: true, completion: nil)
+            }
         }
     }
 
