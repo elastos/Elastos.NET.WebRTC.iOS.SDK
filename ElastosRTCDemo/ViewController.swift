@@ -27,7 +27,9 @@ class ViewController: UIViewController, CarrierDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
         setupObserver()
+        tableView.backgroundColor = .white
         tableView.register(FriendCell.self, forCellReuseIdentifier: NSStringFromClass(FriendCell.self))
         DeviceManager.sharedInstance.start()
         
