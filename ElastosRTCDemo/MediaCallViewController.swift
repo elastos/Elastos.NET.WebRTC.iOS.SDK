@@ -235,9 +235,6 @@ class MediaCallViewController: UIViewController {
     }
     
     func setupObserver() {
-//        NotificationCenter.default.addObserver(self, selector: #selector(connected(_:)), name: .iceConnected, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(reject(_:)), name: .reject, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(disconnected(_:)), name: .iceDisconnected, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(webrtcStateChanged(_:)), name: .rtcStateChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveMessage(_:)), name: .receiveMessage, object: nil)
 
@@ -281,6 +278,10 @@ class MediaCallViewController: UIViewController {
             return []
         }
     }
+    
+    deinit {
+        print("[FREE MEMORY] \(self)")
+    }
 }
 
 extension MediaCallViewController {
@@ -290,8 +291,9 @@ extension MediaCallViewController {
     @objc func didPressEndCall(_ sender: UIButton) {
         if callDirection == .incoming, callState == .connecting {
             closure?(false)
+        } else {
+            client.endCall(type: .normal)
         }
-        client.endCall(type: .normal)
         dismiss(animated: true, completion: nil)
     }
 
@@ -346,12 +348,12 @@ extension MediaCallViewController {
             self.callState = .connected
         case .disconnected, .localFailure, .localHangup:
             self.callState = .hangup
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 self.dismiss(animated: true, completion: nil)
             }
         case .remoteHangup:
             self.callState = .reject
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 self.dismiss(animated: true, completion: nil)
             }
         }

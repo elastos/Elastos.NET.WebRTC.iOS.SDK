@@ -186,6 +186,10 @@ extension ViewController {
             self.title = "WebRTC Demo"
         }
     }
+    
+    deinit {
+        print("[FREE MEMORY] \(self)")
+    }
 }
 
 extension ViewController: WebRtcDelegate {
@@ -197,8 +201,8 @@ extension ViewController: WebRtcDelegate {
     }
 
     func onReceiveMessage(_ data: Data, isBinary: Bool, channelId: Int) {
-        print("✅ [RECV]: \(String(describing: String(data: data, encoding: .utf8)))")
         let content = String(describing: String(data: data, encoding: .utf8))
+        print("✅ [RECV]: \(content)")
         DataManager.shared.write(message: content, from: self.rtcClient.friendId!, to: self.carrier.getUserId())
         DispatchQueue.main.async {
             NotificationCenter.default.post(name: .receiveMessage, object: nil, userInfo: ["data": data, "isBinary": isBinary, "userId": channelId])
@@ -255,6 +259,6 @@ extension ViewController {
             nav.modalPresentationStyle = .fullScreen
             return nav
         }()
-        self.present(nav, animated: true)
+        self.present(nav, animated: true, completion: nil)
     }
 }

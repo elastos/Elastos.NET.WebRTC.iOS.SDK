@@ -126,6 +126,10 @@ class ChatViewController: MessagesViewController, MessagesDataSource {
             }
         }
     }
+    
+    deinit {
+        print("[FREE MEMORY] \(self)")
+    }
 }
 
 extension ChatViewController {
@@ -247,9 +251,7 @@ extension ChatViewController {
         alert(title: "End Chat ?", closure: { [weak self] (_) in
             guard let self = self else { return }
             self.client.endCall(type: .normal)
-            DispatchQueue.main.async {
-                self.dismiss(animated: true, completion: nil)
-            }
+            self.dismiss(animated: true, completion: nil)
         }) { _ in
             print("continus chat")
         }

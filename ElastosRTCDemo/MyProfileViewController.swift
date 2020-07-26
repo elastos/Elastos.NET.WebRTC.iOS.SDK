@@ -174,6 +174,10 @@ class MyProfileViewController: UIViewController {
             self.copyBtn.setTitle("Copy Address", for: .normal)
         }
     }
+    
+    deinit {
+        print("[FREE MEMORY] \(self)")
+    }
 }
 
 extension MyProfileViewController: UITextFieldDelegate {
