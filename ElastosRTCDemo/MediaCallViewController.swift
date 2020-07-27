@@ -338,7 +338,7 @@ extension MediaCallViewController {
 }
 
 extension MediaCallViewController {
-    
+
     @objc func webrtcStateChanged(_ notification: NSNotification) {
         guard let state = notification.userInfo?["state"] as? WebRtcCallState else { return }
         switch state {

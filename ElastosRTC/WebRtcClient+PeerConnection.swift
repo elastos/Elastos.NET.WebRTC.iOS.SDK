@@ -122,7 +122,7 @@ extension WebRtcClient: RTCPeerConnectionDelegate {
         switch newState {
         case .connected:
             self.delegate?.onWebRtc(self, didChangeState: .connected)
-        case .disconnected, .failed, .closed:
+        case .disconnected, .failed:
             self.delegate?.onWebRtc(self, didChangeState: .disconnected)
         default:
             break

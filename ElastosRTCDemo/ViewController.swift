@@ -84,6 +84,10 @@ class ViewController: UIViewController, CarrierDelegate {
         vc.update(address: carrier.getAddress(), userId: carrier.getUserId(), carrier: self.carrier)
         navigationController?.pushViewController(vc, animated: true)
     }
+
+    deinit {
+        print("[FREE MEMORY] \(self)")
+    }
 }
 
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
@@ -186,16 +190,12 @@ extension ViewController {
             self.title = "WebRTC Demo"
         }
     }
-    
-    deinit {
-        print("[FREE MEMORY] \(self)")
-    }
 }
 
 extension ViewController: WebRtcDelegate {
     
     func onWebRtc(_ client: WebRtcClient, didChangeState state: WebRtcCallState) {
-        DispatchQueue.main.sync {
+        DispatchQueue.main.async {
             NotificationCenter.default.post(name: .rtcStateChanged, object: nil, userInfo: ["state": state])
         }
     }
