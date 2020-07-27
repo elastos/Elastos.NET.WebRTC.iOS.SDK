@@ -170,6 +170,8 @@ class MediaCallViewController: UIViewController {
         return view
     }()
 
+    private var localVideoIsFullWindow = false
+
     let client: WebRtcClient
     let friendId: String
     let myId: String
@@ -213,31 +215,64 @@ class MediaCallViewController: UIViewController {
             client.inviteCall(friendId: friendId, options: callOptions)
         }
 
+        setupLocalAndRemoteVideo()
+    }
+
+    func createTapGesture() -> UITapGestureRecognizer {
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(didPressSwitchVideoPosition))
+        return gesture
+    }
+
+    func setupLocalAndRemoteVideo() {
         guard let localVideo = client.getLocalVideoView(), let remoteVideo = client.getRemoteVideoView() else { return }
-        self.view.addSubview(localVideo)
-        self.view.addSubview(remoteVideo)
-        
-        self.view.sendSubviewToBack(remoteVideo)
-        self.view.sendSubviewToBack(localVideo)
-        
-        localVideo.translatesAutoresizingMaskIntoConstraints = false
-        remoteVideo.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            remoteVideo.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            remoteVideo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            remoteVideo.widthAnchor.constraint(equalToConstant: 150),
-            remoteVideo.heightAnchor.constraint(equalToConstant: 150),
-            localVideo.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            localVideo.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            localVideo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            localVideo.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-        ])
+        localVideo.removeFromSuperview()
+        remoteVideo.removeFromSuperview()
+
+        view.addSubview(localVideo)
+        view.addSubview(remoteVideo)
+
+//        localVideo.addGestureRecognizer(createTapGesture())
+//        remoteVideo.addGestureRecognizer(createTapGesture())
+
+        if localVideoIsFullWindow {
+            self.view.sendSubviewToBack(remoteVideo)
+            self.view.sendSubviewToBack(localVideo)
+
+            localVideo.translatesAutoresizingMaskIntoConstraints = false
+            remoteVideo.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                remoteVideo.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+                remoteVideo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+                remoteVideo.widthAnchor.constraint(equalToConstant: 200),
+                remoteVideo.heightAnchor.constraint(equalToConstant: 200),
+                localVideo.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+                localVideo.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+                localVideo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                localVideo.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            ])
+        } else {
+            self.view.sendSubviewToBack(localVideo)
+            self.view.sendSubviewToBack(remoteVideo)
+
+            localVideo.translatesAutoresizingMaskIntoConstraints = false
+            remoteVideo.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                localVideo.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+                localVideo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+                localVideo.widthAnchor.constraint(equalToConstant: 200),
+                localVideo.heightAnchor.constraint(equalToConstant: 200),
+
+                remoteVideo.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+                remoteVideo.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+                remoteVideo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                remoteVideo.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            ])
+        }
     }
     
     func setupObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(webrtcStateChanged(_:)), name: .rtcStateChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveMessage(_:)), name: .receiveMessage, object: nil)
-
     }
 
     func updateToolsStack() {
@@ -329,11 +364,18 @@ extension MediaCallViewController {
         client.switchCamera(position: sender.isSelected ? .back : .front)
     }
 
+    /// Goto Conversation page
+    /// - Parameter sender: button
     @objc func didPressChatControl(_ sender: UIButton) {
         let chatViewController = ChatViewController(sender: myId, to: friendId, client: client, state: .connected)
         chatViewController.modalPresentationStyle = .fullScreen
         self.navigationController?.pushViewController(chatViewController, animated: true)
         newMessageTipLabel.text = ""
+    }
+
+    @objc func didPressSwitchVideoPosition() {
+        localVideoIsFullWindow = !localVideoIsFullWindow
+        setupLocalAndRemoteVideo()
     }
 }
 

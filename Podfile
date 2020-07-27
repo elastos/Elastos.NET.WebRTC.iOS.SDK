@@ -13,6 +13,7 @@ target 'ElastosRTC' do
     pod 'EFQRCode', '5.1.6'
     pod 'QRCodeReader.swift', '10.1.0'
     pod 'MessageKit', '3.1.0'
+    pod 'Bugly', '2.5.5'
     pod 'ElastosRTC', :path => './'
     inherit! :search_paths
   end

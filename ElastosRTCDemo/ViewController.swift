@@ -165,9 +165,7 @@ extension ViewController {
             return assertionFailure("missing data")
         }
         friends = list.map { $0.convert() }.sorted(by: { (m1, m2) -> Bool in m1.status.priority < m2.status.priority })
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
+        updateTableView()
     }
 
     func upSert(friend: FriendCellModel) {
@@ -178,9 +176,7 @@ extension ViewController {
             friends.append(friend)
         }
         friends = friends.sorted(by: { (m1, m2) -> Bool in m1.status.priority < m2.status.priority })
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
+        updateTableView()
     }
 
     @objc func didBecomeReady() {
@@ -188,6 +184,17 @@ extension ViewController {
         DataManager.shared.me = self.carrier.getUserId()
         DispatchQueue.main.async {
             self.title = "WebRTC Demo"
+        }
+    }
+
+    func updateTableView() {
+        DispatchQueue.main.async {
+            if self.friends.isEmpty {
+                self.showEmpty(title: "没有好友信息", subTitle: "请点击右上角Info按钮，邀请好友进行语音视频通话")
+            } else {
+                self.hideEmpty()
+            }
+            self.tableView.reloadData()
         }
     }
 }
