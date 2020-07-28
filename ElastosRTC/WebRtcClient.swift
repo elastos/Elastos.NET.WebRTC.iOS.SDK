@@ -35,6 +35,8 @@ public protocol WebRtcDelegate: class {
     ///   - isBinary: Indicates whether |data| contains UTF-8 or binary data.
     ///   - channelId: The identifier for this data channel
     func onReceiveMessage(_ data: Data, isBinary: Bool, channelId: Int)
+
+    func onWebRtc(_ client: WebRtcClient, videoView: RTCVideoRenderer, didChangeVideoSize size: CGSize)
 }
 
 public class WebRtcClient: NSObject {
@@ -100,12 +102,14 @@ public class WebRtcClient: NSObject {
 
     lazy var localRenderView: RTCEAGLVideoView = {
         let view = RTCEAGLVideoView()
+        view.translatesAutoresizingMaskIntoConstraints = false
         view.delegate = self
         return view
     }()
 
     lazy var remoteRenderView: RTCEAGLVideoView = {
         let view = RTCEAGLVideoView()
+        view.translatesAutoresizingMaskIntoConstraints = false
         view.delegate = self
         return view
     }()

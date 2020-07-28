@@ -24,6 +24,7 @@ class ViewController: UIViewController, CarrierDelegate {
     @IBOutlet weak var tableView: UITableView!
 
     private var friends: [FriendCellModel] = []
+    private var remoteVideoSize: CGSize = .zero
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -200,6 +201,12 @@ extension ViewController {
 }
 
 extension ViewController: WebRtcDelegate {
+
+    func onWebRtc(_ client: WebRtcClient, videoView: RTCVideoRenderer, didChangeVideoSize size: CGSize) {
+        if (videoView as? RTCEAGLVideoView) == client.getRemoteVideoView() {
+            remoteVideoSize = size
+        }
+    }
     
     func onWebRtc(_ client: WebRtcClient, didChangeState state: WebRtcCallState) {
         DispatchQueue.main.async {
