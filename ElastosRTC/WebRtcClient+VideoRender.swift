@@ -19,14 +19,19 @@ extension WebRtcClient {
                 self.remoteVideoView.addSubview(self.remoteRenderView)
                 self.localVideoTrack.add(self.localRenderView)
                 NSLayoutConstraint.activate([
-                    self.localRenderView.leadingAnchor.constraint(equalTo: self.localVideoView.leadingAnchor),
-                    self.localRenderView.trailingAnchor.constraint(equalTo: self.localVideoView.trailingAnchor),
-                    self.localRenderView.topAnchor.constraint(equalTo: self.localVideoView.topAnchor),
-                    self.localRenderView.bottomAnchor.constraint(equalTo: self.localVideoView.bottomAnchor),
-                    self.remoteVideoView.leadingAnchor.constraint(equalTo: self.remoteRenderView.leadingAnchor),
-                    self.remoteVideoView.trailingAnchor.constraint(equalTo: self.remoteRenderView.trailingAnchor),
-                    self.remoteVideoView.topAnchor.constraint(equalTo: self.remoteRenderView.topAnchor),
-                    self.remoteVideoView.bottomAnchor.constraint(equalTo: self.remoteRenderView.bottomAnchor)
+                    self.localRenderView.leadingAnchor.constraint(greaterThanOrEqualTo: self.localVideoView.leadingAnchor),
+                    self.localRenderView.trailingAnchor.constraint(lessThanOrEqualTo: self.localVideoView.trailingAnchor),
+                    self.localRenderView.topAnchor.constraint(greaterThanOrEqualTo: self.localVideoView.topAnchor),
+                    self.localRenderView.bottomAnchor.constraint(lessThanOrEqualTo: self.localVideoView.bottomAnchor),
+                    self.localRenderView.centerXAnchor.constraint(equalTo: self.localVideoView.centerXAnchor),
+                    self.localRenderView.centerYAnchor.constraint(equalTo: self.localVideoView.centerYAnchor),
+
+                    self.remoteVideoView.leadingAnchor.constraint(greaterThanOrEqualTo: self.remoteRenderView.leadingAnchor),
+                    self.remoteVideoView.trailingAnchor.constraint(lessThanOrEqualTo: self.remoteRenderView.trailingAnchor),
+                    self.remoteVideoView.topAnchor.constraint(greaterThanOrEqualTo: self.remoteRenderView.topAnchor),
+                    self.remoteVideoView.bottomAnchor.constraint(lessThanOrEqualTo: self.remoteRenderView.bottomAnchor),
+                    self.remoteVideoView.centerXAnchor.constraint(equalTo: self.remoteRenderView.centerXAnchor),
+                    self.remoteVideoView.centerYAnchor.constraint(equalTo: self.remoteRenderView.centerYAnchor),
                 ])
                 self.startCaptureLocalVideo(cameraPositon: .front, videoWidth: 1280, videoHeight: 1280 * 16 / 9, videoFps: 30)
             }

@@ -16,7 +16,7 @@ PODS:
   - QRCodeReader.swift (10.1.0)
 
 DEPENDENCIES:
-  - Bugly
+  - Bugly (= 2.5.5)
   - EFQRCode (= 5.1.6)
   - ElastosCarrierSDK
   - ElastosRTC (from `./`)
@@ -48,6 +48,6 @@ SPEC CHECKSUMS:
   MessageKit: 3beb578737a5aa2bba25cc27c7b6d6faa09af5a7
   QRCodeReader.swift: 373a389fe9a22d513c879a32a6f647c58f4ef572
 
-PODFILE CHECKSUM: d266eac6e2c79e6713926af2bf2fee19932370ea
+PODFILE CHECKSUM: 179a5fc2bcb2a38ca23838d8d111b19855a7192d
 
 COCOAPODS: 1.9.3
