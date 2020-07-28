@@ -88,13 +88,11 @@ class ChatViewController: MessagesViewController, MessagesDataSource {
         configureMessageCollectionView()
         setupObserver()
         self.title = callState.state
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "结束", style: .done, target: self, action: #selector(endChat))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "End", style: .done, target: self, action: #selector(endChat))
     }
     
     func setupObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(connected(_:)), name: .iceConnected, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(reject(_:)), name: .reject, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(disconnected(_:)), name: .iceDisconnected, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(webrtcStateChanged(_:)), name: .rtcStateChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveMessageFromDataChannel(_:)), name: .receiveMessage, object: nil)
     }
 
@@ -127,6 +125,10 @@ class ChatViewController: MessagesViewController, MessagesDataSource {
                 insertMessage(message)
             }
         }
+    }
+    
+    deinit {
+        print("[FREE MEMORY] \(self)")
     }
 }
 
@@ -225,34 +227,33 @@ extension ChatViewController: MessagesLayoutDelegate, MessagesDisplayDelegate { 
 
 extension ChatViewController {
 
-    @objc func connected(_ notification: NSNotification) {
-        self.callState = .connected
-    }
-
-    @objc func disconnected(_ notification: NSNotification) {
-        self.callState = .hangup
-        alert(title: "聊天室挂断") { _ in
-             DispatchQueue.main.async {
-                 self.dismiss(animated: true, completion: nil)
-             }
-         }
-    }
-
-    @objc func reject(_ notification: NSNotification) {
-        self.callState = .reject
-        alert(title: "对方拒绝加入聊天室") { _ in
-            DispatchQueue.main.async {
+    @objc func webrtcStateChanged(_ notification: NSNotification) {
+        guard let state = notification.userInfo?["state"] as? WebRtcCallState else { return }
+        switch state {
+        case .connecting:
+            self.callState = .connecting
+        case .connected:
+            self.callState = .connected
+        case .disconnected, .localFailure, .localHangup:
+            self.callState = .hangup
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                self.dismiss(animated: true, completion: nil)
+            }
+        case .remoteHangup:
+            self.callState = .reject
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                 self.dismiss(animated: true, completion: nil)
             }
         }
     }
 
     @objc func endChat() {
-        alert(title: "结束会话？") { _ in
-            self.client.endCall()
-            DispatchQueue.main.async {
-                self.dismiss(animated: true, completion: nil)
-            }
+        alert(title: "End Chat ?", closure: { [weak self] (_) in
+            guard let self = self else { return }
+            self.client.endCall(type: .normal)
+            self.dismiss(animated: true, completion: nil)
+        }) { _ in
+            print("continus chat")
         }
     }
 }

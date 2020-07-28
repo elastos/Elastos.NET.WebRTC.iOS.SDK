@@ -18,6 +18,16 @@ extension WebRtcClient {
                 self.localVideoView.addSubview(self.localRenderView)
                 self.remoteVideoView.addSubview(self.remoteRenderView)
                 self.localVideoTrack.add(self.localRenderView)
+                NSLayoutConstraint.activate([
+                    self.localRenderView.leadingAnchor.constraint(equalTo: self.localVideoView.leadingAnchor),
+                    self.localRenderView.trailingAnchor.constraint(equalTo: self.localVideoView.trailingAnchor),
+                    self.localRenderView.topAnchor.constraint(equalTo: self.localVideoView.topAnchor),
+                    self.localRenderView.bottomAnchor.constraint(equalTo: self.localVideoView.bottomAnchor),
+                    self.remoteVideoView.leadingAnchor.constraint(equalTo: self.remoteRenderView.leadingAnchor),
+                    self.remoteVideoView.trailingAnchor.constraint(equalTo: self.remoteRenderView.trailingAnchor),
+                    self.remoteVideoView.topAnchor.constraint(equalTo: self.remoteRenderView.topAnchor),
+                    self.remoteVideoView.bottomAnchor.constraint(equalTo: self.remoteRenderView.bottomAnchor)
+                ])
                 self.startCaptureLocalVideo(cameraPositon: .front, videoWidth: 1280, videoHeight: 1280 * 16 / 9, videoFps: 30)
             }
         }
@@ -92,20 +102,6 @@ extension WebRtcClient {
 extension WebRtcClient: RTCVideoViewDelegate {
 
     public func videoView(_ videoView: RTCVideoRenderer, didChangeVideoSize size: CGSize) {
-        let isLandScape = size.width < size.height
-        let isLocalRenderView = videoView.isEqual(localRenderView)
-
-        let parentView = isLocalRenderView ? localVideoView : remoteVideoView
-        let renderView = isLocalRenderView ? localRenderView : remoteRenderView
-
-        if isLandScape {
-            let ratio = size.width / size.height
-            renderView.frame = CGRect(x: 0, y: 0, width: parentView.frame.height * ratio, height: parentView.frame.height)
-            renderView.center.x = parentView.frame.width / 2
-        } else {
-            let ratio = size.height / size.width
-            renderView.frame = CGRect(x: 0, y: 0, width: parentView.frame.width, height: parentView.frame.width * ratio)
-            renderView.center.y = parentView.frame.height / 2
-        }
+        self.delegate?.onWebRtc(self, videoView: videoView, didChangeVideoSize: size)
     }
 }

@@ -188,6 +188,11 @@ class MediaCallViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = callOptions.title
@@ -208,34 +213,37 @@ class MediaCallViewController: UIViewController {
             newMessageTipLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 20),
             newMessageTipLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
+        
+        if callDirection == .outgoing {
+            client.inviteCall(friendId: friendId, options: callOptions)
+        }
 
         guard let localVideo = client.getLocalVideoView(), let remoteVideo = client.getRemoteVideoView() else { return }
-        self.view.addSubview(localVideo)
-        self.view.addSubview(remoteVideo)
-        
-        self.view.sendSubviewToBack(remoteVideo)
-        self.view.sendSubviewToBack(localVideo)
-        
+        view.addSubview(localVideo)
+        view.addSubview(remoteVideo)
+
+        view.sendSubviewToBack(remoteVideo)
+        view.bringSubviewToFront(localVideo)
+
         localVideo.translatesAutoresizingMaskIntoConstraints = false
         remoteVideo.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            remoteVideo.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            remoteVideo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            remoteVideo.widthAnchor.constraint(equalToConstant: 150),
-            remoteVideo.heightAnchor.constraint(equalToConstant: 150),
-            localVideo.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             localVideo.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            localVideo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            localVideo.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            localVideo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            localVideo.widthAnchor.constraint(equalToConstant: 200),
+            localVideo.heightAnchor.constraint(equalToConstant: 200),
+
+            remoteVideo.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            remoteVideo.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            remoteVideo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            remoteVideo.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
-    
-    func setupObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(connected(_:)), name: .iceConnected, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(reject(_:)), name: .reject, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(disconnected(_:)), name: .iceDisconnected, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveMessage(_:)), name: .receiveMessage, object: nil)
 
+    func setupObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(webrtcStateChanged(_:)), name: .rtcStateChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveMessage(_:)), name: .receiveMessage, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(remoteVideoSizeDidChanged(_:)), name: .receiveVideoSizeChanged, object: nil)
     }
 
     func updateToolsStack() {
@@ -276,6 +284,10 @@ class MediaCallViewController: UIViewController {
             return []
         }
     }
+    
+    deinit {
+        print("[FREE MEMORY] \(self)")
+    }
 }
 
 extension MediaCallViewController {
@@ -285,8 +297,9 @@ extension MediaCallViewController {
     @objc func didPressEndCall(_ sender: UIButton) {
         if callDirection == .incoming, callState == .connecting {
             closure?(false)
+        } else {
+            client.endCall(type: .normal)
         }
-        client.endCall()
         dismiss(animated: true, completion: nil)
     }
 
@@ -322,7 +335,10 @@ extension MediaCallViewController {
         client.switchCamera(position: sender.isSelected ? .back : .front)
     }
 
+    /// Goto Conversation page
+    /// - Parameter sender: button
     @objc func didPressChatControl(_ sender: UIButton) {
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
         let chatViewController = ChatViewController(sender: myId, to: friendId, client: client, state: .connected)
         chatViewController.modalPresentationStyle = .fullScreen
         self.navigationController?.pushViewController(chatViewController, animated: true)
@@ -332,21 +348,23 @@ extension MediaCallViewController {
 
 extension MediaCallViewController {
 
-    @objc func connected(_ notification: NSNotification) {
-        self.callState = .connected
-    }
-
-    @objc func disconnected(_ notification: NSNotification) {
-        self.callState = .hangup
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            self.dismiss(animated: true, completion: nil)
-        }
-    }
-
-    @objc func reject(_ notification: NSNotification) {
-        self.callState = .reject
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            self.dismiss(animated: true, completion: nil)
+    @objc func webrtcStateChanged(_ notification: NSNotification) {
+        guard let state = notification.userInfo?["state"] as? WebRtcCallState else { return }
+        switch state {
+        case .connecting:
+            self.callState = .connecting
+        case .connected:
+            self.callState = .connected
+        case .disconnected, .localFailure, .localHangup:
+            self.callState = .hangup
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.dismiss(animated: true, completion: nil)
+            }
+        case .remoteHangup:
+            self.callState = .reject
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.dismiss(animated: true, completion: nil)
+            }
         }
     }
 
@@ -358,5 +376,9 @@ extension MediaCallViewController {
                 self.newMessageTipLabel.text = "Have a New Message"
             }
         }
+    }
+
+    @objc func remoteVideoSizeDidChanged(_ notification: NSNotification) {
+//        guard let size = notification.userInfo?["size"] as? CGSize else { return }
     }
 }

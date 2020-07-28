@@ -19,6 +19,7 @@ class MyProfileViewController: UIViewController {
         view.text = "Please enter a carrier address id, if the user is not your friend, please ad as friend"
         view.lineBreakMode = .byWordWrapping
         view.numberOfLines = 0
+        view.textColor = .black
         return view
     }()
 
@@ -26,6 +27,7 @@ class MyProfileViewController: UIViewController {
         let view = UITextField()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.placeholder = "carrier address id"
+        view.textColor = .black
         return view
     }()
 
@@ -168,6 +170,13 @@ class MyProfileViewController: UIViewController {
     @objc func copyCarrierUserAddress() {
         UIPasteboard.general.string = userAddressId
         copyBtn.setTitle("Copy Success", for: .normal)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            self.copyBtn.setTitle("Copy Address", for: .normal)
+        }
+    }
+    
+    deinit {
+        print("[FREE MEMORY] \(self)")
     }
 }
 

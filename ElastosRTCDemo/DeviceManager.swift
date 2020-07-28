@@ -10,12 +10,10 @@ extension Notification.Name {
     static let friendAdded = Notification.Name("friendAdded")
     static let acceptFriend = Notification.Name("acceptFriend")
     static let friendList = Notification.Name("friendList")
-    
-    static let iceConnected = Notification.Name("ice_did_connect")
-    static let iceDisconnected = Notification.Name("ice_did_disconnected")
-    static let reject = NSNotification.Name("ice_reject")
 
-    static let receiveMessage = NSNotification.Name("data-channel-receive-message")
+    static let rtcStateChanged = Notification.Name("webrtc_state_changed")
+    static let receiveMessage = Notification.Name("data-channel-receive-message")
+    static let receiveVideoSizeChanged = Notification.Name("remote-video-size-changed")
 
 }
 var transferFrientId = ""

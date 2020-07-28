@@ -24,10 +24,13 @@ class ViewController: UIViewController, CarrierDelegate {
     @IBOutlet weak var tableView: UITableView!
 
     private var friends: [FriendCellModel] = []
+    private var remoteVideoSize: CGSize = .zero
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
         setupObserver()
+        tableView.backgroundColor = .white
         tableView.register(FriendCell.self, forCellReuseIdentifier: NSStringFromClass(FriendCell.self))
         DeviceManager.sharedInstance.start()
         
@@ -81,6 +84,10 @@ class ViewController: UIViewController, CarrierDelegate {
         let vc = MyProfileViewController()
         vc.update(address: carrier.getAddress(), userId: carrier.getUserId(), carrier: self.carrier)
         navigationController?.pushViewController(vc, animated: true)
+    }
+
+    deinit {
+        print("[FREE MEMORY] \(self)")
     }
 }
 
@@ -159,9 +166,7 @@ extension ViewController {
             return assertionFailure("missing data")
         }
         friends = list.map { $0.convert() }.sorted(by: { (m1, m2) -> Bool in m1.status.priority < m2.status.priority })
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
+        updateTableView()
     }
 
     func upSert(friend: FriendCellModel) {
@@ -172,9 +177,7 @@ extension ViewController {
             friends.append(friend)
         }
         friends = friends.sorted(by: { (m1, m2) -> Bool in m1.status.priority < m2.status.priority })
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
+        updateTableView()
     }
 
     @objc func didBecomeReady() {
@@ -184,13 +187,36 @@ extension ViewController {
             self.title = "WebRTC Demo"
         }
     }
+
+    func updateTableView() {
+        DispatchQueue.main.async {
+            if self.friends.isEmpty {
+                self.showEmpty(title: "没有好友信息", subTitle: "请点击右上角Info按钮，邀请好友进行语音视频通话")
+            } else {
+                self.hideEmpty()
+            }
+            self.tableView.reloadData()
+        }
+    }
 }
 
 extension ViewController: WebRtcDelegate {
 
+    func onWebRtc(_ client: WebRtcClient, videoView: RTCVideoRenderer, didChangeVideoSize size: CGSize) {
+        if (videoView as? RTCEAGLVideoView) == client.getRemoteVideoView() {
+            remoteVideoSize = size
+        }
+    }
+    
+    func onWebRtc(_ client: WebRtcClient, didChangeState state: WebRtcCallState) {
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .rtcStateChanged, object: nil, userInfo: ["state": state])
+        }
+    }
+
     func onReceiveMessage(_ data: Data, isBinary: Bool, channelId: Int) {
-        print("✅ [RECV]: \(String(describing: String(data: data, encoding: .utf8)))")
         let content = String(describing: String(data: data, encoding: .utf8))
+        print("✅ [RECV]: \(content)")
         DataManager.shared.write(message: content, from: self.rtcClient.friendId!, to: self.carrier.getUserId())
         DispatchQueue.main.async {
             NotificationCenter.default.post(name: .receiveMessage, object: nil, userInfo: ["data": data, "isBinary": isBinary, "userId": channelId])
@@ -202,11 +228,11 @@ extension ViewController: WebRtcDelegate {
         DispatchQueue.main.async {
             if mediaOption.isEnableAudio == false, mediaOption.isEnableVideo == false, mediaOption.isEnableDataChannel {
                 let alert = UIAlertController(title: "Invite Chat", message: friendId, preferredStyle: .alert)
-                alert.addAction(.init(title: "Accept", style: .destructive, handler: { [weak self] _ in
+                alert.addAction(.init(title: "Accept", style: .default, handler: { [weak self] _ in
                     self?.chat(friendId: friendId, direction: .incoming)
                     completion(true)
                 }))
-                alert.addAction(.init(title: "Declined", style: .default, handler: { _ in
+                alert.addAction(.init(title: "Declined", style: .destructive, handler: { _ in
                     completion(false)
                 }))
                 self.present(alert, animated: true, completion: nil)
@@ -215,40 +241,6 @@ extension ViewController: WebRtcDelegate {
                 self.mediaCall(friendId: friendId, options: mediaOption, direction: .incoming, closure: completion)
             }
         }
-    }
-
-    func onAnswer() {
-
-    }
-
-    func onActive() {
-
-    }
-
-    func onEndCall(reason: HangupType) {
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: .reject, object: reason)
-        }
-    }
-
-    func onIceConnected() {
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: .iceConnected, object: nil)
-        }
-    }
-
-    func onIceDisconnected() {
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: .iceDisconnected, object: nil)
-        }
-    }
-
-    func onConnectionError(error: Error) {
-
-    }
-
-    func onConnectionClosed() {
-
     }
 }
 
@@ -281,10 +273,6 @@ extension ViewController {
             nav.modalPresentationStyle = .fullScreen
             return nav
         }()
-        self.present(nav, animated: true) { [weak self] in
-            if direction == .outgoing {
-                self?.rtcClient.inviteCall(friendId: friendId, options: options)
-            }
-        }
+        self.present(nav, animated: true, completion: nil)
     }
 }

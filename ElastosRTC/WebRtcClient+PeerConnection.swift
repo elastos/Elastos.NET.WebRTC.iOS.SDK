@@ -16,12 +16,12 @@ extension WebRtcClient {
         peerConnection.offer(for: constraints) { [weak self] (desc, error) in
             guard let self = self else { return }
             if let error = error {
-                self.delegate?.onConnectionError(error: error)
+                self.delegate?.onWebRtc(self, didChangeState: .localFailure(error: error))
                 return Log.e(TAG, "failed to create offer, due to %@", error as CVarArg)
             } else if let desc = desc {
                 self.peerConnection.setLocalDescription(desc) { error in
                     if let error = error {
-                        self.delegate?.onConnectionError(error: error)
+                        self.delegate?.onWebRtc(self, didChangeState: .localFailure(error: error))
                         return Log.e(TAG, "failed to set local sdp into peerconnection, due to %@", error as CVarArg)
                     } else {
                         closure(desc)
@@ -40,12 +40,12 @@ extension WebRtcClient {
         peerConnection.answer(for: constraints) { [weak self] (desc, error) in
             guard let self = self else { return }
             if let error = error {
-                self.delegate?.onConnectionError(error: error)
+                self.delegate?.onWebRtc(self, didChangeState: .localFailure(error: error))
                 return Log.e(TAG, "failed to create local answer sdp, due to %@", error as CVarArg)
             } else if let desc = desc {
                 self.peerConnection.setLocalDescription(desc) { error in
                     if let error = error {
-                        self.delegate?.onConnectionError(error: error)
+                        self.delegate?.onWebRtc(self, didChangeState: .localFailure(error: error))
                         return Log.e(TAG, "failed to set local answer sdp, due to %@", error as CVarArg)
                     }
                     closure(desc)
@@ -121,11 +121,9 @@ extension WebRtcClient: RTCPeerConnectionDelegate {
         Log.d(TAG, "peerconnection did change state: ", newState.state)
         switch newState {
         case .connected:
-            self.delegate?.onIceConnected()
+            self.delegate?.onWebRtc(self, didChangeState: .connected)
         case .disconnected, .failed:
-            self.delegate?.onIceDisconnected()
-        case .closed:
-            self.delegate?.onConnectionClosed()
+            self.delegate?.onWebRtc(self, didChangeState: .disconnected)
         default:
             break
         }
@@ -143,7 +141,6 @@ extension WebRtcClient: RTCPeerConnectionDelegate {
 
     public func peerConnection(_ peerConnection: RTCPeerConnection, didOpen dataChannel: RTCDataChannel) {
         Log.d(TAG, "peerconnection did open data-channel")
-        print("✅ peerconnection did open data-channel")
         guard self.callDirection == .incoming else { return }
         self.dataChannel = dataChannel
         self.dataChannel?.delegate = self
