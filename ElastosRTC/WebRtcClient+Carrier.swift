@@ -76,15 +76,15 @@ extension WebRtcClient {
                     closureAfterAccepted()
                 }
             case .answer:
-                guard let sdp = message.answer, from == self.friendId else { return }
+                guard let sdp = message.answer, from == self.friendId else { return Log.d(TAG, "ignore answer") }
                 receive(sdp: sdp)
             case .candidate:
-                guard let candidate = message.candidate, from == self.friendId else { return }
+                guard let candidate = message.candidate, from == self.friendId else { return Log.d(TAG, "candidate") }
                 receive(candidate: RTCIceCandidate(sdp: candidate.sdp, sdpMLineIndex: candidate.sdpMLineIndex, sdpMid: candidate.sdpMid))
             case .prAnswer:
                 fatalError("not support prAnswer now")
             case .removeCandiate:
-                guard let candiates = message.removeCandidates, from == self.friendId else { return }
+                guard let candiates = message.removeCandidates, from == self.friendId else { return Log.d(TAG, "ignore removal-candidates") }
                 receive(removal: candiates)
             case .bye:
                 self.delegate?.onWebRtc(self, didChangeState: .remoteHangup)
@@ -94,6 +94,7 @@ extension WebRtcClient {
             Log.e(TAG, "signal message decode error, due to ", error as CVarArg)
         }
         drainMessageQueueIfReady()
+        try? carrier.replyFriendInviteRequest(to: from, withStatus: 0, nil, nil)
     }
 
     func registerCarrierCallback() {
