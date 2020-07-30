@@ -27,6 +27,7 @@ extension MediaOptions {
 }
 
 enum MediaCallState {
+    case answering
     case connecting
     case connected
     case hangup
@@ -36,6 +37,8 @@ enum MediaCallState {
 
     var state: String {
         switch self {
+        case .answering:
+            return "waiting for answer"
         case .connecting:
             return "Connecting"
         case .connected:
@@ -200,7 +203,7 @@ class MediaCallViewController: UIViewController {
         view.addSubview(nameLabel)
         view.addSubview(newMessageTipLabel)
         view.addSubview(toolStack)
-        callState = .connecting
+        callState = .answering
 
         setupObserver()
         NSLayoutConstraint.activate([
@@ -222,8 +225,8 @@ class MediaCallViewController: UIViewController {
         view.addSubview(localVideo)
         view.addSubview(remoteVideo)
 
+        view.sendSubviewToBack(localVideo)
         view.sendSubviewToBack(remoteVideo)
-        view.bringSubviewToFront(localVideo)
 
         localVideo.translatesAutoresizingMaskIntoConstraints = false
         remoteVideo.translatesAutoresizingMaskIntoConstraints = false
@@ -255,7 +258,7 @@ class MediaCallViewController: UIViewController {
     func tools(state: MediaCallState, direction: MediaCallDirection, options: MediaOptions) -> [UIView] {
         if options.isEnableVideo, options.isEnableAudio {
             switch state {
-            case .connecting:
+            case .answering:
                 return direction == .incoming ? [acceptBtn, endBtn] : [endBtn]
             case .connected:
                 return [audioMuteBtn, videoMuteBtn, loudSpeakerBtn, flipCameraBtn, chatBtn, endBtn]
@@ -264,7 +267,7 @@ class MediaCallViewController: UIViewController {
             }
         } else if options.isEnableAudio {
             switch state {
-            case .connecting:
+            case .answering:
                 return direction == .incoming ? [acceptBtn, endBtn] : [endBtn]
             case .connected:
                 return [audioMuteBtn, loudSpeakerBtn, chatBtn, endBtn]
@@ -273,7 +276,7 @@ class MediaCallViewController: UIViewController {
             }
         } else if options.isEnableVideo {
             switch state {
-            case .connecting:
+            case .answering:
                 return direction == .incoming ? [acceptBtn, endBtn] : [endBtn]
             case .connected:
                 return [videoMuteBtn, flipCameraBtn, chatBtn, endBtn]
@@ -295,7 +298,7 @@ extension MediaCallViewController {
     /// Did tap end call button
     /// - Parameter sender: the button that user taped
     @objc func didPressEndCall(_ sender: UIButton) {
-        if callDirection == .incoming, callState == .connecting {
+        if callDirection == .incoming, callState == .answering {
             closure?(false)
         } else {
             client.endCall(type: .normal)
@@ -304,6 +307,7 @@ extension MediaCallViewController {
     }
 
     @objc func didPressAcceptCall(_ sender: UIButton) {
+        self.callState = .connecting
         closure?(true)
     }
 
