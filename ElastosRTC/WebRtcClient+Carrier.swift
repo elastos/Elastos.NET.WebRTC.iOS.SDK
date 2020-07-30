@@ -94,7 +94,6 @@ extension WebRtcClient {
             Log.e(TAG, "signal message decode error, due to ", error as CVarArg)
         }
         drainMessageQueueIfReady()
-        try? carrier.replyFriendInviteRequest(to: from, withStatus: 0, nil, nil)
     }
 
     func registerCarrierCallback() {
@@ -103,6 +102,7 @@ extension WebRtcClient {
                 Log.d(TAG, "[RECV]: %@, data: %@", friendId, message ?? "empty content")
                 guard let data = message, let self = self else { return }
                 self.receive(from: friendId, data: data)
+                try? self.carrier.replyFriendInviteRequest(to: friendId, withStatus: 0, nil, "data")
             }
         } catch {
             fatalError("register extension error, due to \(error)")
