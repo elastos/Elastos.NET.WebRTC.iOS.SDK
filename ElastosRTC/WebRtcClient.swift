@@ -36,6 +36,11 @@ public protocol WebRtcDelegate: class {
     ///   - channelId: The identifier for this data channel
     func onReceiveMessage(_ data: Data, isBinary: Bool, channelId: Int)
 
+    /// Fired when receive video size did changed
+    /// - Parameters:
+    ///   - client: instance of the webrtc client
+    ///   - videoView: the render view
+    ///   - size: the video size
     func onWebRtc(_ client: WebRtcClient, videoView: RTCVideoRenderer, didChangeVideoSize size: CGSize)
 }
 
@@ -74,9 +79,9 @@ public class WebRtcClient: NSObject {
             }
         }
     }
-    private var videoWidth = 1280
-    private var videoHeight = 1280 * 16 / 9
-    private var videoFps = 30
+    var videoWidth = UIScreen.main.nativeBounds.width
+    var videoHeight = UIScreen.main.nativeBounds.height
+    var videoFps: Double = 30
     
     private var _peerConnection: RTCPeerConnection?
     var peerConnection: RTCPeerConnection {
@@ -102,14 +107,12 @@ public class WebRtcClient: NSObject {
 
     lazy var localRenderView: RTCEAGLVideoView = {
         let view = RTCEAGLVideoView()
-        view.translatesAutoresizingMaskIntoConstraints = false
         view.delegate = self
         return view
     }()
 
     lazy var remoteRenderView: RTCEAGLVideoView = {
         let view = RTCEAGLVideoView()
-        view.translatesAutoresizingMaskIntoConstraints = false
         view.delegate = self
         return view
     }()
@@ -187,22 +190,16 @@ public extension WebRtcClient {
         }
     }
 
-    var isLoudSpeaker: Bool {
-        get {
-            true //TODO
-        }
-        set {
-            RTCDispatcher.dispatchAsync(on: .typeAudioSession) {
+    func setLoudSpeaker(enabled: Bool) {
+        RTCDispatcher.dispatchAsync(on: .typeAudioSession) {
+            do {
                 let session = AVAudioSession.sharedInstance()
-                var _: Error?
-                try? session.setCategory(.playAndRecord)
-                try? session.setMode(.voiceChat)
-                if newValue {
-                    try? session.overrideOutputAudioPort(.speaker)
-                } else {
-                    try? session.overrideOutputAudioPort(.none)
-                }
-                try? session.setActive(true)
+                try session.setCategory(.playAndRecord)
+                try session.setMode(.voiceChat)
+                try session.overrideOutputAudioPort(enabled ? .speaker : .none)
+                try session.setActive(true)
+            } catch {
+                assertionFailure("set speaker failure")
             }
         }
     }
@@ -227,7 +224,7 @@ public extension WebRtcClient {
         cleanup()
     }
 
-    func setResolution(cameraPosition: AVCaptureDevice.Position = .front, width: Int = 1280, height: Int = 1280 * 16 / 9, fps: Int = 30) {
+    func setResolution(cameraPosition: AVCaptureDevice.Position = .front, width: CGFloat, height: CGFloat, fps: Double) {
         self.videoWidth = width
         self.videoHeight = height
         self.videoFps = fps
@@ -238,10 +235,7 @@ public extension WebRtcClient {
 
     func switchCamera(position: AVCaptureDevice.Position, completion: (() -> Void)? = nil) {
         RTCDispatcher.dispatchAsync(on: .typeCaptureSession) {
-            self.startCaptureLocalVideo(cameraPositon: position,
-                                        videoWidth: self.videoWidth,
-                                        videoHeight: self.videoHeight,
-                                        videoFps: self.videoFps)
+            self.startCaptureLocalVideo(cameraPositon: position)
         }
     }
 

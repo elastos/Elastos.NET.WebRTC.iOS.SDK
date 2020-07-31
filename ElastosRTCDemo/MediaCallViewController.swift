@@ -322,7 +322,7 @@ extension MediaCallViewController {
     /// - Parameter sender: normal: loud speaker, selected: micro
     @objc func didPressLoudSpeakerControl(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
-        client.isLoudSpeaker = sender.isSelected
+        client.setLoudSpeaker(enabled: sender.isSelected)
     }
 
     /// Did tap video mute control button

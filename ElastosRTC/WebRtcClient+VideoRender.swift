@@ -6,6 +6,8 @@
 //  Copyright © 2020 Elastos Foundation. All rights reserved.
 //
 
+import AVFoundation
+
 extension WebRtcClient {
 
     func setupMedia() {
@@ -18,54 +20,49 @@ extension WebRtcClient {
                 self.localVideoView.addSubview(self.localRenderView)
                 self.remoteVideoView.addSubview(self.remoteRenderView)
                 self.localVideoTrack.add(self.localRenderView)
-                NSLayoutConstraint.activate([
-                    self.localRenderView.leadingAnchor.constraint(greaterThanOrEqualTo: self.localVideoView.leadingAnchor),
-                    self.localRenderView.trailingAnchor.constraint(lessThanOrEqualTo: self.localVideoView.trailingAnchor),
-                    self.localRenderView.topAnchor.constraint(greaterThanOrEqualTo: self.localVideoView.topAnchor),
-                    self.localRenderView.bottomAnchor.constraint(lessThanOrEqualTo: self.localVideoView.bottomAnchor),
-                    self.localRenderView.centerXAnchor.constraint(equalTo: self.localVideoView.centerXAnchor),
-                    self.localRenderView.centerYAnchor.constraint(equalTo: self.localVideoView.centerYAnchor),
-
-                    self.remoteVideoView.leadingAnchor.constraint(greaterThanOrEqualTo: self.remoteRenderView.leadingAnchor),
-                    self.remoteVideoView.trailingAnchor.constraint(lessThanOrEqualTo: self.remoteRenderView.trailingAnchor),
-                    self.remoteVideoView.topAnchor.constraint(greaterThanOrEqualTo: self.remoteRenderView.topAnchor),
-                    self.remoteVideoView.bottomAnchor.constraint(lessThanOrEqualTo: self.remoteRenderView.bottomAnchor),
-                    self.remoteVideoView.centerXAnchor.constraint(equalTo: self.remoteRenderView.centerXAnchor),
-                    self.remoteVideoView.centerYAnchor.constraint(equalTo: self.remoteRenderView.centerYAnchor),
-                ])
-                self.startCaptureLocalVideo(cameraPositon: .front, videoWidth: 1280, videoHeight: 1280 * 16 / 9, videoFps: 30)
+                self.startCaptureLocalVideo(cameraPositon: .front)
             }
         }
         if self.options.isEnableDataChannel {
             createDataChannel()
             dataChannel?.delegate = self
             assert(self.dataChannel != nil, "create data channel failed")
-            print("✅ enable data-channel")
         }
-        
-        Log.d(TAG, isEnableVideo ? "enable video" : "disable video")
-        Log.d(TAG, isEnableAudio ? "enable audio" : "disable audio")
     }
 
-    func startCaptureLocalVideo(cameraPositon: AVCaptureDevice.Position, videoWidth: Int, videoHeight: Int?, videoFps: Int) {
+    func startCaptureLocalVideo(cameraPositon: AVCaptureDevice.Position, videoWidth: CGFloat? = nil, videoHeight: CGFloat? = nil, videoFps: Double? = nil) {
         if let capturer = self.videoCapturer as? RTCCameraVideoCapturer {
             guard let targetDevice = RTCCameraVideoCapturer.captureDevices().first(where: { $0.position == cameraPositon }) else {
                 fatalError("could not find target device")
             }
             var targetFormat: AVCaptureDevice.Format?
-            let formats = RTCCameraVideoCapturer.supportedFormats(for: targetDevice)
-            formats.forEach { format in
-                let description = format.formatDescription as CMFormatDescription
-                let dimensions = CMVideoFormatDescriptionGetDimensions(description)
+            var targetFps = videoFps
 
-                if dimensions.width == videoWidth && dimensions.height == videoHeight ?? 0 {
-                    targetFormat = format
-                } else if dimensions.width == videoWidth {
-                    targetFormat = format
+            let formats = RTCCameraVideoCapturer.supportedFormats(for: targetDevice)
+            if let videoWidth = videoWidth, let videoHeight = videoHeight {
+                formats.forEach { format in
+                    let description = format.formatDescription as CMFormatDescription
+                    let dimensions = CMVideoFormatDescriptionGetDimensions(description)
+
+                    if dimensions.width == Int(videoWidth) && dimensions.height == Int(videoHeight) {
+                        targetFormat = format
+                    } else if dimensions.width == Int(videoWidth) {
+                        targetFormat = format
+                    }
                 }
             }
-            guard let format = targetFormat else { fatalError("could not find target format" ) }
-            capturer.startCapture(with: targetDevice, format: format, fps: videoFps)
+
+            if targetFormat == nil {
+                // choose highest resolution
+                targetFormat = formats.sorted { CMVideoFormatDescriptionGetDimensions($0.formatDescription).width < CMVideoFormatDescriptionGetDimensions($1.formatDescription).width }.last
+            }
+
+            if targetFps == nil {
+                targetFps = targetFormat?.videoSupportedFrameRateRanges.sorted { return $0.maxFrameRate < $1.maxFrameRate }.last?.maxFrameRate
+            }
+
+            guard let format = targetFormat, let fps = targetFps else { fatalError("could not find target format" ) }
+            capturer.startCapture(with: targetDevice, format: format, fps: Int(fps))
         } else if let capturer = videoCapturer as? RTCFileVideoCapturer {
             #if DEBUG
             if Bundle.main.path( forResource: "sample.mp4", ofType: nil ) != nil {
@@ -107,6 +104,31 @@ extension WebRtcClient {
 extension WebRtcClient: RTCVideoViewDelegate {
 
     public func videoView(_ videoView: RTCVideoRenderer, didChangeVideoSize size: CGSize) {
+        guard size.width > 0, size.height > 0 else { return }
+
         self.delegate?.onWebRtc(self, videoView: videoView, didChangeVideoSize: size)
+
+        let isLocalView = videoView.isEqual(localRenderView)
+        let parentView = isLocalView ? localVideoView : remoteVideoView
+        let renderView = isLocalView ? localRenderView : remoteRenderView
+
+        print("isLocal View: \(isLocalView), \(videoView)")
+
+        var frame = AVMakeRect(aspectRatio: size, insideRect: parentView.bounds)
+        var scale: CGFloat = 1
+        if frame.width > frame.height {
+            // scale by height
+            scale = parentView.bounds.height / frame.height
+        } else {
+            // scale by width
+            scale = parentView.bounds.width / frame.width
+        }
+
+        frame.size.height *= scale
+        frame.size.width *= scale
+        renderView.frame = frame
+        renderView.center = parentView.center
+
+        print("render_view: \(renderView)")
     }
 }
