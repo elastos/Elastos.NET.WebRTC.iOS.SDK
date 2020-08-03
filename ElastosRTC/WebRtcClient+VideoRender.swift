@@ -19,6 +19,8 @@ extension WebRtcClient {
             RTCDispatcher.dispatchAsync(on: .typeMain) {
                 self.localVideoView.addSubview(self.localRenderView)
                 self.remoteVideoView.addSubview(self.remoteRenderView)
+                self.localRenderView.frame = self.localVideoView.bounds
+                self.remoteRenderView.frame = self.remoteVideoView.bounds
                 self.localVideoTrack.add(self.localRenderView)
                 self.startCaptureLocalVideo(cameraPositon: .front)
             }
@@ -106,13 +108,10 @@ extension WebRtcClient: RTCVideoViewDelegate {
     public func videoView(_ videoView: RTCVideoRenderer, didChangeVideoSize size: CGSize) {
         guard size.width > 0, size.height > 0 else { return }
 
-        self.delegate?.onWebRtc(self, videoView: videoView, didChangeVideoSize: size)
-
         let isLocalView = videoView.isEqual(localRenderView)
         let parentView = isLocalView ? localVideoView : remoteVideoView
         let renderView = isLocalView ? localRenderView : remoteRenderView
 
-        print("isLocal View: \(isLocalView), \(videoView)")
 
         var frame = AVMakeRect(aspectRatio: size, insideRect: parentView.bounds)
         var scale: CGFloat = 1
@@ -127,8 +126,6 @@ extension WebRtcClient: RTCVideoViewDelegate {
         frame.size.height *= scale
         frame.size.width *= scale
         renderView.frame = frame
-        renderView.center = parentView.center
-
-        print("render_view: \(renderView)")
+        renderView.center = CGPoint(x: parentView.bounds.midX, y: parentView.bounds.midY)
     }
 }

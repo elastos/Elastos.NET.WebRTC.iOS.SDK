@@ -216,7 +216,7 @@ class MediaCallViewController: UIViewController {
             newMessageTipLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 20),
             newMessageTipLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
-        
+
         if callDirection == .outgoing {
             client.inviteCall(friendId: friendId, options: callOptions)
         }

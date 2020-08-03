@@ -35,13 +35,6 @@ public protocol WebRtcDelegate: class {
     ///   - isBinary: Indicates whether |data| contains UTF-8 or binary data.
     ///   - channelId: The identifier for this data channel
     func onReceiveMessage(_ data: Data, isBinary: Bool, channelId: Int)
-
-    /// Fired when receive video size did changed
-    /// - Parameters:
-    ///   - client: instance of the webrtc client
-    ///   - videoView: the render view
-    ///   - size: the video size
-    func onWebRtc(_ client: WebRtcClient, videoView: RTCVideoRenderer, didChangeVideoSize size: CGSize)
 }
 
 public class WebRtcClient: NSObject {
@@ -192,15 +185,21 @@ public extension WebRtcClient {
 
     func setLoudSpeaker(enabled: Bool) {
         RTCDispatcher.dispatchAsync(on: .typeAudioSession) {
+            let session = RTCAudioSession.sharedInstance()
+            session.lockForConfiguration()
             do {
-                let session = AVAudioSession.sharedInstance()
-                try session.setCategory(.playAndRecord)
-                try session.setMode(.voiceChat)
-                try session.overrideOutputAudioPort(enabled ? .speaker : .none)
-                try session.setActive(true)
+                try session.setCategory(AVAudioSession.Category.playAndRecord.rawValue)
+                try session.setMode(AVAudioSession.Mode.voiceChat.rawValue)
+                if enabled {
+                    try session.overrideOutputAudioPort(.speaker)
+                    try session.setActive(true)
+                } else {
+                    try session.overrideOutputAudioPort(.none)
+                }
             } catch {
                 assertionFailure("set speaker failure")
             }
+            session.unlockForConfiguration()
         }
     }
 
