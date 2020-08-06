@@ -205,7 +205,7 @@ extension ChatViewController {
     func showImagePickerViewController() {
         let vc = UIImagePickerController()
         vc.sourceType = .photoLibrary
-        vc.allowsEditing = false
+        vc.allowsEditing = true
         vc.delegate = self
         present(vc, animated: true)
     }
