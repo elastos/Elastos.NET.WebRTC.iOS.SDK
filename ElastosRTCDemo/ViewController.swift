@@ -231,7 +231,7 @@ extension ViewController: WebRtcDelegate {
             } else {
                 dictData[fileId] = tmpData
             }
-            print("✅ [RECV]: \(fileId), end: \(isEnd)")
+            print("✅ [RECV]: \(fileId), end: \(isEnd), index: \(index)")
         } else {
             let content = String(describing: String(data: data, encoding: .utf8))
             print("✅ [RECV]: \(content)")
