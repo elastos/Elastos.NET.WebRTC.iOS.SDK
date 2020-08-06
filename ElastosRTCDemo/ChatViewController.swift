@@ -8,6 +8,7 @@
 
 import MessageKit
 import InputBarAccessoryView
+import MobileCoreServices
 
 struct ImageMediaItem: MediaItem {
 
@@ -139,6 +140,12 @@ extension ChatViewController {
         messageInputBar.inputTextView.tintColor = .primaryColor
         messageInputBar.sendButton.setTitleColor(.primaryColor, for: .normal)
         messageInputBar.sendButton.setTitleColor(UIColor.primaryColor.withAlphaComponent(0.3), for: .highlighted)
+
+        messageInputBar.setRightStackViewWidthConstant(to: 52, animated: false)
+        let bottomItems = [makeButton(named: "album", closure: { [weak self] in
+            self?.showImagePickerViewController()
+        }), .flexibleSpace]
+        messageInputBar.setStackViewItems(bottomItems, forStack: .bottom, animated: false)
     }
 
     func configureMessageCollectionView() {
@@ -178,6 +185,30 @@ extension ChatViewController {
         let lastIndexPath = IndexPath(item: 0, section: messages.count - 1)
         return messagesCollectionView.indexPathsForVisibleItems.contains(lastIndexPath)
     }
+
+    private func makeButton(named: String, closure: @escaping VoidClosure) -> InputBarButtonItem {
+        return InputBarButtonItem()
+            .configure {
+                $0.spacing = .fixed(10)
+                $0.image = UIImage(named: named)?.withRenderingMode(.alwaysTemplate)
+                $0.setSize(CGSize(width: 25, height: 25), animated: false)
+                $0.tintColor = UIColor(white: 0.8, alpha: 1)
+            }.onSelected {
+                $0.tintColor = .primaryColor
+            }.onDeselected {
+                $0.tintColor = UIColor(white: 0.8, alpha: 1)
+            }.onTouchUpInside { _ in
+                closure()
+        }
+    }
+
+    func showImagePickerViewController() {
+        let vc = UIImagePickerController()
+        vc.sourceType = .photoLibrary
+        vc.allowsEditing = false
+        vc.delegate = self
+        present(vc, animated: true)
+    }
 }
 
 extension ChatViewController: InputBarAccessoryViewDelegate {
@@ -195,9 +226,6 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
             if let str = component as? String, let data = str.data(using: .utf8) {
                 let result = try? self.client.sendData(data, isBinary: false)
                 print("[SEND]: " + "<" + str + "> " + (result == true ? "data-channel sent success" : "data-channel sent failure"))
-            } else if let img = component as? UIImage, let data = img.pngData() {
-                let result = try? self.client.sendData(data, isBinary: true)
-                print("[SEND]: <image>" + (result == true ? "data-channel sent success" : "data-channel sent failure"))
             }
         }
         DispatchQueue.main.async {
@@ -206,6 +234,13 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
             self.insertMessages(components)
             self.messagesCollectionView.scrollToBottom(animated: true)
         }
+    }
+
+    private func sendMessage(data: Data, fileId: String, index: Int, mime: String, end: Bool) {
+        let dict: [String: Any] = ["data": data.base64EncodedString(), "fileId": fileId, "index": index, "mime": mime, "end": end]
+        guard let data = jsonToData(jsonDic: dict) else { fatalError() }
+        print("[SEND]: \(data)")
+        try? self.client.sendData(data, isBinary: true)
     }
 
     private func insertMessages(_ data: [Any]) {
@@ -258,6 +293,81 @@ extension ChatViewController {
     }
 }
 
+extension ChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let image = info[.originalImage] as? UIImage else { return }
+
+        if let data = image.pngData() {
+            let stream = InputStream(data: data)
+            let fileId = UUID().uuidString
+            try? readData(stream, closure: { (data, index, end) in
+                self.sendMessage(data: data, fileId: fileId, index: index, mime: mimeType(pathExtension: "png"), end: end)
+            })
+        }
+
+        self.messageInputBar.sendButton.stopAnimating()
+        self.messageInputBar.inputTextView.placeholder = "Aa"
+        self.insertMessages([image])
+        self.messagesCollectionView.scrollToBottom(animated: true)
+
+        self.dismiss(animated: true, completion: nil)
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+}
+
 extension UIColor {
     static let primaryColor = UIColor(red: 69/255, green: 193/255, blue: 89/255, alpha: 1)
+}
+
+func readData(_ stream: InputStream, closure: (Data, Int, Bool) -> Void) throws {
+    stream.open()
+
+    let bufferSize = 1024 //1k
+    let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
+    defer {
+        stream.close()
+        buffer.deallocate()
+    }
+    var index: Int = 0
+    while stream.hasBytesAvailable {
+        let read = stream.read(buffer, maxLength: bufferSize)
+        if read < 0 {
+            throw stream.streamError!
+        } else if read == 0 {
+            //EOF
+            break
+        }
+        closure(Data(bytes: buffer, count: read), index, read != bufferSize)
+        index += 1
+    }
+}
+
+func mimeType(pathExtension: String) -> String {
+    if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension as NSString, nil)?.takeRetainedValue(),
+        let mimetype = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType)?.takeRetainedValue() {
+            return mimetype as String
+    }
+    return "application/octet-stream"
+}
+
+func jsonToData(jsonDic: [String: Any]) -> Data? {
+    if !JSONSerialization.isValidJSONObject(jsonDic) {
+        print("is not a valid json object")
+        return nil
+    }
+    return try? JSONSerialization.data(withJSONObject: jsonDic, options: [])
+
+}
+
+func dataToDict(data: Data) -> [String: Any]? {
+    do {
+        let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
+        return json as? [String: Any]
+    } catch {
+        return nil
+    }
 }

@@ -25,6 +25,8 @@ class ViewController: UIViewController, CarrierDelegate {
 
     private var friends: [FriendCellModel] = []
 
+    var dictData: [String: Data] = [:]
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -208,11 +210,33 @@ extension ViewController: WebRtcDelegate {
     }
 
     func onReceiveMessage(_ data: Data, isBinary: Bool, channelId: Int) {
-        let content = String(describing: String(data: data, encoding: .utf8))
-        print("✅ [RECV]: \(content)")
-        DataManager.shared.write(message: content, from: self.rtcClient.friendId!, to: self.carrier.getUserId())
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: .receiveMessage, object: nil, userInfo: ["data": data, "isBinary": isBinary, "userId": channelId])
+        if isBinary {
+            guard let dict = dataToDict(data: data),
+                let fileId = dict["fileId"] as? String,
+                let index = dict["index"] as? Int,
+                let str = dict["data"] as? String,
+                let data = str.data(using: .utf8),
+                let isEnd = dict["end"] as? Bool else {
+                fatalError("error format message")
+            }
+            var tmpData = dictData[fileId] ?? Data()
+            tmpData.append(data)
+            if isEnd {
+                DataManager.shared.write(image: UIImage.init(data: tmpData)!, from: self.rtcClient.friendId!, to: self.carrier.getUserId())
+                dictData[fileId] = nil
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: .receiveMessage, object: nil, userInfo: ["data": tmpData, "isBinary": isBinary, "userId": channelId])
+                }
+            } else {
+                dictData[fileId] = tmpData
+            }
+        } else {
+            let content = String(describing: String(data: data, encoding: .utf8))
+            print("✅ [RECV]: \(content)")
+            DataManager.shared.write(message: content, from: self.rtcClient.friendId!, to: self.carrier.getUserId())
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: .receiveMessage, object: nil, userInfo: ["data": data, "isBinary": isBinary, "userId": channelId])
+            }
         }
     }
 

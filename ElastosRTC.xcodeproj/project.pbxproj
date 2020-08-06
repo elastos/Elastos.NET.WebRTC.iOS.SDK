@@ -138,10 +138,10 @@
 		1080FBEDED7512ABF91355BC /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				D106126C256D19CEF427196A /* Pods-ElastosRTCDemo.debug.xcconfig */,
-				7446E9EDE7D97C628741B805 /* Pods-ElastosRTCDemo.release.xcconfig */,
 				E083358915BD80DF61BBD546 /* Pods-ElastosRTC.debug.xcconfig */,
 				DA2A2ECC557F86F530E0EAC5 /* Pods-ElastosRTC.release.xcconfig */,
+				D106126C256D19CEF427196A /* Pods-ElastosRTCDemo.debug.xcconfig */,
+				7446E9EDE7D97C628741B805 /* Pods-ElastosRTCDemo.release.xcconfig */,
 				749E621FACBE3D5FE0323038 /* Pods-ElastosRTCTests.debug.xcconfig */,
 				43126D9EA6BBEC3B2A90F90E /* Pods-ElastosRTCTests.release.xcconfig */,
 			);
@@ -151,8 +151,8 @@
 		195004598616434BB9B055D8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				75885C044B032846CFCCBA1F /* Pods_ElastosRTCDemo.framework */,
 				D89F702DD67FA45DCC3E3EF5 /* Pods_ElastosRTC.framework */,
+				75885C044B032846CFCCBA1F /* Pods_ElastosRTCDemo.framework */,
 				9433CAE98CBBF62000E449C2 /* Pods_ElastosRTCTests.framework */,
 			);
 			name = Frameworks;
@@ -170,9 +170,9 @@
 		808AE2CD24A8C50D002DF9C9 /* Mock files */ = {
 			isa = PBXGroup;
 			children = (
-				808AE2C724A8BA38002DF9C9 /* mock_offer.json */,
 				808AE2C924A8C35F002DF9C9 /* mock_added_candidate.json */,
 				808AE2CB24A8C3C3002DF9C9 /* mock_answer.json */,
+				808AE2C724A8BA38002DF9C9 /* mock_offer.json */,
 			);
 			path = "Mock files";
 			sourceTree = "<group>";
@@ -213,15 +213,15 @@
 		F9A8D0A92486A9C100FFDFD2 /* ElastosRTC */ = {
 			isa = PBXGroup;
 			children = (
+				808AE2C524A8B70B002DF9C9 /* Const.swift */,
 				74EA215E248A93B800240BD9 /* Supporting Files */,
 				F9A2817E2487F05A0032A2C0 /* WebRtcClient.swift */,
 				F9A281802487F5230032A2C0 /* WebRtcClient+Carrier.swift */,
+				80BEB5E024AF2BE600FC850F /* WebRtcClient+DataChannel.swift */,
 				F9A281842487F6830032A2C0 /* WebRtcClient+PeerConnection.swift */,
 				807706C8248908390066D477 /* WebRtcClient+VideoRender.swift */,
-				80BEB5E024AF2BE600FC850F /* WebRtcClient+DataChannel.swift */,
-				F9A2818C248952990032A2C0 /* WebRtcSignal.swift */,
 				80E6940424BC179D008F1DE2 /* WebRtcModel+Extension.swift */,
-				808AE2C524A8B70B002DF9C9 /* Const.swift */,
+				F9A2818C248952990032A2C0 /* WebRtcSignal.swift */,
 			);
 			path = ElastosRTC;
 			sourceTree = "<group>";
@@ -229,10 +229,10 @@
 		F9A8D0B42486A9C100FFDFD2 /* ElastosRTCTests */ = {
 			isa = PBXGroup;
 			children = (
+				F9A8D0B72486A9C100FFDFD2 /* Info.plist */,
+				808AE2CD24A8C50D002DF9C9 /* Mock files */,
 				808AE2C124A8A72E002DF9C9 /* WebRtcSignalTests.swift */,
 				808AE2C324A8A8D0002DF9C9 /* XCTestCase+Util.swift */,
-				808AE2CD24A8C50D002DF9C9 /* Mock files */,
-				F9A8D0B72486A9C100FFDFD2 /* Info.plist */,
 			);
 			path = ElastosRTCTests;
 			sourceTree = "<group>";
@@ -336,7 +336,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1150;
-				LastUpgradeCheck = 1150;
+				LastUpgradeCheck = 1160;
 				ORGANIZATIONNAME = "Elastos Foundation";
 				TargetAttributes = {
 					F9A8D0A62486A9C100FFDFD2 = {
@@ -384,9 +384,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				808AE2C824A8BA38002DF9C9 /* mock_offer.json in Resources */,
 				808AE2CA24A8C35F002DF9C9 /* mock_added_candidate.json in Resources */,
 				808AE2CC24A8C3C3002DF9C9 /* mock_answer.json in Resources */,
+				808AE2C824A8BA38002DF9C9 /* mock_offer.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -489,14 +489,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				808AE2C624A8B70B002DF9C9 /* Const.swift in Sources */,
 				F9A281812487F5230032A2C0 /* WebRtcClient+Carrier.swift in Sources */,
-				F9A281852487F6830032A2C0 /* WebRtcClient+PeerConnection.swift in Sources */,
 				80BEB5E124AF2BE600FC850F /* WebRtcClient+DataChannel.swift in Sources */,
+				F9A281852487F6830032A2C0 /* WebRtcClient+PeerConnection.swift in Sources */,
 				807706C9248908390066D477 /* WebRtcClient+VideoRender.swift in Sources */,
 				F9A2817F2487F05A0032A2C0 /* WebRtcClient.swift in Sources */,
-				F9A2818D248952990032A2C0 /* WebRtcSignal.swift in Sources */,
 				80E6940524BC179D008F1DE2 /* WebRtcModel+Extension.swift in Sources */,
-				808AE2C624A8B70B002DF9C9 /* Const.swift in Sources */,
+				F9A2818D248952990032A2C0 /* WebRtcSignal.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -504,8 +504,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				808AE2C424A8A8D0002DF9C9 /* XCTestCase+Util.swift in Sources */,
 				808AE2C224A8A72E002DF9C9 /* WebRtcSignalTests.swift in Sources */,
+				808AE2C424A8A8D0002DF9C9 /* XCTestCase+Util.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -513,18 +513,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				746250DB24C48C9A00CC97BB /* MyProfileViewController.swift in Sources */,
 				F9A8D0C82486AA1C00FFDFD2 /* AppDelegate.swift in Sources */,
-				743AC317248D33EA00A04AD0 /* DeviceManager.swift in Sources */,
-				746250DF24C4A65800CC97BB /* UIViewController+Alert.swift in Sources */,
-				F9A8D0CC2486AA1C00FFDFD2 /* ViewController.swift in Sources */,
-				745CB73B249652E500E7D308 /* SettingViewController.swift in Sources */,
 				745CB72E2494668A00E7D308 /* Carrier+Util.swift in Sources */,
-				80E3481524C557FB0009B998 /* DataManager.swift in Sources */,
 				808D141824BC402C00BA0DCE /* ChatViewController.swift in Sources */,
+				80E3481524C557FB0009B998 /* DataManager.swift in Sources */,
+				743AC317248D33EA00A04AD0 /* DeviceManager.swift in Sources */,
 				F9870083248FE1DB005758F3 /* FriendCell.swift in Sources */,
-				80139DEE24CEA3AB005987AD /* UIViewController+Empty.swift in Sources */,
 				80E3481724C558D30009B998 /* MediaCallViewController.swift in Sources */,
+				746250DB24C48C9A00CC97BB /* MyProfileViewController.swift in Sources */,
+				745CB73B249652E500E7D308 /* SettingViewController.swift in Sources */,
+				746250DF24C4A65800CC97BB /* UIViewController+Alert.swift in Sources */,
+				80139DEE24CEA3AB005987AD /* UIViewController+Empty.swift in Sources */,
+				F9A8D0CC2486AA1C00FFDFD2 /* ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -688,7 +688,7 @@
 			baseConfigurationReference = E083358915BD80DF61BBD546 /* Pods-ElastosRTC.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 68SKULU766;
@@ -718,7 +718,7 @@
 			baseConfigurationReference = DA2A2ECC557F86F530E0EAC5 /* Pods-ElastosRTC.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 68SKULU766;
