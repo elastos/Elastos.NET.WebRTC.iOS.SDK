@@ -211,11 +211,12 @@ extension ViewController: WebRtcDelegate {
 
     func onReceiveMessage(_ data: Data, isBinary: Bool, channelId: Int) {
         if isBinary {
+            print("✅ [RECV]: \(isBinary)")
             guard let dict = dataToDict(data: data),
                 let fileId = dict["fileId"] as? String,
                 let index = dict["index"] as? Int,
                 let str = dict["data"] as? String,
-                let data = str.data(using: .utf8),
+                let data = Data(base64Encoded: str),
                 let isEnd = dict["end"] as? Bool else {
                 fatalError("error format message")
             }
@@ -230,6 +231,7 @@ extension ViewController: WebRtcDelegate {
             } else {
                 dictData[fileId] = tmpData
             }
+            print("✅ [RECV]: \(fileId)")
         } else {
             let content = String(describing: String(data: data, encoding: .utf8))
             print("✅ [RECV]: \(content)")

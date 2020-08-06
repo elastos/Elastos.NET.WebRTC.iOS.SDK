@@ -239,7 +239,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
     private func sendMessage(data: Data, fileId: String, index: Int, mime: String, end: Bool) {
         let dict: [String: Any] = ["data": data.base64EncodedString(), "fileId": fileId, "index": index, "mime": mime, "end": end]
         guard let data = jsonToData(jsonDic: dict) else { fatalError() }
-        print("[SEND]: \(data)")
+        print("[SEND]: \(data), end: \(end), index: \(index)")
         try? self.client.sendData(data, isBinary: true)
     }
 
@@ -326,7 +326,7 @@ extension UIColor {
 func readData(_ stream: InputStream, closure: (Data, Int, Bool) -> Void) throws {
     stream.open()
 
-    let bufferSize = 1024 //1k
+    let bufferSize = 1024 * 16 //1k
     let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
     defer {
         stream.close()
