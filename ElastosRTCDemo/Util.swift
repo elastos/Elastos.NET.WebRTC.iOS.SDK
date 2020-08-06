@@ -16,7 +16,7 @@ extension UIColor {
 func readData(_ stream: InputStream, closure: (Data, Int, Bool) -> Void) throws {
     stream.open()
 
-    let bufferSize = 1024 * 32 //16k
+    let bufferSize = 1024 * 16 //16k
     let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
     defer {
         stream.close()
