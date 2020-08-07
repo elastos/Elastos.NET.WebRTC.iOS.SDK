@@ -21,5 +21,6 @@ extension WebRtcClient: RTCDataChannelDelegate {
     
     public func dataChannel(_ dataChannel: RTCDataChannel, didChangeBufferedAmount amount: UInt64) {
         Log.d(TAG, "data-channel didChangeBufferedAmount, %ld", amount)
+        print("✅ data channel did change buffered amount = \(amount). sum = \(dataChannel.bufferedAmount)")
     }
 }

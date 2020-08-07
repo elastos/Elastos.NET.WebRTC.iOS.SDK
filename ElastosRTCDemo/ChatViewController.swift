@@ -295,14 +295,17 @@ extension ChatViewController {
 extension ChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        guard let image = info[.originalImage] as? UIImage else { return }
+        guard let image = info[.editedImage] as? UIImage else { return }
 
-        if let data = image.pngData() {
-            let stream = InputStream(data: data)
-            let fileId = UUID().uuidString
-            try? readData(stream, closure: { (data, index, end) in
-                self.sendMessage(data: data, fileId: fileId, index: index, mime: mimeType(pathExtension: "png"), end: end)
-            })
+        DispatchQueue.global().async {
+            if let data = image.pngData() {
+                let stream = InputStream(data: data)
+                let fileId = UUID().uuidString
+                try? readData(stream, closure: { (data, index, end) in
+                    self.sendMessage(data: data, fileId: fileId, index: index, mime: mimeType(pathExtension: "png"), end: end)
+                    usleep(100000)
+                })
+            }
         }
 
         self.messageInputBar.sendButton.stopAnimating()
