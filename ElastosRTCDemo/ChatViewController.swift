@@ -204,7 +204,7 @@ extension ChatViewController {
     func showImagePickerViewController() {
         let vc = UIImagePickerController()
         vc.sourceType = .photoLibrary
-        vc.allowsEditing = true
+        vc.allowsEditing = false
         vc.delegate = self
         present(vc, animated: true)
     }
@@ -295,7 +295,7 @@ extension ChatViewController {
 extension ChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        guard let image = info[.editedImage] as? UIImage else { return }
+        guard let image = info[.originalImage] as? UIImage else { return }
 
         DispatchQueue.global().async {
             if let data = image.pngData() {
