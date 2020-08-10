@@ -303,7 +303,6 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
                 let fileId = UUID().uuidString
                 try? readData(stream, closure: { (data, index, end) in
                     self.sendMessage(data: data, fileId: fileId, index: index, mime: mimeType(pathExtension: "png"), end: end)
-                    usleep(100000)
                 })
             }
         }

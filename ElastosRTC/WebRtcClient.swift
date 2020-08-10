@@ -64,6 +64,22 @@ public class WebRtcClient: NSObject {
     var isUsingFrontCamera: Bool = true
     var callDirection: WebRtcCallDirection = .incoming
 
+    var bufferAmount: UInt64 = 0 {
+        didSet {
+            guard bufferItems.isEmpty == false, let channel = self.dataChannel else { return }
+            print("buffer item \(bufferItems)")
+            let item = bufferItems.removeFirst()
+            if channel.bufferedAmount / UInt64(item.data.count) < 5 {
+                print("send item")
+                channel.sendData(item)
+            } else {
+                print("full amount")
+            }
+        }
+    }
+
+    var bufferItems: [RTCDataBuffer] = []
+
     var messageQueue: [RtcSignal] = []
     var hasReceivedSdp: Bool = false {
         didSet {
@@ -250,6 +266,14 @@ public extension WebRtcClient {
         let buffer = RTCDataBuffer(data: data, isBinary: isBinary)
         guard let channel = dataChannel else { throw WebRtcError.dataChannelInitFailed }
         guard channel.readyState == .open else { throw WebRtcError.dataChannelStateIsNotOpen }
-        return channel.sendData(buffer) == true
+        if isBinary {
+            self.bufferItems.append(buffer)
+            self.bufferAmount = 0
+        } else {
+            return channel.sendData(buffer)
+        }
+
+        return true
+//        return channel.sendData(buffer) == true
     }
 }

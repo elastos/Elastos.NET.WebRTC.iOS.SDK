@@ -6,7 +6,7 @@ PODS:
   - ElastosCarrierSDK (5.6.3)
   - ElastosRTC (0.0.1):
     - ElastosCarrierSDK (= 5.6.3)
-    - GoogleWebRTC
+    - GoogleWebRTC (= 1.1.29400)
   - GoogleWebRTC (1.1.29400)
   - InputBarAccessoryView (4.3.3):
     - InputBarAccessoryView/Core (= 4.3.3)
@@ -42,7 +42,7 @@ SPEC CHECKSUMS:
   Bugly: eded937bbb1f731cacf689c2d934ddbd9ab34f83
   EFQRCode: a7ea2e517912f5bf6ba258b631327a83cd8084a5
   ElastosCarrierSDK: de9c0536432cd5d14937dd638e18d693592818af
-  ElastosRTC: 705be0cc777385d3c23d9b478985877e7305652e
+  ElastosRTC: 194941448e4167d0ff55ebf7049061b395fd98ca
   GoogleWebRTC: cfb83bc346435a17fe06bb05f04ad826b858a7fb
   InputBarAccessoryView: 8e7fc09e9cba75e0fee5da13450e15c194806f69
   MessageKit: 3beb578737a5aa2bba25cc27c7b6d6faa09af5a7
