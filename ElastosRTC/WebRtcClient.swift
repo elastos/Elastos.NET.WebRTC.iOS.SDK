@@ -67,14 +67,13 @@ public class WebRtcClient: NSObject {
     var bufferAmount: UInt64 = 0 {
         didSet {
             guard bufferItems.isEmpty == false, let channel = self.dataChannel else { return }
-            print("buffer item \(bufferItems)")
             let item = bufferItems.removeFirst()
             if channel.bufferedAmount / UInt64(item.data.count) < 5 {
-                print("send item")
+                print("[SEND]▶️: \(item)")
                 channel.sendData(item)
-            } else {
-                print("full amount")
+                return
             }
+            print("[STOP]❌: buffer amount = \(channel.bufferedAmount)")
         }
     }
 
@@ -272,8 +271,6 @@ public extension WebRtcClient {
         } else {
             return channel.sendData(buffer)
         }
-
         return true
-//        return channel.sendData(buffer) == true
     }
 }

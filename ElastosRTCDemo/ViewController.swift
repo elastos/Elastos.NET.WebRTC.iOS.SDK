@@ -211,7 +211,6 @@ extension ViewController: WebRtcDelegate {
 
     func onReceiveMessage(_ data: Data, isBinary: Bool, channelId: Int) {
         if isBinary {
-            print("✅ [RECV]: \(isBinary)")
             guard let dict = dataToDict(data: data),
                 let fileId = dict["fileId"] as? String,
                 let index = dict["index"] as? Int,
@@ -231,10 +230,10 @@ extension ViewController: WebRtcDelegate {
             } else {
                 dictData[fileId] = tmpData
             }
-            print("✅ [RECV]: \(fileId), end: \(isEnd), index: \(index)")
+            print("[RECV]✅: fileID: \(fileId), isEnd: \(isEnd), index: \(index)")
         } else {
             let content = String(describing: String(data: data, encoding: .utf8))
-            print("✅ [RECV]: \(content)")
+            print("[RECV]✅: \(content)")
             DataManager.shared.write(message: content, from: self.rtcClient.friendId!, to: self.carrier.getUserId())
             DispatchQueue.main.async {
                 NotificationCenter.default.post(name: .receiveMessage, object: nil, userInfo: ["data": data, "isBinary": isBinary, "userId": channelId])
