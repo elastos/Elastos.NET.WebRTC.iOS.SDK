@@ -64,18 +64,7 @@ public class WebRtcClient: NSObject {
     var isUsingFrontCamera: Bool = true
     var callDirection: WebRtcCallDirection = .incoming
 
-    var bufferAmount: UInt64 = 0 {
-        didSet {
-            guard bufferItems.isEmpty == false, let channel = self.dataChannel else { return }
-            let item = bufferItems.removeFirst()
-            if channel.bufferedAmount / UInt64(item.data.count) < 5 {
-                print("[SEND]▶️: \(item)")
-                channel.sendData(item)
-                return
-            }
-            print("[STOP]❌: buffer amount = \(channel.bufferedAmount)")
-        }
-    }
+    let queue = DispatchQueue(label: "org.elastos.webrtc.datachannel", qos: .background, attributes: .concurrent, autoreleaseFrequency: .workItem, target: .global())
 
     var bufferItems: [RTCDataBuffer] = []
 
@@ -258,19 +247,5 @@ public extension WebRtcClient {
         RTCDispatcher.dispatchAsync(on: .typeCaptureSession) {
             videoSource.stopCapture()
         }
-    }
-
-    @discardableResult
-    func sendData(_ data: Data, isBinary: Bool) throws -> Bool {
-        let buffer = RTCDataBuffer(data: data, isBinary: isBinary)
-        guard let channel = dataChannel else { throw WebRtcError.dataChannelInitFailed }
-        guard channel.readyState == .open else { throw WebRtcError.dataChannelStateIsNotOpen }
-        if isBinary {
-            self.bufferItems.append(buffer)
-            self.bufferAmount = 0
-        } else {
-            return channel.sendData(buffer)
-        }
-        return true
     }
 }

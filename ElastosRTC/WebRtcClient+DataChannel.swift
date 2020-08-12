@@ -22,6 +22,38 @@ extension WebRtcClient: RTCDataChannelDelegate {
     public func dataChannel(_ dataChannel: RTCDataChannel, didChangeBufferedAmount amount: UInt64) {
         Log.d(TAG, "data-channel didChangeBufferedAmount, %ld", amount)
         print("[WARN]❗️: buffer amount did change: \(amount), sum: \(dataChannel.bufferedAmount)")
-        self.bufferAmount = dataChannel.bufferedAmount
+        sendDataIfPossible()
+    }
+}
+
+extension WebRtcClient {
+
+    func sendDataIfPossible() {
+        guard bufferItems.isEmpty == false, let channel = self.dataChannel else { return }
+        queue.sync {
+            let item = self.bufferItems.removeFirst()
+            if channel.bufferedAmount / UInt64(item.data.count) < 5 {
+                print("[SEND]▶️: \(item)")
+                channel.sendData(item)
+                return
+            }
+            print("[STOP]❌: buffer amount = \(channel.bufferedAmount)")
+        }
+    }
+
+    @discardableResult
+    public func sendData(_ data: Data, isBinary: Bool) throws -> Bool {
+        let buffer = RTCDataBuffer(data: data, isBinary: isBinary)
+        guard let channel = dataChannel else { throw WebRtcError.dataChannelInitFailed }
+        guard channel.readyState == .open else { throw WebRtcError.dataChannelStateIsNotOpen }
+        if isBinary {
+            queue.sync {
+                self.bufferItems.append(buffer)
+                self.sendDataIfPossible()
+            }
+        } else {
+            return channel.sendData(buffer)
+        }
+        return true
     }
 }
