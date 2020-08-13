@@ -22,7 +22,9 @@ extension WebRtcClient: RTCDataChannelDelegate {
     public func dataChannel(_ dataChannel: RTCDataChannel, didChangeBufferedAmount amount: UInt64) {
         Log.d(TAG, "data-channel didChangeBufferedAmount, %ld", amount)
         print("[WARN]❗️: buffer amount did change: \(amount), sum: \(self.dataChannel!.bufferedAmount)")
-        sendDataIfPossible()
+        if self.buffers.isEmpty == false && dataChannel.bufferedAmount / 20 * 1024 < 5 {
+            self.condition.broadcast()
+        }
     }
 }
 
@@ -30,30 +32,30 @@ extension WebRtcClient {
 
     func sendDataIfPossible() {
         guard let channel = self.dataChannel else { return }
-        queue.sync {
-            while channel.bufferedAmount / 20 * 1024 < 5 {
-                guard self.bufferItems.isEmpty == false else { break }
-                let item = self.bufferItems.removeFirst()
-                 print("[SEND]▶️: \(item)")
-                channel.sendData(item)
+        queue.async {
+            while self.options.isEnableDataChannel {
+                self.condition.lock()
+                if self.buffers.isEmpty == true || channel.bufferedAmount / 20 * 1024 > 5 {
+                    if self.buffers.isEmpty == false {
+                        print("[WAIT]❌: buffer amount = \(channel.bufferedAmount), buffers count = \(self.buffers.count)")
+                    }
+                    self.condition.wait()
+                }
+                let buffer = self.buffers.removeFirst()
+                channel.sendData(buffer) ? print("[SEND]✅: \(buffer)") : print("[SEND]❌: \(buffer)")
+                self.condition.unlock()
             }
-            print("[STOP]❌: buffer amount = \(channel.bufferedAmount)")
         }
     }
 
-    @discardableResult
-    public func sendData(_ data: Data, isBinary: Bool) throws -> Bool {
-        let buffer = RTCDataBuffer(data: data, isBinary: isBinary)
+    public func sendData(_ data: Data, isBinary: Bool) throws {
         guard let channel = dataChannel else { throw WebRtcError.dataChannelInitFailed }
         guard channel.readyState == .open else { throw WebRtcError.dataChannelStateIsNotOpen }
-        if isBinary {
-            queue.sync {
-                self.bufferItems.append(buffer)
-                self.sendDataIfPossible()
-            }
-        } else {
-            return channel.sendData(buffer)
+        queue.async {
+            self.condition.lock()
+            self.buffers.append(RTCDataBuffer(data: data, isBinary: isBinary))
+            self.condition.signal()
+            self.condition.unlock()
         }
-        return true
     }
 }

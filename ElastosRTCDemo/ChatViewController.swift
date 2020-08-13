@@ -223,8 +223,8 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
 
         for component in components {
             if let str = component as? String, let data = str.data(using: .utf8) {
-                let result = try? self.client.sendData(data, isBinary: false)
-                print("[SEND]: " + "<" + str + "> " + (result == true ? "data-channel sent success" : "data-channel sent failure"))
+                try? self.client.sendData(data, isBinary: false)
+                print("[SEND]: " + "<" + str + "> ")
             }
         }
         DispatchQueue.main.async {

@@ -64,9 +64,9 @@ public class WebRtcClient: NSObject {
     var isUsingFrontCamera: Bool = true
     var callDirection: WebRtcCallDirection = .incoming
 
+    var buffers: [RTCDataBuffer] = []
+    let condition = NSCondition()
     let queue = DispatchQueue(label: "org.elastos.webrtc.datachannel", qos: .background, attributes: .concurrent, autoreleaseFrequency: .workItem, target: .global())
-
-    var bufferItems: [RTCDataBuffer] = []
 
     var messageQueue: [RtcSignal] = []
     var hasReceivedSdp: Bool = false {
