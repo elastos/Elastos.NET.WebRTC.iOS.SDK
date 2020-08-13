@@ -29,7 +29,7 @@ extension WebRtcClient {
             createDataChannel()
             dataChannel?.delegate = self
             assert(self.dataChannel != nil, "create data channel failed")
-            sendDataIfPossible()
+            Thread(target: self, selector: #selector(startToSendData), object: nil).start()
         }
     }
 

@@ -158,6 +158,7 @@ public class WebRtcClient: NSObject {
         dataChannel = nil
         hasReceivedSdp = false
         messageQueue.removeAll()
+        options = []
         Log.d(TAG, "webrtc client cleanup")
     }
 }
