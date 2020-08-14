@@ -66,7 +66,6 @@ public class WebRtcClient: NSObject {
 
     var buffers: [RTCDataBuffer] = []
     let condition = NSCondition()
-    let queue = DispatchQueue(label: "org.elastos.webrtc.datachannel", qos: .background, attributes: .concurrent, autoreleaseFrequency: .workItem, target: .global())
 
     var messageQueue: [RtcSignal] = []
     var hasReceivedSdp: Bool = false {
@@ -160,6 +159,7 @@ public class WebRtcClient: NSObject {
         messageQueue.removeAll()
         options = []
         Log.d(TAG, "webrtc client cleanup")
+        print("[FREE MEMORY]: WebRtcClient clean up")
     }
 }
 

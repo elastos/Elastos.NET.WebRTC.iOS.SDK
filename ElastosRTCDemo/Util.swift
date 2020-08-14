@@ -9,9 +9,7 @@
 import Foundation
 import MobileCoreServices
 
-extension UIColor {
-    static let primaryColor = UIColor(red: 69/255, green: 193/255, blue: 89/255, alpha: 1)
-}
+
 
 func readData(_ stream: InputStream, closure: (Data, Int, Bool) -> Void) throws {
     stream.open()

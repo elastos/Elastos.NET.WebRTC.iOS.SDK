@@ -222,8 +222,8 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         messageInputBar.inputTextView.placeholder = "Sending..."
 
         for component in components {
-            if let str = component as? String, let data = str.data(using: .utf8) {
-                try? self.client.sendData(data, isBinary: false)
+            if let str = component as? String {
+                try? self.client.sendText(str)
                 print("[SEND]: " + "<" + str + "> ")
             }
         }
@@ -233,13 +233,6 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
             self.insertMessages(components)
             self.messagesCollectionView.scrollToBottom(animated: true)
         }
-    }
-
-    private func sendMessage(data: Data, fileId: String, index: Int, mime: String, end: Bool) {
-        let dict: [String: Any] = ["data": data.base64EncodedString(), "fileId": fileId, "index": index, "mime": mime, "end": end]
-        guard let data = jsonToData(jsonDic: dict) else { fatalError() }
-        print("[SEND]: \(data), end: \(end), index: \(index)")
-        try? self.client.sendData(data, isBinary: true)
     }
 
     private func insertMessages(_ data: [Any]) {
@@ -297,15 +290,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let image = info[.originalImage] as? UIImage else { return }
 
-        DispatchQueue.global().async {
-            if let data = image.pngData() {
-                let stream = InputStream(data: data)
-                let fileId = UUID().uuidString
-                try? readData(stream, closure: { (data, index, end) in
-                    self.sendMessage(data: data, fileId: fileId, index: index, mime: mimeType(pathExtension: "png"), end: end)
-                })
-            }
-        }
+        try? self.client.sendImage(image)
 
         self.messageInputBar.sendButton.stopAnimating()
         self.messageInputBar.inputTextView.placeholder = "Aa"
@@ -318,4 +303,8 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
+}
+
+extension UIColor {
+    static let primaryColor = UIColor(red: 69/255, green: 193/255, blue: 89/255, alpha: 1)
 }
