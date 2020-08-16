@@ -7,13 +7,12 @@
 //
 
 import Foundation
-import MobileCoreServices
 
-let bufferAmountSize: UInt64 = 10 * 1024 * 10
 extension WebRtcClient: RTCDataChannelDelegate {
 
     public func dataChannelDidChangeState(_ dataChannel: RTCDataChannel) {
         Log.d(TAG, "data-channel did change state %@", dataChannel.readyState.state as CVarArg)
+        print("[DC]❌: \(dataChannel.readyState.state)")
     }
 
     public func dataChannel(_ dataChannel: RTCDataChannel, didReceiveMessageWith buffer: RTCDataBuffer) {
@@ -24,7 +23,7 @@ extension WebRtcClient: RTCDataChannelDelegate {
     public func dataChannel(_ dataChannel: RTCDataChannel, didChangeBufferedAmount amount: UInt64) {
         Log.d(TAG, "data-channel didChangeBufferedAmount, %ld", amount)
         print("[WARN]❗️: buffer amount did change: \(amount), sum: \(self.dataChannel!.bufferedAmount)")
-        if self.buffers.isEmpty == false && dataChannel.bufferedAmount < bufferAmountSize {
+        if self.buffers.isEmpty == false && dataChannel.bufferedAmount < HIGH_WATER_MARK {
             self.condition.signal()
         }
     }
@@ -37,12 +36,13 @@ extension WebRtcClient {
             print("READY TO SEND DATA")
             self.condition.lock()
             let channel = self.dataChannel!
-            if self.buffers.isEmpty == true || channel.bufferedAmount > bufferAmountSize {
+            if self.buffers.isEmpty == true || channel.bufferedAmount > HIGH_WATER_MARK {
                 print("[CONSUMER-WAIT]🕒: buffer amount = \(channel.bufferedAmount), buffers count = \(self.buffers.count)")
                 self.condition.wait()
             }
             let buffer = self.buffers.removeFirst()
             channel.sendData(buffer) ? print("[CONSUMER]✅: \(buffer)") : print("[CONSUMER]❌: \(buffer)")
+            self.condition.signal()
             self.condition.unlock()
         }
     }
@@ -83,7 +83,7 @@ extension WebRtcClient {
 
     func readData(_ stream: InputStream, fileExtension: String) throws {
         stream.open()
-        let bufferSize = 1024 * 16 //16k
+        let bufferSize = MAX_CHUNK_SIZE
         let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
         defer {
             stream.close()
@@ -117,13 +117,5 @@ extension WebRtcClient {
             condition.signal()
             condition.unlock()
         }
-    }
-
-    func mimeType(pathExtension: String) -> String {
-        if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension as NSString, nil)?.takeRetainedValue(),
-            let mimetype = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType)?.takeRetainedValue() {
-                return mimetype as String
-        }
-        return "application/octet-stream"
     }
 }

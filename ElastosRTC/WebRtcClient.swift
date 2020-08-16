@@ -158,6 +158,7 @@ public class WebRtcClient: NSObject {
         hasReceivedSdp = false
         messageQueue.removeAll()
         options = []
+        buffers = []
         Log.d(TAG, "webrtc client cleanup")
         print("[FREE MEMORY]: WebRtcClient clean up")
     }

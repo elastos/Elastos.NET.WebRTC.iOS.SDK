@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		74104B6724E8251800EE6A19 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74104B6624E8251800EE6A19 /* Utils.swift */; };
 		743AC317248D33EA00A04AD0 /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743AC316248D33EA00A04AD0 /* DeviceManager.swift */; };
 		745CB72E2494668A00E7D308 /* Carrier+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745CB72D2494668A00E7D308 /* Carrier+Util.swift */; };
 		745CB73B249652E500E7D308 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745CB73A249652E500E7D308 /* SettingViewController.swift */; };
@@ -16,7 +17,6 @@
 		807706C9248908390066D477 /* WebRtcClient+VideoRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807706C8248908390066D477 /* WebRtcClient+VideoRender.swift */; };
 		808AE2C224A8A72E002DF9C9 /* WebRtcSignalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808AE2C124A8A72E002DF9C9 /* WebRtcSignalTests.swift */; };
 		808AE2C424A8A8D0002DF9C9 /* XCTestCase+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808AE2C324A8A8D0002DF9C9 /* XCTestCase+Util.swift */; };
-		808AE2C624A8B70B002DF9C9 /* Const.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808AE2C524A8B70B002DF9C9 /* Const.swift */; };
 		808AE2C824A8BA38002DF9C9 /* mock_offer.json in Resources */ = {isa = PBXBuildFile; fileRef = 808AE2C724A8BA38002DF9C9 /* mock_offer.json */; };
 		808AE2CA24A8C35F002DF9C9 /* mock_added_candidate.json in Resources */ = {isa = PBXBuildFile; fileRef = 808AE2C924A8C35F002DF9C9 /* mock_added_candidate.json */; };
 		808AE2CC24A8C3C3002DF9C9 /* mock_answer.json in Resources */ = {isa = PBXBuildFile; fileRef = 808AE2CB24A8C3C3002DF9C9 /* mock_answer.json */; };
@@ -62,6 +62,7 @@
 
 /* Begin PBXFileReference section */
 		43126D9EA6BBEC3B2A90F90E /* Pods-ElastosRTCTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosRTCTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ElastosRTCTests/Pods-ElastosRTCTests.release.xcconfig"; sourceTree = "<group>"; };
+		74104B6624E8251800EE6A19 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		743AC316248D33EA00A04AD0 /* DeviceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
 		7446E9EDE7D97C628741B805 /* Pods-ElastosRTCDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosRTCDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-ElastosRTCDemo/Pods-ElastosRTCDemo.release.xcconfig"; sourceTree = "<group>"; };
 		745CB72D2494668A00E7D308 /* Carrier+Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Carrier+Util.swift"; sourceTree = "<group>"; };
@@ -74,7 +75,6 @@
 		807706C8248908390066D477 /* WebRtcClient+VideoRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebRtcClient+VideoRender.swift"; sourceTree = "<group>"; };
 		808AE2C124A8A72E002DF9C9 /* WebRtcSignalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRtcSignalTests.swift; sourceTree = "<group>"; };
 		808AE2C324A8A8D0002DF9C9 /* XCTestCase+Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Util.swift"; sourceTree = "<group>"; };
-		808AE2C524A8B70B002DF9C9 /* Const.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Const.swift; sourceTree = "<group>"; };
 		808AE2C724A8BA38002DF9C9 /* mock_offer.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = mock_offer.json; sourceTree = "<group>"; };
 		808AE2C924A8C35F002DF9C9 /* mock_added_candidate.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = mock_added_candidate.json; sourceTree = "<group>"; };
 		808AE2CB24A8C3C3002DF9C9 /* mock_answer.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = mock_answer.json; sourceTree = "<group>"; };
@@ -215,7 +215,6 @@
 		F9A8D0A92486A9C100FFDFD2 /* ElastosRTC */ = {
 			isa = PBXGroup;
 			children = (
-				808AE2C524A8B70B002DF9C9 /* Const.swift */,
 				74EA215E248A93B800240BD9 /* Supporting Files */,
 				F9A2817E2487F05A0032A2C0 /* WebRtcClient.swift */,
 				F9A281802487F5230032A2C0 /* WebRtcClient+Carrier.swift */,
@@ -224,6 +223,7 @@
 				807706C8248908390066D477 /* WebRtcClient+VideoRender.swift */,
 				80E6940424BC179D008F1DE2 /* WebRtcModel+Extension.swift */,
 				F9A2818C248952990032A2C0 /* WebRtcSignal.swift */,
+				74104B6624E8251800EE6A19 /* Utils.swift */,
 			);
 			path = ElastosRTC;
 			sourceTree = "<group>";
@@ -492,8 +492,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				808AE2C624A8B70B002DF9C9 /* Const.swift in Sources */,
 				F9A281812487F5230032A2C0 /* WebRtcClient+Carrier.swift in Sources */,
+				74104B6724E8251800EE6A19 /* Utils.swift in Sources */,
 				80BEB5E124AF2BE600FC850F /* WebRtcClient+DataChannel.swift in Sources */,
 				F9A281852487F6830032A2C0 /* WebRtcClient+PeerConnection.swift in Sources */,
 				807706C9248908390066D477 /* WebRtcClient+VideoRender.swift in Sources */,
