@@ -1,5 +1,4 @@
 PODS:
-  - Bugly (2.5.5)
   - EFQRCode (5.1.6):
     - EFQRCode/Core (= 5.1.6)
   - EFQRCode/Core (5.1.6)
@@ -8,15 +7,14 @@ PODS:
     - ElastosCarrierSDK (= 5.6.3)
     - GoogleWebRTC (= 1.1.29400)
   - GoogleWebRTC (1.1.29400)
-  - InputBarAccessoryView (4.3.2):
-    - InputBarAccessoryView/Core (= 4.3.2)
-  - InputBarAccessoryView/Core (4.3.2)
+  - InputBarAccessoryView (4.3.3):
+    - InputBarAccessoryView/Core (= 4.3.3)
+  - InputBarAccessoryView/Core (4.3.3)
   - MessageKit (3.1.0):
     - InputBarAccessoryView (~> 4.3.0)
   - QRCodeReader.swift (10.1.0)
 
 DEPENDENCIES:
-  - Bugly (= 2.5.5)
   - EFQRCode (= 5.1.6)
   - ElastosCarrierSDK
   - ElastosRTC (from `./`)
@@ -26,7 +24,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
-    - Bugly
     - EFQRCode
     - ElastosCarrierSDK
     - GoogleWebRTC
@@ -39,15 +36,14 @@ EXTERNAL SOURCES:
     :path: "./"
 
 SPEC CHECKSUMS:
-  Bugly: eded937bbb1f731cacf689c2d934ddbd9ab34f83
   EFQRCode: a7ea2e517912f5bf6ba258b631327a83cd8084a5
   ElastosCarrierSDK: de9c0536432cd5d14937dd638e18d693592818af
   ElastosRTC: 194941448e4167d0ff55ebf7049061b395fd98ca
   GoogleWebRTC: cfb83bc346435a17fe06bb05f04ad826b858a7fb
-  InputBarAccessoryView: 7985d418040a05fe894bd4b8328dd43ab35517c3
+  InputBarAccessoryView: 8e7fc09e9cba75e0fee5da13450e15c194806f69
   MessageKit: 3beb578737a5aa2bba25cc27c7b6d6faa09af5a7
   QRCodeReader.swift: 373a389fe9a22d513c879a32a6f647c58f4ef572
 
-PODFILE CHECKSUM: 179a5fc2bcb2a38ca23838d8d111b19855a7192d
+PODFILE CHECKSUM: d2de301d705e65377db8a35e762cc6169f627156
 
 COCOAPODS: 1.9.3
