@@ -24,7 +24,7 @@ extension WebRtcClient: RTCDataChannelDelegate {
         Log.d(TAG, "data-channel didChangeBufferedAmount, %ld", amount)
         print("[WARN]❗️: buffer amount did change: \(amount), sum: \(self.dataChannel!.bufferedAmount)")
         if self.buffers.isEmpty == false && dataChannel.bufferedAmount < HIGH_WATER_MARK {
-            self.condition.signal()
+            self.condition.broadcast()
         }
     }
 }
@@ -36,7 +36,7 @@ extension WebRtcClient {
             print("READY TO SEND DATA")
             self.condition.lock()
             let channel = self.dataChannel!
-            if self.buffers.isEmpty == true || channel.bufferedAmount > HIGH_WATER_MARK {
+            while self.buffers.isEmpty == true || channel.bufferedAmount > HIGH_WATER_MARK {
                 print("[CONSUMER-WAIT]🕒: buffer amount = \(channel.bufferedAmount), buffers count = \(self.buffers.count)")
                 self.condition.wait()
             }
