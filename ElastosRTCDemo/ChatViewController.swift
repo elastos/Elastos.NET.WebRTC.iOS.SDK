@@ -250,7 +250,12 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
     }
 }
 
-extension ChatViewController: MessagesLayoutDelegate, MessagesDisplayDelegate { }
+extension ChatViewController: MessagesLayoutDelegate, MessagesDisplayDelegate {
+
+    func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
+        .bubble
+    }
+}
 
 extension ChatViewController {
 

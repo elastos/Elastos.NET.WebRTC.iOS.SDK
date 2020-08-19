@@ -13,6 +13,7 @@
 		745CB73B249652E500E7D308 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745CB73A249652E500E7D308 /* SettingViewController.swift */; };
 		746250DB24C48C9A00CC97BB /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746250DA24C48C9A00CC97BB /* MyProfileViewController.swift */; };
 		746250DF24C4A65800CC97BB /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746250DE24C4A65800CC97BB /* UIViewController+Alert.swift */; };
+		80129E6A24ED350A00823F3F /* UIView+Progress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80129E6924ED350A00823F3F /* UIView+Progress.swift */; };
 		80139DEE24CEA3AB005987AD /* UIViewController+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80139DED24CEA3AB005987AD /* UIViewController+Empty.swift */; };
 		807706C9248908390066D477 /* WebRtcClient+VideoRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807706C8248908390066D477 /* WebRtcClient+VideoRender.swift */; };
 		808AE2C224A8A72E002DF9C9 /* WebRtcSignalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808AE2C124A8A72E002DF9C9 /* WebRtcSignalTests.swift */; };
@@ -71,6 +72,7 @@
 		746250DE24C4A65800CC97BB /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		749E621FACBE3D5FE0323038 /* Pods-ElastosRTCTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosRTCTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ElastosRTCTests/Pods-ElastosRTCTests.debug.xcconfig"; sourceTree = "<group>"; };
 		75885C044B032846CFCCBA1F /* Pods_ElastosRTCDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ElastosRTCDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		80129E6924ED350A00823F3F /* UIView+Progress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Progress.swift"; sourceTree = "<group>"; };
 		80139DED24CEA3AB005987AD /* UIViewController+Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Empty.swift"; sourceTree = "<group>"; };
 		807706C8248908390066D477 /* WebRtcClient+VideoRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebRtcClient+VideoRender.swift"; sourceTree = "<group>"; };
 		808AE2C124A8A72E002DF9C9 /* WebRtcSignalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRtcSignalTests.swift; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 				80E3481624C558D30009B998 /* MediaCallViewController.swift */,
 				746250DA24C48C9A00CC97BB /* MyProfileViewController.swift */,
 				745CB73A249652E500E7D308 /* SettingViewController.swift */,
+				80129E6924ED350A00823F3F /* UIView+Progress.swift */,
 				80EBBC9324DC2FCD00BD4704 /* Util.swift */,
 				80E6940824BC28AE008F1DE2 /* Supporting Files */,
 				746250DE24C4A65800CC97BB /* UIViewController+Alert.swift */,
@@ -523,6 +526,7 @@
 				743AC317248D33EA00A04AD0 /* DeviceManager.swift in Sources */,
 				F9870083248FE1DB005758F3 /* FriendCell.swift in Sources */,
 				80E3481724C558D30009B998 /* MediaCallViewController.swift in Sources */,
+				80129E6A24ED350A00823F3F /* UIView+Progress.swift in Sources */,
 				80F2C49524E6A42F00BFF091 /* Util.swift in Sources */,
 				746250DB24C48C9A00CC97BB /* MyProfileViewController.swift in Sources */,
 				745CB73B249652E500E7D308 /* SettingViewController.swift in Sources */,
