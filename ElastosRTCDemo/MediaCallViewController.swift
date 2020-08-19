@@ -236,10 +236,10 @@ class MediaCallViewController: UIViewController {
             localVideo.widthAnchor.constraint(equalToConstant: 200),
             localVideo.heightAnchor.constraint(equalToConstant: 200),
 
-            remoteVideo.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            remoteVideo.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            remoteVideo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            remoteVideo.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            remoteVideo.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            remoteVideo.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            remoteVideo.topAnchor.constraint(equalTo: view.topAnchor),
+            remoteVideo.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
 

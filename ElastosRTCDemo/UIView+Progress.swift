@@ -20,7 +20,7 @@ class IndicatorProgressView: UIView {
     }()
 
     let activityIndicatorView: UIActivityIndicatorView = {
-        let view = UIActivityIndicatorView(style: .medium)
+        let view = UIActivityIndicatorView(style: .gray)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.startAnimating()
         view.hidesWhenStopped = true
