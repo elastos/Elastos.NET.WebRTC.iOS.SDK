@@ -106,7 +106,7 @@ extension WebRtcClient: RTCPeerConnectionDelegate {
         self.remoteStream = stream
         RTCDispatcher.dispatchAsync(on: .typeMain) {
             if let track = stream.videoTracks.first {
-                track.add(self.remoteRenderView)
+                track.add(self.remoteRenderView!)
             }
         }
     }

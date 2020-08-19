@@ -43,16 +43,6 @@ public class WebRtcClient: NSObject {
     public var friendId: String?
     public weak var delegate: WebRtcDelegate?
 
-    lazy var localVideoView: UIView = {
-        let view = UIView()
-        return view
-    }()
-
-    lazy var remoteVideoView: UIView = {
-        let view = UIView()
-        return view
-    }()
-
     public internal(set) var options: MediaOptions = [.audio, .video] {
         didSet {
             setupMedia()
@@ -101,17 +91,24 @@ public class WebRtcClient: NSObject {
         return RTCPeerConnectionFactory(encoderFactory: videoEncoder, decoderFactory: videoDecoder)
     }()
 
-    lazy var localRenderView: RTCEAGLVideoView = {
-        let view = RTCEAGLVideoView()
-        view.delegate = self
+    lazy var localVideoView: UIView = {
+        let view = UIView()
         return view
     }()
 
-    lazy var remoteRenderView: RTCEAGLVideoView = {
+    lazy var remoteVideoView: UIView = {
+        let view = UIView()
+        return view
+    }()
+
+    var localRenderView: RTCEAGLVideoView?
+    var remoteRenderView: RTCEAGLVideoView?
+
+    func createRenderView() -> RTCEAGLVideoView {
         let view = RTCEAGLVideoView()
         view.delegate = self
         return view
-    }()
+    }
 
     lazy var localAudioTrack: RTCAudioTrack = {
         let constraints = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil)
@@ -159,6 +156,10 @@ public class WebRtcClient: NSObject {
         messageQueue.removeAll()
         options = []
         buffers = []
+        localRenderView?.removeFromSuperview()
+        remoteRenderView?.removeFromSuperview()
+        localRenderView = nil
+        remoteRenderView = nil
         Log.d(TAG, "webrtc client cleanup")
         print("[FREE MEMORY]: WebRtcClient clean up")
     }
