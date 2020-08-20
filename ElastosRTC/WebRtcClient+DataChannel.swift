@@ -8,7 +8,6 @@
 
 import Foundation
 
-typealias SendFileProgressClosure = (Float) -> Void
 extension WebRtcClient: RTCDataChannelDelegate {
 
     public func dataChannelDidChangeState(_ dataChannel: RTCDataChannel) {
@@ -30,17 +29,27 @@ extension WebRtcClient: RTCDataChannelDelegate {
 
 extension WebRtcClient {
 
+    var hasAvailableBuffersToSend: Bool {
+        guard let channel = self.dataChannel else { return false }
+        return !buffers.isEmpty && channel.bufferedAmount < HIGH_WATER_MARK
+    }
+
     @objc func startToSendData() {
         while self.options.isEnableDataChannel {
             self.condition.lock()
             let channel = self.dataChannel!
-            while self.buffers.isEmpty == true || channel.bufferedAmount > HIGH_WATER_MARK {
+
+            if !hasAvailableBuffersToSend {
                 self.condition.wait()
             }
-            let buffer = self.buffers.removeFirst()
-            channel.sendData(buffer)
-            self.condition.signal()
-            self.condition.unlock()
+
+            while hasAvailableBuffersToSend {
+                let buffer = self.buffers.removeFirst()
+                channel.sendData(buffer)
+            }
+
+            condition.signal()
+            condition.unlock()
         }
     }
 
@@ -56,7 +65,7 @@ extension WebRtcClient {
         }
     }
 
-    public func sendFile(_ path: String, closure: ((Float) -> Void)? = nil) throws {
+    public func sendFile(_ path: String) throws {
         guard let channel = dataChannel else { throw WebRtcError.dataChannelInitFailed }
         guard channel.readyState == .open else { throw WebRtcError.dataChannelStateIsNotOpen }
         guard FileManager.default.fileExists(atPath: path) else { fatalError("file path must be valid") }
@@ -104,7 +113,7 @@ extension WebRtcClient {
                                        "mime": mimeType(pathExtension: fileExtension),
                                        "end": !stream.hasBytesAvailable]
             let data = try JSONSerialization.data(withJSONObject: dict, options: [])
-            self.buffers.append(RTCDataBuffer(data: data, isBinary: true))
+            buffers.append(RTCDataBuffer(data: data, isBinary: true))
             index += 1
             condition.signal()
             condition.unlock()

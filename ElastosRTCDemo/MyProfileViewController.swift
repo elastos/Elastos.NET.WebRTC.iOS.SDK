@@ -135,8 +135,8 @@ class MyProfileViewController: UIViewController {
         readerVC.completionBlock = { [weak self] (result: QRCodeReaderResult?) in
             guard let self = self else { return }
             self.textField.text = result?.value
-            self.addAsFriend()
             self.dismiss(animated: true, completion: nil)
+            self.addAsFriend()
         }
 
         // Presents the readerVC as modal form sheet

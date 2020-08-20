@@ -245,7 +245,6 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         for component in components {
             if let str = component as? String {
                 try? self.client.sendText(str)
-                print("[SEND]: " + "<" + str + "> ")
             }
         }
         DispatchQueue.main.async {
@@ -274,7 +273,6 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
 extension ChatViewController: MessagesLayoutDelegate, MessagesDisplayDelegate {
 
     func configureMediaMessageImageView(_ imageView: UIImageView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
-        
     }
 }
 
