@@ -13,7 +13,6 @@ extension WebRtcClient: RTCDataChannelDelegate {
 
     public func dataChannelDidChangeState(_ dataChannel: RTCDataChannel) {
         Log.d(TAG, "data-channel did change state %@", dataChannel.readyState.state as CVarArg)
-        print("[DC]❌: \(dataChannel.readyState.state)")
     }
 
     public func dataChannel(_ dataChannel: RTCDataChannel, didReceiveMessageWith buffer: RTCDataBuffer) {
@@ -23,7 +22,6 @@ extension WebRtcClient: RTCDataChannelDelegate {
     
     public func dataChannel(_ dataChannel: RTCDataChannel, didChangeBufferedAmount amount: UInt64) {
         Log.d(TAG, "data-channel didChangeBufferedAmount, %ld", amount)
-        print("[WARN]❗️: buffer amount did change: \(amount), sum: \(self.dataChannel!.bufferedAmount)")
         if self.buffers.isEmpty == false && dataChannel.bufferedAmount < HIGH_WATER_MARK {
             self.condition.broadcast()
         }
@@ -34,15 +32,13 @@ extension WebRtcClient {
 
     @objc func startToSendData() {
         while self.options.isEnableDataChannel {
-            print("READY TO SEND DATA")
             self.condition.lock()
             let channel = self.dataChannel!
             while self.buffers.isEmpty == true || channel.bufferedAmount > HIGH_WATER_MARK {
-                print("[CONSUMER-WAIT]🕒: buffer amount = \(channel.bufferedAmount), buffers count = \(self.buffers.count)")
                 self.condition.wait()
             }
             let buffer = self.buffers.removeFirst()
-            channel.sendData(buffer) ? print("[CONSUMER]✅: \(buffer)") : print("[CONSUMER]❌: \(buffer)")
+            channel.sendData(buffer)
             self.condition.signal()
             self.condition.unlock()
         }
@@ -54,7 +50,6 @@ extension WebRtcClient {
         guard let data = text.data(using: .utf8) else { fatalError("utf8 failure") }
         DispatchQueue.global().async {
             self.condition.lock()
-            print("[PRODUCER]: Append a new item: | \(text)")
             self.buffers.append(RTCDataBuffer(data: data, isBinary: false))
             self.condition.signal()
             self.condition.unlock()
@@ -95,7 +90,6 @@ extension WebRtcClient {
         while stream.hasBytesAvailable {
             condition.lock()
             if buffers.count > 10 {
-                print("[PRODUCER-WAIT]🕒: buffers count > 10")
                 condition.wait()
             }
             let read = stream.read(buffer, maxLength: bufferSize)
@@ -110,7 +104,6 @@ extension WebRtcClient {
                                        "mime": mimeType(pathExtension: fileExtension),
                                        "end": !stream.hasBytesAvailable]
             let data = try JSONSerialization.data(withJSONObject: dict, options: [])
-            print("[PRODUCER]: Append a new item | \(mimeType(pathExtension: fileExtension))")
             self.buffers.append(RTCDataBuffer(data: data, isBinary: true))
             index += 1
             condition.signal()
