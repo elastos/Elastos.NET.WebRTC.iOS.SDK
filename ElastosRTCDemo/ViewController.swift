@@ -213,7 +213,6 @@ extension ViewController: WebRtcDelegate {
         if isBinary {
             guard let dict = dataToDict(data: data),
                 let fileId = dict["fileId"] as? String,
-                let index = dict["index"] as? Int,
                 let str = dict["data"] as? String,
                 let data = Data(base64Encoded: str),
                 let isEnd = dict["end"] as? Bool else {
@@ -222,7 +221,11 @@ extension ViewController: WebRtcDelegate {
             var tmpData = dictData[fileId] ?? Data()
             tmpData.append(data)
             if isEnd {
-                DataManager.shared.write(image: UIImage.init(data: tmpData)!, from: self.rtcClient.friendId!, to: self.carrier.getUserId())
+                guard let image = UIImage(data: tmpData) else {
+                    alert(message: "收到图片, 合成图片失败")
+                    return
+                }
+                DataManager.shared.write(image: image, from: self.rtcClient.friendId!, to: self.carrier.getUserId())
                 dictData[fileId] = nil
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: .receiveMessage, object: nil, userInfo: ["data": tmpData, "isBinary": isBinary, "userId": channelId])
@@ -230,10 +233,8 @@ extension ViewController: WebRtcDelegate {
             } else {
                 dictData[fileId] = tmpData
             }
-            print("[RECV]✅: fileID: \(fileId), isEnd: \(isEnd), index: \(index)")
         } else {
             let content = String(describing: String(data: data, encoding: .utf8))
-            print("[RECV]✅: \(content)")
             DataManager.shared.write(message: content, from: self.rtcClient.friendId!, to: self.carrier.getUserId())
             DispatchQueue.main.async {
                 NotificationCenter.default.post(name: .receiveMessage, object: nil, userInfo: ["data": data, "isBinary": isBinary, "userId": channelId])
