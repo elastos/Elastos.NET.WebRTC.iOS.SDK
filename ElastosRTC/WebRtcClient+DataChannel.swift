@@ -8,6 +8,7 @@
 
 import Foundation
 
+typealias SendFileProgressClosure = (Float) -> Void
 extension WebRtcClient: RTCDataChannelDelegate {
 
     public func dataChannelDidChangeState(_ dataChannel: RTCDataChannel) {
@@ -60,7 +61,7 @@ extension WebRtcClient {
         }
     }
 
-    public func sendFile(_ path: String) throws {
+    public func sendFile(_ path: String, closure: ((Float) -> Void)? = nil) throws {
         guard let channel = dataChannel else { throw WebRtcError.dataChannelInitFailed }
         guard channel.readyState == .open else { throw WebRtcError.dataChannelStateIsNotOpen }
         guard FileManager.default.fileExists(atPath: path) else { fatalError("file path must be valid") }
@@ -101,9 +102,7 @@ extension WebRtcClient {
             if read < 0 {
                 throw stream.streamError!
             } else if read == 0 {
-                //EOF
-                assertionFailure()
-                break
+                break //EOF
             }
             let dict: [String: Any] = ["data": Data(bytes: buffer, count: read).base64EncodedString(),
                                        "fileId": fileID,

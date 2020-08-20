@@ -39,6 +39,8 @@ struct MockMessage: MessageType {
 
 	var user: MockUser
 
+    var percent: Float?
+
 	private init(kind: MessageKind, user: MockUser, messageId: String, date: Date) {
 	    self.kind = kind
 	    self.user = user
@@ -54,6 +56,10 @@ struct MockMessage: MessageType {
 	    let mediaItem = ImageMediaItem(image: image)
 	    self.init(kind: .photo(mediaItem), user: user, messageId: messageId, date: date)
 	}
+
+    init(custom: Any, user: MockUser, messageId: String, date: Date) {
+        self.init(kind: .custom(custom), user: user, messageId: messageId, date: date)
+    }
 }
 
 class ChatViewController: MessagesViewController, MessagesDataSource {
@@ -136,7 +142,7 @@ extension ChatViewController: MessageCellDelegate {
 
     func didTapImage(in cell: MessageCollectionViewCell) {
         guard let indexPath = self.messagesCollectionView.indexPath(for: cell) else { return }
-        let message = self.messages[indexPath.row]
+        let message = self.messages[indexPath.section]
         switch message.kind {
         case .photo(let media):
             self.showPreview(image: media.image!)
@@ -267,8 +273,8 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
 
 extension ChatViewController: MessagesLayoutDelegate, MessagesDisplayDelegate {
 
-    func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
-        .bubble
+    func configureMediaMessageImageView(_ imageView: UIImageView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+        
     }
 }
 

@@ -220,6 +220,7 @@
 			isa = PBXGroup;
 			children = (
 				74EA215E248A93B800240BD9 /* Supporting Files */,
+				74104B6624E8251800EE6A19 /* Utils.swift */,
 				F9A2817E2487F05A0032A2C0 /* WebRtcClient.swift */,
 				F9A281802487F5230032A2C0 /* WebRtcClient+Carrier.swift */,
 				80BEB5E024AF2BE600FC850F /* WebRtcClient+DataChannel.swift */,
@@ -227,7 +228,6 @@
 				807706C8248908390066D477 /* WebRtcClient+VideoRender.swift */,
 				80E6940424BC179D008F1DE2 /* WebRtcModel+Extension.swift */,
 				F9A2818C248952990032A2C0 /* WebRtcSignal.swift */,
-				74104B6624E8251800EE6A19 /* Utils.swift */,
 			);
 			path = ElastosRTC;
 			sourceTree = "<group>";
@@ -255,12 +255,12 @@
 				80E3481624C558D30009B998 /* MediaCallViewController.swift */,
 				746250DA24C48C9A00CC97BB /* MyProfileViewController.swift */,
 				745CB73A249652E500E7D308 /* SettingViewController.swift */,
-				80129E6924ED350A00823F3F /* UIView+Progress.swift */,
-				80EBBC9324DC2FCD00BD4704 /* Util.swift */,
 				80E6940824BC28AE008F1DE2 /* Supporting Files */,
+				80129E6924ED350A00823F3F /* UIView+Progress.swift */,
 				746250DE24C4A65800CC97BB /* UIViewController+Alert.swift */,
 				80139DED24CEA3AB005987AD /* UIViewController+Empty.swift */,
 				80FAFBAC24EE551400C36804 /* UIViewController+Preview.swift */,
+				80EBBC9324DC2FCD00BD4704 /* Util.swift */,
 				F9A8D0CB2486AA1C00FFDFD2 /* ViewController.swift */,
 			);
 			path = ElastosRTCDemo;
@@ -498,8 +498,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F9A281812487F5230032A2C0 /* WebRtcClient+Carrier.swift in Sources */,
 				74104B6724E8251800EE6A19 /* Utils.swift in Sources */,
+				F9A281812487F5230032A2C0 /* WebRtcClient+Carrier.swift in Sources */,
 				80BEB5E124AF2BE600FC850F /* WebRtcClient+DataChannel.swift in Sources */,
 				F9A281852487F6830032A2C0 /* WebRtcClient+PeerConnection.swift in Sources */,
 				807706C9248908390066D477 /* WebRtcClient+VideoRender.swift in Sources */,
@@ -529,13 +529,13 @@
 				743AC317248D33EA00A04AD0 /* DeviceManager.swift in Sources */,
 				F9870083248FE1DB005758F3 /* FriendCell.swift in Sources */,
 				80E3481724C558D30009B998 /* MediaCallViewController.swift in Sources */,
-				80129E6A24ED350A00823F3F /* UIView+Progress.swift in Sources */,
-				80F2C49524E6A42F00BFF091 /* Util.swift in Sources */,
 				746250DB24C48C9A00CC97BB /* MyProfileViewController.swift in Sources */,
 				745CB73B249652E500E7D308 /* SettingViewController.swift in Sources */,
+				80129E6A24ED350A00823F3F /* UIView+Progress.swift in Sources */,
 				746250DF24C4A65800CC97BB /* UIViewController+Alert.swift in Sources */,
-				80FAFBAD24EE551400C36804 /* UIViewController+Preview.swift in Sources */,
 				80139DEE24CEA3AB005987AD /* UIViewController+Empty.swift in Sources */,
+				80FAFBAD24EE551400C36804 /* UIViewController+Preview.swift in Sources */,
+				80F2C49524E6A42F00BFF091 /* Util.swift in Sources */,
 				F9A8D0CC2486AA1C00FFDFD2 /* ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
