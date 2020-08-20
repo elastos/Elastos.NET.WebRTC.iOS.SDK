@@ -132,6 +132,20 @@ class ChatViewController: MessagesViewController, MessagesDataSource {
     }
 }
 
+extension ChatViewController: MessageCellDelegate {
+
+    func didTapImage(in cell: MessageCollectionViewCell) {
+        guard let indexPath = self.messagesCollectionView.indexPath(for: cell) else { return }
+        let message = self.messages[indexPath.row]
+        switch message.kind {
+        case .photo(let media):
+            self.showPreview(image: media.image!)
+        default:
+            break
+        }
+    }
+}
+
 extension ChatViewController {
 
     func configureMessageInputBar() {
@@ -149,6 +163,7 @@ extension ChatViewController {
 
     func configureMessageCollectionView() {
         messagesCollectionView.messagesDataSource = self
+        messagesCollectionView.messageCellDelegate = self
         scrollsToBottomOnKeyboardBeginsEditing = true // default false
         maintainPositionOnKeyboardFrameChanged = true // default false
 
