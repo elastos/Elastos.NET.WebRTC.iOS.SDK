@@ -9,7 +9,11 @@
 import Foundation
 import MobileCoreServices
 
-
+let formatter: DateFormatter = {
+     let formatter = DateFormatter()
+     formatter.dateStyle = .medium
+     return formatter
+ }()
 
 func readData(_ stream: InputStream, closure: (Data, Int, Bool) -> Void) throws {
     stream.open()

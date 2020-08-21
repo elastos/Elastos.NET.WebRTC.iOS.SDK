@@ -205,40 +205,36 @@ extension ViewController: WebRtcDelegate {
     }
 
     func onReceiveMessage(_ data: Data, isBinary: Bool, channelId: Int) {
-        if isBinary {
-            guard let dict = dataToDict(data: data),
-                let fileId = dict["fileId"] as? String,
-                let str = dict["data"] as? String,
-                let data = Data(base64Encoded: str),
-                let index = dict["index"] as? Int,
-                let isEnd = dict["end"] as? Bool else {
-                fatalError("error format message")
-            }
-            var tmpData = dictData[fileId] ?? Data()
-            tmpData.append(data)
-            DispatchQueue.main.async {
-                if index == 0 {
-                    NotificationCenter.default.post(name: .receiveMessage, object: nil, userInfo: ["data": ("传输开始" + Date().description).data(using: .utf8)!, "isBinary": false, "userId": channelId, "type": "system"])
+        DispatchQueue.main.async {
+            if isBinary {
+                guard let dict = dataToDict(data: data),
+                    let fileId = dict["fileId"] as? String,
+                    let str = dict["data"] as? String,
+                    let data = Data(base64Encoded: str),
+                    let index = dict["index"] as? Int,
+                    let isEnd = dict["end"] as? Bool else {
+                        fatalError("error format message")
                 }
-            }
-            if isEnd {
-                DispatchQueue.main.async {
+                var tmpData = self.dictData[fileId] ?? Data()
+                tmpData.append(data)
+                if index == 0 {
+                    NotificationCenter.default.post(name: .receiveMessage, object: "传输开始" + formatter.string(from: Date()), userInfo:["isBinary": false, "userId": channelId, "type": "system"])
+                }
+                if isEnd {
                     guard let image = UIImage(data: tmpData) else { return self.alert(message: "收到图片, 图片格式出错") }
                     DataManager.shared.write(image: image, from: self.rtcClient.friendId!, to: self.carrier.getUserId())
-                    NotificationCenter.default.post(name: .receiveMessage, object: nil, userInfo: ["data": tmpData, "isBinary": isBinary, "userId": channelId])
-                    self.dictData[fileId] = nil
+                    NotificationCenter.default.post(name: .receiveMessage, object: image, userInfo: ["isBinary": isBinary, "userId": channelId])
+                    self.dictData.removeValue(forKey: fileId)
+                } else {
+                    self.dictData[fileId] = tmpData
                 }
-            } else {
-                dictData[fileId] = tmpData
+                return
             }
-        } else {
             let content = String(describing: String(data: data, encoding: .utf8))
             DataManager.shared.write(message: content, from: self.rtcClient.friendId!, to: self.carrier.getUserId())
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(name: .receiveMessage, object: nil, userInfo: ["data": data, "isBinary": isBinary, "userId": channelId])
-            }
+            NotificationCenter.default.post(name: .receiveMessage, object: content, userInfo: ["isBinary": isBinary, "userId": channelId])
         }
-    }
+}
 
     func onInvite(friendId: String, mediaOption: MediaOptions, completion: @escaping (Bool) -> Void) {
         print("declined or accept: \(mediaOption)")

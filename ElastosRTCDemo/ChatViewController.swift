@@ -165,17 +165,19 @@ class ChatViewController: MessagesViewController, MessagesDataSource {
 
     //TODO: 检查消息是否属于当前的会话？丢弃如果不属于当前会话
     @objc func didReceiveMessageFromDataChannel(_ notification: Notification) {
-        if let userInfo = notification.userInfo, let data = userInfo["data"] as? Data,
+        if let userInfo = notification.userInfo,
             let isBinary = userInfo["isBinary"] as? Bool {
-            if isBinary, let img = UIImage(data: data) {
-                insertMessage(MockMessage(image: img, user: other, messageId: UUID().uuidString, date: Date()))
-                insertMessage(MockMessage(custom: "传输结束" + Date().description, user: system, messageId: UUID().uuidString, date: Date()))
-            } else if let str = String(data: data, encoding: .utf8) {
+            if isBinary, let image = notification.object as? UIImage {
+                insertMessage(MockMessage(image: image, user: other, messageId: UUID().uuidString, date: Date()))
+                insertMessage(MockMessage(custom: "传输结束" + formatter.string(from: Date()), user: system, messageId: UUID().uuidString, date: Date()))
+            } else if let content = notification.object as? String {
                 if let type = userInfo["type"] as? String, type == "system" {
-                    insertMessage(MockMessage(custom: str, user: system, messageId: UUID().uuidString, date: Date()))
+                    insertMessage(MockMessage(custom: content, user: system, messageId: UUID().uuidString, date: Date()))
                 } else {
-                    insertMessage(MockMessage(text: str, user: other, messageId: UUID().uuidString, date: Date()))
+                    insertMessage(MockMessage(text: content, user: other, messageId: UUID().uuidString, date: Date()))
                 }
+            } else {
+                insertMessage(MockMessage(custom: "不能识别的文件" + Date().description, user: system, messageId: UUID().uuidString, date: Date()))
             }
         }
     }
