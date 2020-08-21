@@ -169,7 +169,7 @@ class ChatViewController: MessagesViewController, MessagesDataSource {
             let isBinary = userInfo["isBinary"] as? Bool {
             if isBinary, let image = notification.object as? UIImage {
                 insertMessage(MockMessage(image: image, user: other, messageId: UUID().uuidString, date: Date()))
-                insertMessage(MockMessage(custom: "传输结束" + formatter.string(from: Date()), user: system, messageId: UUID().uuidString, date: Date()))
+                insertMessage(MockMessage(custom: "传输结束" + formatter.string(from: Date()) + " size:" + (userInfo["size"] as! String), user: system, messageId: UUID().uuidString, date: Date()))
             } else if let content = notification.object as? String {
                 if let type = userInfo["type"] as? String, type == "system" {
                     insertMessage(MockMessage(custom: content, user: system, messageId: UUID().uuidString, date: Date()))
@@ -391,7 +391,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let image = info[.originalImage] as? UIImage else { return }
-
+        insertMessage(MockMessage(custom: "文件: \(image.getSizeIn(.megabyte))", user: system, messageId: UUID().uuidString, date: Date()))
         try? self.client.sendImage(image)
 
         self.messageInputBar.sendButton.stopAnimating()

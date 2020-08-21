@@ -223,7 +223,7 @@ extension ViewController: WebRtcDelegate {
                 if isEnd {
                     guard let image = UIImage(data: tmpData) else { return self.alert(message: "收到图片, 图片格式出错") }
                     DataManager.shared.write(image: image, from: self.rtcClient.friendId!, to: self.carrier.getUserId())
-                    NotificationCenter.default.post(name: .receiveMessage, object: image, userInfo: ["isBinary": isBinary, "userId": channelId])
+                    NotificationCenter.default.post(name: .receiveMessage, object: image, userInfo: ["isBinary": isBinary, "userId": channelId, "size": image.getSizeIn(.megabyte)])
                     self.dictData.removeValue(forKey: fileId)
                 } else {
                     self.dictData[fileId] = tmpData

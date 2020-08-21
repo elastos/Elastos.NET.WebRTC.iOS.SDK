@@ -8,12 +8,13 @@
 
 import Foundation
 import MobileCoreServices
+import UIKit
 
 let formatter: DateFormatter = {
-     let formatter = DateFormatter()
-     formatter.dateStyle = .medium
-     return formatter
- }()
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+    return formatter
+}()
 
 func readData(_ stream: InputStream, closure: (Data, Int, Bool) -> Void) throws {
     stream.open()
@@ -61,5 +62,45 @@ func dataToDict(data: Data) -> [String: Any]? {
         return json as? [String: Any]
     } catch {
         return nil
+    }
+}
+
+extension UIImage {
+    public enum DataUnits: String {
+        case byte, kilobyte, megabyte, gigabyte
+
+        var unit: String {
+            switch self {
+            case .byte:
+                return "B"
+            case .kilobyte:
+                return "KB"
+            case .megabyte:
+                return "M"
+            case .gigabyte:
+                return "G"
+            }
+        }
+    }
+
+    func getSizeIn(_ type: DataUnits)-> String {
+        guard let data = self.pngData() else {
+            return ""
+        }
+
+        var size: Double = 0.0
+
+        switch type {
+        case .byte:
+            size = Double(data.count)
+        case .kilobyte:
+            size = Double(data.count) / 1024
+        case .megabyte:
+            size = Double(data.count) / 1024 / 1024
+        case .gigabyte:
+            size = Double(data.count) / 1024 / 1024 / 1024
+        }
+
+        return String(format: "%.2f", size) + type.unit
     }
 }
