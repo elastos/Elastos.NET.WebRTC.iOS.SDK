@@ -75,12 +75,13 @@ extension UIViewController {
 
     func showPreview(image: UIImage) {
         if self.preview.superview == nil {
-            self.view.addSubview(preview)
+            let superView = (self.navigationController?.view ?? self.view)!
+            superView.addSubview(preview)
             NSLayoutConstraint.activate([
-                preview.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-                preview.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-                preview.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                preview.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+                preview.leadingAnchor.constraint(equalTo: superView.safeAreaLayoutGuide.leadingAnchor),
+                preview.trailingAnchor.constraint(equalTo: superView.safeAreaLayoutGuide.trailingAnchor),
+                preview.topAnchor.constraint(equalTo: superView.safeAreaLayoutGuide.topAnchor),
+                preview.bottomAnchor.constraint(equalTo: superView.safeAreaLayoutGuide.bottomAnchor),
             ])
         }
         self.preview.image = image

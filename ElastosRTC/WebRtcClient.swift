@@ -107,6 +107,7 @@ public class WebRtcClient: NSObject {
     func createRenderView() -> RTCEAGLVideoView {
         let view = RTCEAGLVideoView()
         view.delegate = self
+        view.contentMode = .scaleAspectFill
         return view
     }
 
