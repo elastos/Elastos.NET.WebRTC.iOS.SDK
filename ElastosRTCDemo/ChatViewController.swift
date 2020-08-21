@@ -179,7 +179,7 @@ class ChatViewController: MessagesViewController, MessagesDataSource {
             }
         }
     }
-    
+
     deinit {
         print("[FREE MEMORY] \(self)")
     }

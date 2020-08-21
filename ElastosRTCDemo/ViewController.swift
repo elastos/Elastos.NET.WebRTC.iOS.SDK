@@ -68,11 +68,6 @@ class ViewController: UIViewController, CarrierDelegate {
         }
     }
 
-    func alert(message: String) {
-        let vc = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        present(vc, animated: true, completion: nil)
-    }
-
     func setupObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleFriendStatusChanged(_:)), name: .friendStatusChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleFriendList(_:)), name: .friendList, object: nil)
@@ -227,9 +222,9 @@ extension ViewController: WebRtcDelegate {
                 }
             }
             if isEnd {
-                guard let image = UIImage(data: tmpData) else { return alert(message: "收到图片, 图片格式出错") }
-                DataManager.shared.write(image: image, from: self.rtcClient.friendId!, to: self.carrier.getUserId())
                 DispatchQueue.main.async {
+                    guard let image = UIImage(data: tmpData) else { return self.alert(message: "收到图片, 图片格式出错") }
+                    DataManager.shared.write(image: image, from: self.rtcClient.friendId!, to: self.carrier.getUserId())
                     NotificationCenter.default.post(name: .receiveMessage, object: nil, userInfo: ["data": tmpData, "isBinary": isBinary, "userId": channelId])
                     self.dictData[fileId] = nil
                 }
