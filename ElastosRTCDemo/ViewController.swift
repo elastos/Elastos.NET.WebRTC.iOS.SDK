@@ -215,20 +215,23 @@ extension ViewController: WebRtcDelegate {
                 let fileId = dict["fileId"] as? String,
                 let str = dict["data"] as? String,
                 let data = Data(base64Encoded: str),
+                let index = dict["index"] as? Int,
                 let isEnd = dict["end"] as? Bool else {
                 fatalError("error format message")
             }
             var tmpData = dictData[fileId] ?? Data()
             tmpData.append(data)
-            if isEnd {
-                guard let image = UIImage(data: tmpData) else {
-                    alert(message: "收到图片, 合成图片失败")
-                    return
+            DispatchQueue.main.async {
+                if index == 0 {
+                    NotificationCenter.default.post(name: .receiveMessage, object: nil, userInfo: ["data": ("传输开始" + Date().description).data(using: .utf8)!, "isBinary": false, "userId": channelId, "type": "system"])
                 }
+            }
+            if isEnd {
+                guard let image = UIImage(data: tmpData) else { return alert(message: "收到图片, 图片格式出错") }
                 DataManager.shared.write(image: image, from: self.rtcClient.friendId!, to: self.carrier.getUserId())
-                dictData[fileId] = nil
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: .receiveMessage, object: nil, userInfo: ["data": tmpData, "isBinary": isBinary, "userId": channelId])
+                    self.dictData[fileId] = nil
                 }
             } else {
                 dictData[fileId] = tmpData

@@ -16,6 +16,16 @@ extension UIViewController {
         if let cancelClosure = cancelled {
             alert.addAction(.init(title: "Cancel", style: .cancel, handler: cancelClosure))
         }
-        present(alert, animated: true, completion: nil)
+        topViewController().present(alert, animated: true, completion: nil)
+    }
+
+    func topViewController() -> UIViewController {
+        if var topController = UIApplication.shared.keyWindow?.rootViewController {
+            while let presentedViewController = topController.presentedViewController {
+                topController = presentedViewController
+            }
+            return topController
+        }
+        return self
     }
 }

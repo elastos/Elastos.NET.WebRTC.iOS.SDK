@@ -62,6 +62,48 @@ struct MockMessage: MessageType {
     }
 }
 
+class CustomMessagesFlowLayout: MessagesCollectionViewFlowLayout {
+
+    open lazy var customMessageSizeCalculator = CustomMessageSizeCalculator(layout: self)
+
+    open override func cellSizeCalculatorForItem(at indexPath: IndexPath) -> CellSizeCalculator {
+        if isSectionReservedForTypingIndicator(indexPath.section) {
+            return typingIndicatorSizeCalculator
+        }
+        let message = messagesDataSource.messageForItem(at: indexPath, in: messagesCollectionView)
+        if case .custom = message.kind {
+            return customMessageSizeCalculator
+        }
+        return super.cellSizeCalculatorForItem(at: indexPath)
+    }
+
+    open override func messageSizeCalculators() -> [MessageSizeCalculator] {
+        var superCalculators = super.messageSizeCalculators()
+        // Append any of your custom `MessageSizeCalculator` if you wish for the convenience
+        // functions to work such as `setMessageIncoming...` or `setMessageOutgoing...`
+        superCalculators.append(customMessageSizeCalculator)
+        return superCalculators
+    }
+}
+
+class CustomMessageSizeCalculator: MessageSizeCalculator {
+
+    public override init(layout: MessagesCollectionViewFlowLayout? = nil) {
+        super.init()
+        self.layout = layout
+    }
+
+    open override func sizeForItem(at indexPath: IndexPath) -> CGSize {
+        guard let layout = layout else { return .zero }
+        let collectionViewWidth = layout.collectionView?.bounds.width ?? 0
+        let contentInset = layout.collectionView?.contentInset ?? .zero
+        let inset = layout.sectionInset.left + layout.sectionInset.right + contentInset.left + contentInset.right
+        return CGSize(width: collectionViewWidth - inset, height: 44)
+    }
+
+}
+
+let system = MockUser(senderId: "000000", displayName: "System")
 class ChatViewController: MessagesViewController, MessagesDataSource {
 
     let sender: MockUser
@@ -89,6 +131,8 @@ class ChatViewController: MessagesViewController, MessagesDataSource {
     }
 
     override func viewDidLoad() {
+        messagesCollectionView = MessagesCollectionView(frame: .zero, collectionViewLayout: CustomMessagesFlowLayout())
+        messagesCollectionView.register(CustomCell.self)
         super.viewDidLoad()
         configureMessageInputBar()
         configureMessageCollectionView()
@@ -124,17 +168,38 @@ class ChatViewController: MessagesViewController, MessagesDataSource {
         if let userInfo = notification.userInfo, let data = userInfo["data"] as? Data,
             let isBinary = userInfo["isBinary"] as? Bool {
             if isBinary, let img = UIImage(data: data) {
-                let message = MockMessage(image: img, user: other, messageId: UUID().uuidString, date: Date())
-                insertMessage(message)
+                insertMessage(MockMessage(image: img, user: other, messageId: UUID().uuidString, date: Date()))
+                insertMessage(MockMessage(custom: "传输结束" + Date().description, user: system, messageId: UUID().uuidString, date: Date()))
             } else if let str = String(data: data, encoding: .utf8) {
-                let message = MockMessage(text: str, user: other, messageId: UUID().uuidString, date: Date())
-                insertMessage(message)
+                if let type = userInfo["type"] as? String, type == "system" {
+                    insertMessage(MockMessage(custom: str, user: system, messageId: UUID().uuidString, date: Date()))
+                } else {
+                    insertMessage(MockMessage(text: str, user: other, messageId: UUID().uuidString, date: Date()))
+                }
             }
         }
     }
     
     deinit {
         print("[FREE MEMORY] \(self)")
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let messagesDataSource = messagesCollectionView.messagesDataSource else {
+            fatalError("Ouch. nil data source for messages")
+        }
+
+        guard !isSectionReservedForTypingIndicator(indexPath.section) else {
+            return super.collectionView(collectionView, cellForItemAt: indexPath)
+        }
+
+        let message = messagesDataSource.messageForItem(at: indexPath, in: messagesCollectionView)
+        if case .custom = message.kind {
+            let cell = messagesCollectionView.dequeueReusableCell(CustomCell.self, for: indexPath)
+            cell.configure(with: message, at: indexPath, and: messagesCollectionView)
+            return cell
+        }
+        return super.collectionView(collectionView, cellForItemAt: indexPath)
     }
 }
 
@@ -168,8 +233,6 @@ extension ChatViewController {
     }
 
     func configureMessageCollectionView() {
-        messagesCollectionView.messagesDataSource = self
-        messagesCollectionView.messageCellDelegate = self
         scrollsToBottomOnKeyboardBeginsEditing = true // default false
         maintainPositionOnKeyboardFrameChanged = true // default false
 
@@ -180,8 +243,11 @@ extension ChatViewController {
         layout?.setMessageOutgoingMessageTopLabelAlignment(LabelAlignment(textAlignment: .right, textInsets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)))
         layout?.setMessageOutgoingMessageBottomLabelAlignment(LabelAlignment(textAlignment: .right, textInsets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)))
 
+        messagesCollectionView.register(CustomCell.self)
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
+        messagesCollectionView.messagesDataSource = self
+        messagesCollectionView.messageCellDelegate = self
 
         additionalBottomInset = 30
     }
@@ -229,6 +295,20 @@ extension ChatViewController {
         vc.delegate = self
         present(vc, animated: true)
     }
+
+    func isTimeLabelVisible(at indexPath: IndexPath) -> Bool {
+        return indexPath.section % 3 == 0 && !isPreviousMessageSameSender(at: indexPath)
+    }
+
+    func isPreviousMessageSameSender(at indexPath: IndexPath) -> Bool {
+        guard indexPath.section - 1 >= 0 else { return false }
+        return messages[indexPath.section].user == messages[indexPath.section - 1].user
+    }
+
+    func isNextMessageSameSender(at indexPath: IndexPath) -> Bool {
+        guard indexPath.section + 1 < messages.count else { return false }
+        return messages[indexPath.section].user == messages[indexPath.section + 1].user
+    }
 }
 
 extension ChatViewController: InputBarAccessoryViewDelegate {
@@ -270,11 +350,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
     }
 }
 
-extension ChatViewController: MessagesLayoutDelegate, MessagesDisplayDelegate {
-
-    func configureMediaMessageImageView(_ imageView: UIImageView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
-    }
-}
+extension ChatViewController: MessagesLayoutDelegate, MessagesDisplayDelegate { }
 
 extension ChatViewController {
 

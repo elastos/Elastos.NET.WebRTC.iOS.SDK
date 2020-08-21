@@ -28,6 +28,7 @@
 		80E6940524BC179D008F1DE2 /* WebRtcModel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E6940424BC179D008F1DE2 /* WebRtcModel+Extension.swift */; };
 		80F2C49524E6A42F00BFF091 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EBBC9324DC2FCD00BD4704 /* Util.swift */; };
 		80FAFBAD24EE551400C36804 /* UIViewController+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FAFBAC24EE551400C36804 /* UIViewController+Preview.swift */; };
+		80FAFBAF24EF94BB00C36804 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FAFBAE24EF94BB00C36804 /* CustomCell.swift */; };
 		83751758AB9C042ECF924374 /* Pods_ElastosRTCTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9433CAE98CBBF62000E449C2 /* Pods_ElastosRTCTests.framework */; };
 		8C3285D5CB4A9871CAD13993 /* Pods_ElastosRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D89F702DD67FA45DCC3E3EF5 /* Pods_ElastosRTC.framework */; };
 		C5FC6EA084D0886BEEC5A48C /* Pods_ElastosRTCDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75885C044B032846CFCCBA1F /* Pods_ElastosRTCDemo.framework */; };
@@ -88,6 +89,7 @@
 		80E6940424BC179D008F1DE2 /* WebRtcModel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebRtcModel+Extension.swift"; sourceTree = "<group>"; };
 		80EBBC9324DC2FCD00BD4704 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		80FAFBAC24EE551400C36804 /* UIViewController+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Preview.swift"; sourceTree = "<group>"; };
+		80FAFBAE24EF94BB00C36804 /* CustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
 		9433CAE98CBBF62000E449C2 /* Pods_ElastosRTCTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ElastosRTCTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D106126C256D19CEF427196A /* Pods-ElastosRTCDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosRTCDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ElastosRTCDemo/Pods-ElastosRTCDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		D89F702DD67FA45DCC3E3EF5 /* Pods_ElastosRTC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ElastosRTC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -194,6 +196,15 @@
 			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		80FAFBB024EF94CA00C36804 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				F9870082248FE1DB005758F3 /* FriendCell.swift */,
+				80FAFBAE24EF94BB00C36804 /* CustomCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		F9A8D09D2486A9C100FFDFD2 = {
 			isa = PBXGroup;
 			children = (
@@ -248,10 +259,10 @@
 			children = (
 				F9A8D0C72486AA1C00FFDFD2 /* AppDelegate.swift */,
 				745CB72D2494668A00E7D308 /* Carrier+Util.swift */,
+				80FAFBB024EF94CA00C36804 /* Cell */,
 				808D141724BC402C00BA0DCE /* ChatViewController.swift */,
 				80E3481424C557FB0009B998 /* DataManager.swift */,
 				743AC316248D33EA00A04AD0 /* DeviceManager.swift */,
-				F9870082248FE1DB005758F3 /* FriendCell.swift */,
 				80E3481624C558D30009B998 /* MediaCallViewController.swift */,
 				746250DA24C48C9A00CC97BB /* MyProfileViewController.swift */,
 				745CB73A249652E500E7D308 /* SettingViewController.swift */,
@@ -528,6 +539,7 @@
 				80E3481524C557FB0009B998 /* DataManager.swift in Sources */,
 				743AC317248D33EA00A04AD0 /* DeviceManager.swift in Sources */,
 				F9870083248FE1DB005758F3 /* FriendCell.swift in Sources */,
+				80FAFBAF24EF94BB00C36804 /* CustomCell.swift in Sources */,
 				80E3481724C558D30009B998 /* MediaCallViewController.swift in Sources */,
 				746250DB24C48C9A00CC97BB /* MyProfileViewController.swift in Sources */,
 				745CB73B249652E500E7D308 /* SettingViewController.swift in Sources */,
