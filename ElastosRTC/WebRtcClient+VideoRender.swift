@@ -12,11 +12,13 @@ extension WebRtcClient {
 
     func setupMedia() {
         if self.options.isEnableAudio {
-            peerConnection?.add(localAudioTrack, streamIds: ["stream0"])
+            peerConnection.add(localAudioTrack, streamIds: ["stream0"])
         }
 
         if self.options.isEnableVideo {
             RTCDispatcher.dispatchAsync(on: .typeMain) {
+                self.localRenderView = self.createRenderVideoView()
+                self.remoteRenderView = self.createRenderVideoView()
                 self.localVideoView.addSubview(self.localRenderView!)
                 self.remoteVideoView.addSubview(self.remoteRenderView!)
                 self.localRenderView!.frame = self.localVideoView.bounds
@@ -26,6 +28,7 @@ extension WebRtcClient {
             }
         }
         if self.options.isEnableDataChannel {
+            self.dataChannel = self.createDataChannel()
             assert(self.dataChannel != nil, "create data channel failed")
             dataChannel?.delegate = self
             Thread(target: self, selector: #selector(startToSendData), object: nil).start()

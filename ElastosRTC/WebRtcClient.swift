@@ -68,17 +68,21 @@ public class WebRtcClient: NSObject {
     var videoHeight = UIScreen.main.nativeBounds.height
     var videoFps: Double = 30
 
-    lazy var peerConnection: RTCPeerConnection? = {
-        let config = RTCConfiguration()
-        let constraints = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil)
-        config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"])]
-        if let turn = try? self.carrier.turnServerInfo() {
-            config.iceServers.append(turn.iceServer)
-        } else {
-            assertionFailure("turn server is null")
+    private var _peerConnection: RTCPeerConnection?
+    var peerConnection: RTCPeerConnection {
+        if _peerConnection == nil {
+            let config = RTCConfiguration()
+            let constraints = RTCMediaConstraints.init(mandatoryConstraints: nil, optionalConstraints: nil)
+            config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"])]
+            if let turn = try? self.carrier.turnServerInfo() {
+                config.iceServers.append(turn.iceServer)
+            } else {
+                assertionFailure("turn server is null")
+            }
+            _peerConnection = peerConnectionFactory.peerConnection(with: config, constraints: constraints, delegate: self)
         }
-        return peerConnectionFactory.peerConnection(with: config, constraints: constraints, delegate: self)
-    }()
+        return _peerConnection!
+    }
 
     private let peerConnectionFactory: RTCPeerConnectionFactory = {
         let videoDecoder = RTCDefaultVideoDecoderFactory()
@@ -96,19 +100,15 @@ public class WebRtcClient: NSObject {
         return view
     }()
 
-    lazy var localRenderView: RTCEAGLVideoView? = {
-        let view = RTCEAGLVideoView()
-        view.delegate = self
-        view.contentMode = .scaleAspectFill
-        return view
-    }()
+    var localRenderView: RTCEAGLVideoView?
+    var remoteRenderView: RTCEAGLVideoView?
 
-    lazy var remoteRenderView: RTCEAGLVideoView? = {
+    func createRenderVideoView() -> RTCEAGLVideoView {
         let view = RTCEAGLVideoView()
         view.delegate = self
         view.contentMode = .scaleAspectFill
         return view
-    }()
+    }
 
     lazy var localAudioTrack: RTCAudioTrack = {
         let constraints = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil)
@@ -129,15 +129,16 @@ public class WebRtcClient: NSObject {
         return peerConnectionFactory.videoTrack(with: source, trackId: "video0")
     }()
 
-    lazy var dataChannel: RTCDataChannel? = {
+    var dataChannel: RTCDataChannel?
+    func createDataChannel() -> RTCDataChannel? {
         let config = RTCDataChannelConfiguration()
         config.isOrdered = true
         config.isNegotiated = false
         config.maxRetransmits = -1
         config.maxPacketLifeTime = -1
         config.channelId = 3
-        return peerConnection?.dataChannel(forLabel: "message", configuration: config)
-    }()
+        return _peerConnection?.dataChannel(forLabel: "message", configuration: config)
+    }
 
     public init(carrier: Carrier, delegate: WebRtcDelegate) {
         self.carrier = CarrierExtension(carrier)
@@ -147,18 +148,21 @@ public class WebRtcClient: NSObject {
     }
 
     func cleanup() {
-        peerConnection?.close()
-        peerConnection = nil
+        _peerConnection?.close()
+        _peerConnection = nil
         dataChannel?.close()
         dataChannel = nil
         hasReceivedSdp = false
         messageQueue.removeAll()
         options = []
         buffers = []
-        localRenderView?.removeFromSuperview()
-        remoteRenderView?.removeFromSuperview()
-        localRenderView = nil
-        remoteRenderView = nil
+        DispatchQueue.main.async {
+            self.localRenderView?.removeFromSuperview()
+            self.remoteRenderView?.removeFromSuperview()
+            self.localRenderView = nil
+            self.remoteRenderView = nil
+        }
+
         Log.d(TAG, "webrtc client cleanup")
         print("[FREE MEMORY]: WebRtcClient clean up")
     }
@@ -215,7 +219,7 @@ public extension WebRtcClient {
         self.options = options
         self.messageQueue = []
         if options.isEnableVideo {
-            peerConnection?.add(self.localVideoTrack, streamIds: ["stream0"])
+            peerConnection.add(self.localVideoTrack, streamIds: ["stream0"])
         }
 
         createOffer { [weak self] sdp in
