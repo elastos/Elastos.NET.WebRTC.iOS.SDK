@@ -97,15 +97,19 @@ public class WebRtcClient: NSObject {
         return view
     }()
 
-    var localRenderView: RTCEAGLVideoView?
-    var remoteRenderView: RTCEAGLVideoView?
-
-    func createRenderView() -> RTCEAGLVideoView {
+    lazy var localRenderView: RTCEAGLVideoView? = {
         let view = RTCEAGLVideoView()
         view.delegate = self
         view.contentMode = .scaleAspectFill
         return view
-    }
+    }()
+
+    lazy var remoteRenderView: RTCEAGLVideoView? = {
+        let view = RTCEAGLVideoView()
+        view.delegate = self
+        view.contentMode = .scaleAspectFill
+        return view
+    }()
 
     lazy var localAudioTrack: RTCAudioTrack = {
         let constraints = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil)
@@ -126,16 +130,15 @@ public class WebRtcClient: NSObject {
         return peerConnectionFactory.videoTrack(with: source, trackId: "video0")
     }()
 
-    var dataChannel: RTCDataChannel?
-    func createDataChannel() {
+    lazy var dataChannel: RTCDataChannel? = {
         let config = RTCDataChannelConfiguration()
         config.isOrdered = true
         config.isNegotiated = false
         config.maxRetransmits = -1
         config.maxPacketLifeTime = -1
         config.channelId = 3
-        self.dataChannel = peerConnection?.dataChannel(forLabel: "message", configuration: config)
-    }
+        return peerConnection?.dataChannel(forLabel: "message", configuration: config)
+    }()
 
     public init(carrier: Carrier, delegate: WebRtcDelegate) {
         self.carrier = CarrierExtension(carrier)

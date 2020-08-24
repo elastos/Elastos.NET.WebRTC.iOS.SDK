@@ -17,8 +17,6 @@ extension WebRtcClient {
 
         if self.options.isEnableVideo {
             RTCDispatcher.dispatchAsync(on: .typeMain) {
-                self.localRenderView = self.createRenderView()
-                self.remoteRenderView = self.createRenderView()
                 self.localVideoView.addSubview(self.localRenderView!)
                 self.remoteVideoView.addSubview(self.remoteRenderView!)
                 self.localRenderView!.frame = self.localVideoView.bounds
@@ -28,9 +26,8 @@ extension WebRtcClient {
             }
         }
         if self.options.isEnableDataChannel {
-            createDataChannel()
-            dataChannel?.delegate = self
             assert(self.dataChannel != nil, "create data channel failed")
+            dataChannel?.delegate = self
             Thread(target: self, selector: #selector(startToSendData), object: nil).start()
         }
     }
