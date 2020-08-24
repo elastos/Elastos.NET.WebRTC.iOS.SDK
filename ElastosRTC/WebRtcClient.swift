@@ -137,7 +137,7 @@ public class WebRtcClient: NSObject {
         config.maxRetransmits = -1
         config.maxPacketLifeTime = -1
         config.channelId = 3
-        return _peerConnection?.dataChannel(forLabel: "message", configuration: config)
+        return peerConnection.dataChannel(forLabel: "message", configuration: config)
     }
 
     public init(carrier: Carrier, delegate: WebRtcDelegate) {
