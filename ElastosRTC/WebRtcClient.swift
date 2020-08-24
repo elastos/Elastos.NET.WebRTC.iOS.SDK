@@ -60,7 +60,6 @@ public class WebRtcClient: NSObject {
     }
 
     var videoCapturer: RTCVideoCapturer?
-    var remoteStream: RTCMediaStream?
     var isUsingFrontCamera: Bool = true
     var callDirection: WebRtcCallDirection = .incoming
 
@@ -98,17 +97,14 @@ public class WebRtcClient: NSObject {
         return RTCPeerConnectionFactory(encoderFactory: videoEncoder, decoderFactory: videoDecoder)
     }()
 
-    lazy var localRenderView: RTCEAGLVideoView = {
-        let view = RTCEAGLVideoView()
-        view.delegate = self
-        return view
-    }()
+    var localRenderView: RTCEAGLVideoView?
+    var remoteRenderView: RTCEAGLVideoView?
 
-    lazy var remoteRenderView: RTCEAGLVideoView = {
+    func createRenderView() -> RTCEAGLVideoView {
         let view = RTCEAGLVideoView()
         view.delegate = self
         return view
-    }()
+    }
 
     lazy var localAudioTrack: RTCAudioTrack = {
         let constraints = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil)
@@ -148,6 +144,10 @@ public class WebRtcClient: NSObject {
     }
 
     func cleanup() {
+        localRenderView?.removeFromSuperview()
+        remoteRenderView?.removeFromSuperview()
+        localRenderView = nil
+        remoteRenderView = nil
         _peerConnection?.close()
         _peerConnection = nil
         dataChannel?.close()

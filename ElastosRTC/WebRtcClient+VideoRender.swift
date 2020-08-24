@@ -17,11 +17,13 @@ extension WebRtcClient {
 
         if self.options.isEnableVideo {
             RTCDispatcher.dispatchAsync(on: .typeMain) {
-                self.localVideoView.addSubview(self.localRenderView)
-                self.remoteVideoView.addSubview(self.remoteRenderView)
-                self.localRenderView.frame = self.localVideoView.bounds
-                self.remoteRenderView.frame = self.remoteVideoView.bounds
-                self.localVideoTrack.add(self.localRenderView)
+                self.localRenderView = self.createRenderView()
+                self.remoteRenderView = self.createRenderView()
+                self.localVideoView.addSubview(self.localRenderView!)
+                self.remoteVideoView.addSubview(self.remoteRenderView!)
+                self.localRenderView?.frame = self.localVideoView.bounds
+                self.remoteRenderView?.frame = self.remoteVideoView.bounds
+                self.localVideoTrack.add(self.localRenderView!)
                 self.startCaptureLocalVideo(cameraPositon: .front)
             }
         }
@@ -94,12 +96,12 @@ extension WebRtcClient {
 
     public func setLocalVideoFrame(_ frame: CGRect) {
         localVideoView.frame = frame
-        localRenderView.frame = CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height)
+        localRenderView?.frame = CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height)
     }
 
     public func setRemoteVideoFrame(_ frame: CGRect) {
         remoteVideoView.frame = frame
-        remoteRenderView.frame = CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height)
+        remoteRenderView?.frame = CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height)
     }
 }
 
@@ -125,7 +127,7 @@ extension WebRtcClient: RTCVideoViewDelegate {
 
         frame.size.height *= scale
         frame.size.width *= scale
-        renderView.frame = frame
-        renderView.center = CGPoint(x: parentView.bounds.midX, y: parentView.bounds.midY)
+        renderView?.frame = frame
+        renderView?.center = CGPoint(x: parentView.bounds.midX, y: parentView.bounds.midY)
     }
 }
