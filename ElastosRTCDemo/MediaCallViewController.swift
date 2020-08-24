@@ -236,17 +236,16 @@ class MediaCallViewController: UIViewController {
             localVideo.widthAnchor.constraint(equalToConstant: 200),
             localVideo.heightAnchor.constraint(equalToConstant: 200),
 
-            remoteVideo.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            remoteVideo.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            remoteVideo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            remoteVideo.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            remoteVideo.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            remoteVideo.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            remoteVideo.topAnchor.constraint(equalTo: view.topAnchor),
+            remoteVideo.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
 
     func setupObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(webrtcStateChanged(_:)), name: .rtcStateChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveMessage(_:)), name: .receiveMessage, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(remoteVideoSizeDidChanged(_:)), name: .receiveVideoSizeChanged, object: nil)
     }
 
     func updateToolsStack() {
@@ -380,9 +379,5 @@ extension MediaCallViewController {
                 self.newMessageTipLabel.text = "Have a New Message"
             }
         }
-    }
-
-    @objc func remoteVideoSizeDidChanged(_ notification: NSNotification) {
-//        guard let size = notification.userInfo?["size"] as? CGSize else { return }
     }
 }
