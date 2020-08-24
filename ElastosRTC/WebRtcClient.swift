@@ -68,22 +68,18 @@ public class WebRtcClient: NSObject {
     var videoWidth = UIScreen.main.nativeBounds.width
     var videoHeight = UIScreen.main.nativeBounds.height
     var videoFps: Double = 30
-    
-    private var _peerConnection: RTCPeerConnection?
-    var peerConnection: RTCPeerConnection {
-        if _peerConnection == nil {
-            let config = RTCConfiguration()
-            let constraints = RTCMediaConstraints.init(mandatoryConstraints: nil, optionalConstraints: nil)
-            config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"])]
-            if let turn = try? self.carrier.turnServerInfo() {
-                config.iceServers.append(turn.iceServer)
-            } else {
-                assertionFailure("turn server is null")
-            }
-            _peerConnection = peerConnectionFactory.peerConnection(with: config, constraints: constraints, delegate: self)
+
+    lazy var peerConnection: RTCPeerConnection? = {
+        let config = RTCConfiguration()
+        let constraints = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil)
+        config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"])]
+        if let turn = try? self.carrier.turnServerInfo() {
+            config.iceServers.append(turn.iceServer)
+        } else {
+            assertionFailure("turn server is null")
         }
-        return _peerConnection!
-    }
+        return peerConnectionFactory.peerConnection(with: config, constraints: constraints, delegate: self)
+    }()
 
     private let peerConnectionFactory: RTCPeerConnectionFactory = {
         let videoDecoder = RTCDefaultVideoDecoderFactory()
@@ -138,7 +134,7 @@ public class WebRtcClient: NSObject {
         config.maxRetransmits = -1
         config.maxPacketLifeTime = -1
         config.channelId = 3
-        self.dataChannel = peerConnection.dataChannel(forLabel: "message", configuration: config)
+        self.dataChannel = peerConnection?.dataChannel(forLabel: "message", configuration: config)
     }
 
     public init(carrier: Carrier, delegate: WebRtcDelegate) {
@@ -149,8 +145,8 @@ public class WebRtcClient: NSObject {
     }
 
     func cleanup() {
-        _peerConnection?.close()
-        _peerConnection = nil
+        peerConnection?.close()
+        peerConnection = nil
         dataChannel?.close()
         dataChannel = nil
         hasReceivedSdp = false
@@ -217,7 +213,7 @@ public extension WebRtcClient {
         self.options = options
         self.messageQueue = []
         if options.isEnableVideo {
-            peerConnection.add(self.localVideoTrack, streamIds: ["stream0"])
+            peerConnection?.add(self.localVideoTrack, streamIds: ["stream0"])
         }
 
         createOffer { [weak self] sdp in

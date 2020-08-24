@@ -12,7 +12,7 @@ extension WebRtcClient {
 
     func setupMedia() {
         if self.options.isEnableAudio {
-            peerConnection.add(localAudioTrack, streamIds: ["stream0"])
+            peerConnection?.add(localAudioTrack, streamIds: ["stream0"])
         }
 
         if self.options.isEnableVideo {
