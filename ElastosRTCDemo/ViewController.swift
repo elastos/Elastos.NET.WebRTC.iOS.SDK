@@ -234,7 +234,7 @@ extension ViewController: WebRtcDelegate {
             DataManager.shared.write(message: content, from: self.rtcClient.friendId!, to: self.carrier.getUserId())
             NotificationCenter.default.post(name: .receiveMessage, object: content, userInfo: ["isBinary": isBinary, "userId": channelId])
         }
-}
+    }
 
     func onInvite(friendId: String, mediaOption: MediaOptions, completion: @escaping (Bool) -> Void) {
         print("declined or accept: \(mediaOption)")
