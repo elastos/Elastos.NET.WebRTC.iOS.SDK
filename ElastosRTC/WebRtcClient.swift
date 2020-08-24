@@ -50,7 +50,6 @@ public class WebRtcClient: NSObject {
     }
 
     var videoCapturer: RTCVideoCapturer?
-    var remoteStream: RTCMediaStream?
     var isUsingFrontCamera: Bool = true
     var callDirection: WebRtcCallDirection = .incoming
 
