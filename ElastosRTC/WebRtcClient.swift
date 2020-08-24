@@ -144,10 +144,12 @@ public class WebRtcClient: NSObject {
     }
 
     func cleanup() {
-        localRenderView?.removeFromSuperview()
-        remoteRenderView?.removeFromSuperview()
-        localRenderView = nil
-        remoteRenderView = nil
+        DispatchQueue.main.async {
+            self.localRenderView?.removeFromSuperview()
+            self.remoteRenderView?.removeFromSuperview()
+            self.localRenderView = nil
+            self.remoteRenderView = nil
+        }
         _peerConnection?.close()
         _peerConnection = nil
         dataChannel?.close()
