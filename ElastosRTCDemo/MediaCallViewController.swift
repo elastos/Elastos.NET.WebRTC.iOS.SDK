@@ -222,11 +222,8 @@ class MediaCallViewController: UIViewController {
         }
 
         guard let localVideo = client.getLocalVideoView(), let remoteVideo = client.getRemoteVideoView() else { return }
-        view.addSubview(localVideo)
-        view.addSubview(remoteVideo)
-
-        view.sendSubviewToBack(localVideo)
-        view.sendSubviewToBack(remoteVideo)
+        view.insertSubview(localVideo, belowSubview: toolStack)
+        view.insertSubview(remoteVideo, belowSubview: localVideo)
 
         localVideo.translatesAutoresizingMaskIntoConstraints = false
         remoteVideo.translatesAutoresizingMaskIntoConstraints = false

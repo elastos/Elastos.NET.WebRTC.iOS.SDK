@@ -102,6 +102,7 @@ public class WebRtcClient: NSObject {
 
     var localRenderView: RTCEAGLVideoView?
     var remoteRenderView: RTCEAGLVideoView?
+    var mediaStream: RTCMediaStream?
 
     func createRenderVideoView() -> RTCEAGLVideoView {
         let view = RTCEAGLVideoView()
