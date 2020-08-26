@@ -100,14 +100,14 @@ public class WebRtcClient: NSObject {
         return view
     }()
 
-    var localRenderView: RTCEAGLVideoView?
-    var remoteRenderView: RTCEAGLVideoView?
+    var localRenderView: RTCMTLVideoView?
+    var remoteRenderView: RTCMTLVideoView?
     var mediaStream: RTCMediaStream?
 
-    func createRenderVideoView() -> RTCEAGLVideoView {
-        let view = RTCEAGLVideoView()
+    func createRenderVideoView() -> RTCMTLVideoView {
+        let view = RTCMTLVideoView()
         view.delegate = self
-        view.contentMode = .scaleAspectFill
+        view.videoContentMode = .scaleAspectFill
         return view
     }
 
