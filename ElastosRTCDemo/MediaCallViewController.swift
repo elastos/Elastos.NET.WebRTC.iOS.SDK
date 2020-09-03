@@ -220,17 +220,23 @@ class MediaCallViewController: UIViewController {
         if callDirection == .outgoing {
             client.inviteCall(friendId: friendId, options: callOptions)
         }
+        perform(#selector(setupVideoView), with: nil, afterDelay: 1.0)
+    }
 
-        guard let localVideo = client.getLocalVideoView(), let remoteVideo = client.getRemoteVideoView() else { return }
+    @objc func setupVideoView() {
+        guard let localVideo = client.localVideoView, let remoteVideo = client.remoteVideoView else { return }
         view.insertSubview(localVideo, belowSubview: toolStack)
         view.insertSubview(remoteVideo, belowSubview: localVideo)
+
+        localVideo.backgroundColor = .red
+        remoteVideo.backgroundColor = .orange
 
         localVideo.translatesAutoresizingMaskIntoConstraints = false
         remoteVideo.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             localVideo.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             localVideo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            localVideo.widthAnchor.constraint(equalToConstant: 200),
+            localVideo.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.3),
             localVideo.heightAnchor.constraint(equalToConstant: 200),
 
             remoteVideo.leadingAnchor.constraint(equalTo: view.leadingAnchor),

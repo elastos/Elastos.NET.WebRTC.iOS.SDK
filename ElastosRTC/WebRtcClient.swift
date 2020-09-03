@@ -49,7 +49,6 @@ public class WebRtcClient: NSObject {
         }
     }
 
-    var videoCapturer: RTCVideoCapturer?
     var isUsingFrontCamera: Bool = true
     var callDirection: WebRtcCallDirection = .incoming
 
@@ -64,9 +63,6 @@ public class WebRtcClient: NSObject {
             }
         }
     }
-    var videoWidth = UIScreen.main.nativeBounds.width
-    var videoHeight = UIScreen.main.nativeBounds.height
-    var videoFps: Double = 30
 
     private var _peerConnection: RTCPeerConnection?
     var peerConnection: RTCPeerConnection {
@@ -90,24 +86,18 @@ public class WebRtcClient: NSObject {
         return RTCPeerConnectionFactory(encoderFactory: videoEncoder, decoderFactory: videoDecoder)
     }()
 
-    lazy var localVideoView: UIView = {
-        let view = UIView()
-        return view
-    }()
-
-    lazy var remoteVideoView: UIView = {
-        let view = UIView()
-        return view
-    }()
-
-    var localRenderView: RTCMTLVideoView?
-    var remoteRenderView: RTCMTLVideoView?
     var mediaStream: RTCMediaStream?
 
-    func createRenderVideoView() -> RTCMTLVideoView {
-        let view = RTCMTLVideoView()
-        view.delegate = self
-        view.videoContentMode = .scaleAspectFill
+    public internal(set) var remoteVideoView: RemoteVideoView?
+    public internal(set) var localVideoView: LocalVideoView?
+
+    lazy var videoCaptureController = VideoCaptureController()
+
+    func createLocalVideoView() -> LocalVideoView {
+        let view = LocalVideoView(frame: .zero)
+        view.clipsToBounds = true
+        view.contentMode = .scaleAspectFit
+        view.captureSession = videoCaptureController.captureSession
         return view
     }
 
@@ -120,13 +110,11 @@ public class WebRtcClient: NSObject {
     lazy var localVideoTrack: RTCVideoTrack = {
         let source = peerConnectionFactory.videoSource()
 
-        #if targetEnvironment(simulator)
-            // we're on the simulator - use the file local video
-            videoCapturer = RTCFileVideoCapturer(delegate: source)
-        #else
-            // we're on a device – use front camera
-            videoCapturer = RTCCameraVideoCapturer(delegate: source)
-        #endif
+        // Define output video size.
+        source.adaptOutputFormat(toWidth: VideoCaptureController.outputSizeWidth, height: VideoCaptureController.outputSizeHeight, fps: VideoCaptureController.outputFrameRate
+        )
+
+        self.videoCaptureController.capturerDelegate = source
         return peerConnectionFactory.videoTrack(with: source, trackId: "video0")
     }()
 
@@ -158,10 +146,11 @@ public class WebRtcClient: NSObject {
         options = []
         buffers = []
         DispatchQueue.main.async {
-            self.localRenderView?.removeFromSuperview()
-            self.remoteRenderView?.removeFromSuperview()
-            self.localRenderView = nil
-            self.remoteRenderView = nil
+            self.localVideoView?.removeFromSuperview()
+            self.localVideoView = nil
+
+            self.remoteVideoView?.removeFromSuperview()
+            self.remoteVideoView = nil
         }
 
         Log.d(TAG, "webrtc client cleanup")
@@ -234,25 +223,11 @@ public extension WebRtcClient {
         cleanup()
     }
 
-    func setResolution(cameraPosition: AVCaptureDevice.Position = .front, width: CGFloat, height: CGFloat, fps: Double) {
-        self.videoWidth = width
-        self.videoHeight = height
-        self.videoFps = fps
-        RTCDispatcher.dispatchAsync(on: .typeCaptureSession) {
-            self.startCaptureLocalVideo(cameraPositon: cameraPosition, videoWidth: width, videoHeight: width, videoFps: fps)
-        }
-    }
-
-    func switchCamera(position: AVCaptureDevice.Position, completion: (() -> Void)? = nil) {
-        RTCDispatcher.dispatchAsync(on: .typeCaptureSession) {
-            self.startCaptureLocalVideo(cameraPositon: position)
-        }
+    func switchCamera(position: AVCaptureDevice.Position) {
+        videoCaptureController.switchCamera(isUsingFrontCamera: position == .front)
     }
 
     func stopCapture() {
-        guard let videoSource = self.videoCapturer as? RTCCameraVideoCapturer else { return }
-        RTCDispatcher.dispatchAsync(on: .typeCaptureSession) {
-            videoSource.stopCapture()
-        }
+        videoCaptureController.stopCapture()
     }
 }

@@ -9,7 +9,6 @@
 import UIKit
 import EFQRCode
 import QRCodeReader
-import ElastosCarrierSDK
 
 class MyProfileViewController: UIViewController {
     

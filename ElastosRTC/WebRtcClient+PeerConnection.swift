@@ -104,9 +104,10 @@ extension WebRtcClient: RTCPeerConnectionDelegate {
 
     public func peerConnection(_ peerConnection: RTCPeerConnection, didAdd stream: RTCMediaStream) {
         self.mediaStream = stream
+        guard let view = self.remoteVideoView else { return }
         RTCDispatcher.dispatchAsync(on: .typeMain) {
             if let track = stream.videoTracks.first {
-                track.add(self.remoteRenderView!)
+                track.add(view)
             }
         }
     }

@@ -55,8 +55,8 @@ extension WebRtcClient {
             case .offer:
                 guard let sdp = message.offer else { return }
                 friendId = from
-                self.callDirection = .incoming
-                options = message.options ?? [.audio, .video]
+                callDirection = .incoming
+                options = message.options ?? [.audio, .video, .data]
                 let closureAfterAccepted = { [weak self] in
                     self?.receive(sdp: sdp) { [weak self] sdp in
                         self?.send(desc: sdp)

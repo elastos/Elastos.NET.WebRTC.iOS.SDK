@@ -98,7 +98,7 @@ extension WebRtcClient {
         let fileID = UUID().uuidString
         while stream.hasBytesAvailable {
             condition.lock()
-            if buffers.count > 10 {
+            if buffers.count > MAX_CHUNK_COUNT {
                 condition.wait()
             }
             let read = stream.read(buffer, maxLength: bufferSize)
