@@ -228,9 +228,6 @@ class MediaCallViewController: UIViewController {
         view.insertSubview(localVideo, belowSubview: toolStack)
         view.insertSubview(remoteVideo, belowSubview: localVideo)
 
-        localVideo.backgroundColor = .red
-        remoteVideo.backgroundColor = .orange
-
         localVideo.translatesAutoresizingMaskIntoConstraints = false
         remoteVideo.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
