@@ -1,5 +1,4 @@
 PODS:
-  - Bugly (2.5.5)
   - EFQRCode (5.1.6):
     - EFQRCode/Core (= 5.1.6)
   - EFQRCode/Core (5.1.6)
@@ -13,7 +12,6 @@ PODS:
   - QRCodeReader.swift (10.1.0)
 
 DEPENDENCIES:
-  - Bugly (= 2.5.5)
   - EFQRCode (= 5.1.6)
   - ElastosCarrierSDK
   - GoogleWebRTC
@@ -22,7 +20,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
-    - Bugly
     - EFQRCode
     - ElastosCarrierSDK
     - GoogleWebRTC
@@ -31,7 +28,6 @@ SPEC REPOS:
     - QRCodeReader.swift
 
 SPEC CHECKSUMS:
-  Bugly: eded937bbb1f731cacf689c2d934ddbd9ab34f83
   EFQRCode: a7ea2e517912f5bf6ba258b631327a83cd8084a5
   ElastosCarrierSDK: 90cd6e5a44760a400c7c87977abb1de990b6cb8f
   GoogleWebRTC: b39a78c4f5cc6b0323415b9233db03a2faa7b0f0
@@ -39,6 +35,6 @@ SPEC CHECKSUMS:
   MessageKit: 3beb578737a5aa2bba25cc27c7b6d6faa09af5a7
   QRCodeReader.swift: 373a389fe9a22d513c879a32a6f647c58f4ef572
 
-PODFILE CHECKSUM: a6aa0d5a315e689013670284632954d15555ecb9
+PODFILE CHECKSUM: 957eb2b185a9301764c848cc0b38409c1df6e1a4
 
 COCOAPODS: 1.9.3
