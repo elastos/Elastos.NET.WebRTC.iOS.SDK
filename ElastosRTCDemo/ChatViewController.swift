@@ -39,6 +39,8 @@ struct MockMessage: MessageType {
 
 	var user: MockUser
 
+    var percent: Float?
+
 	private init(kind: MessageKind, user: MockUser, messageId: String, date: Date) {
 	    self.kind = kind
 	    self.user = user
@@ -54,8 +56,54 @@ struct MockMessage: MessageType {
 	    let mediaItem = ImageMediaItem(image: image)
 	    self.init(kind: .photo(mediaItem), user: user, messageId: messageId, date: date)
 	}
+
+    init(custom: Any, user: MockUser, messageId: String, date: Date) {
+        self.init(kind: .custom(custom), user: user, messageId: messageId, date: date)
+    }
 }
 
+class CustomMessagesFlowLayout: MessagesCollectionViewFlowLayout {
+
+    open lazy var customMessageSizeCalculator = CustomMessageSizeCalculator(layout: self)
+
+    open override func cellSizeCalculatorForItem(at indexPath: IndexPath) -> CellSizeCalculator {
+        if isSectionReservedForTypingIndicator(indexPath.section) {
+            return typingIndicatorSizeCalculator
+        }
+        let message = messagesDataSource.messageForItem(at: indexPath, in: messagesCollectionView)
+        if case .custom = message.kind {
+            return customMessageSizeCalculator
+        }
+        return super.cellSizeCalculatorForItem(at: indexPath)
+    }
+
+    open override func messageSizeCalculators() -> [MessageSizeCalculator] {
+        var superCalculators = super.messageSizeCalculators()
+        // Append any of your custom `MessageSizeCalculator` if you wish for the convenience
+        // functions to work such as `setMessageIncoming...` or `setMessageOutgoing...`
+        superCalculators.append(customMessageSizeCalculator)
+        return superCalculators
+    }
+}
+
+class CustomMessageSizeCalculator: MessageSizeCalculator {
+
+    public override init(layout: MessagesCollectionViewFlowLayout? = nil) {
+        super.init()
+        self.layout = layout
+    }
+
+    open override func sizeForItem(at indexPath: IndexPath) -> CGSize {
+        guard let layout = layout else { return .zero }
+        let collectionViewWidth = layout.collectionView?.bounds.width ?? 0
+        let contentInset = layout.collectionView?.contentInset ?? .zero
+        let inset = layout.sectionInset.left + layout.sectionInset.right + contentInset.left + contentInset.right
+        return CGSize(width: collectionViewWidth - inset, height: 44)
+    }
+
+}
+
+let system = MockUser(senderId: "000000", displayName: "System")
 class ChatViewController: MessagesViewController, MessagesDataSource {
 
     let sender: MockUser
@@ -83,6 +131,8 @@ class ChatViewController: MessagesViewController, MessagesDataSource {
     }
 
     override func viewDidLoad() {
+        messagesCollectionView = MessagesCollectionView(frame: .zero, collectionViewLayout: CustomMessagesFlowLayout())
+        messagesCollectionView.register(CustomCell.self)
         super.viewDidLoad()
         configureMessageInputBar()
         configureMessageCollectionView()
@@ -115,20 +165,57 @@ class ChatViewController: MessagesViewController, MessagesDataSource {
 
     //TODO: 检查消息是否属于当前的会话？丢弃如果不属于当前会话
     @objc func didReceiveMessageFromDataChannel(_ notification: Notification) {
-        if let userInfo = notification.userInfo, let data = userInfo["data"] as? Data,
+        if let userInfo = notification.userInfo,
             let isBinary = userInfo["isBinary"] as? Bool {
-            if isBinary, let img = UIImage(data: data) {
-                let message = MockMessage(image: img, user: other, messageId: UUID().uuidString, date: Date())
-                insertMessage(message)
-            } else if let str = String(data: data, encoding: .utf8) {
-                let message = MockMessage(text: str, user: other, messageId: UUID().uuidString, date: Date())
-                insertMessage(message)
+            if isBinary, let image = notification.object as? UIImage {
+                insertMessage(MockMessage(image: image, user: other, messageId: UUID().uuidString, date: Date()))
+                insertMessage(MockMessage(custom: "传输结束" + formatter.string(from: Date()) + " size:" + (userInfo["size"] as! String), user: system, messageId: UUID().uuidString, date: Date()))
+            } else if let content = notification.object as? String {
+                if let type = userInfo["type"] as? String, type == "system" {
+                    insertMessage(MockMessage(custom: content, user: system, messageId: UUID().uuidString, date: Date()))
+                } else {
+                    insertMessage(MockMessage(text: content, user: other, messageId: UUID().uuidString, date: Date()))
+                }
+            } else {
+                insertMessage(MockMessage(custom: "不能识别的文件" + Date().description, user: system, messageId: UUID().uuidString, date: Date()))
             }
         }
     }
-    
+
     deinit {
         print("[FREE MEMORY] \(self)")
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let messagesDataSource = messagesCollectionView.messagesDataSource else {
+            fatalError("Ouch. nil data source for messages")
+        }
+
+        guard !isSectionReservedForTypingIndicator(indexPath.section) else {
+            return super.collectionView(collectionView, cellForItemAt: indexPath)
+        }
+
+        let message = messagesDataSource.messageForItem(at: indexPath, in: messagesCollectionView)
+        if case .custom = message.kind {
+            let cell = messagesCollectionView.dequeueReusableCell(CustomCell.self, for: indexPath)
+            cell.configure(with: message, at: indexPath, and: messagesCollectionView)
+            return cell
+        }
+        return super.collectionView(collectionView, cellForItemAt: indexPath)
+    }
+}
+
+extension ChatViewController: MessageCellDelegate {
+
+    func didTapImage(in cell: MessageCollectionViewCell) {
+        guard let indexPath = self.messagesCollectionView.indexPath(for: cell) else { return }
+        let message = self.messages[indexPath.section]
+        switch message.kind {
+        case .photo(let media):
+            self.showPreview(image: media.image!)
+        default:
+            break
+        }
     }
 }
 
@@ -139,10 +226,15 @@ extension ChatViewController {
         messageInputBar.inputTextView.tintColor = .primaryColor
         messageInputBar.sendButton.setTitleColor(.primaryColor, for: .normal)
         messageInputBar.sendButton.setTitleColor(UIColor.primaryColor.withAlphaComponent(0.3), for: .highlighted)
+
+        messageInputBar.setRightStackViewWidthConstant(to: 52, animated: false)
+        let bottomItems = [makeButton(named: "album", closure: { [weak self] in
+            self?.showImagePickerViewController()
+        }), .flexibleSpace]
+        messageInputBar.setStackViewItems(bottomItems, forStack: .bottom, animated: false)
     }
 
     func configureMessageCollectionView() {
-        messagesCollectionView.messagesDataSource = self
         scrollsToBottomOnKeyboardBeginsEditing = true // default false
         maintainPositionOnKeyboardFrameChanged = true // default false
 
@@ -153,8 +245,11 @@ extension ChatViewController {
         layout?.setMessageOutgoingMessageTopLabelAlignment(LabelAlignment(textAlignment: .right, textInsets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)))
         layout?.setMessageOutgoingMessageBottomLabelAlignment(LabelAlignment(textAlignment: .right, textInsets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)))
 
+        messagesCollectionView.register(CustomCell.self)
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
+        messagesCollectionView.messagesDataSource = self
+        messagesCollectionView.messageCellDelegate = self
 
         additionalBottomInset = 30
     }
@@ -178,6 +273,44 @@ extension ChatViewController {
         let lastIndexPath = IndexPath(item: 0, section: messages.count - 1)
         return messagesCollectionView.indexPathsForVisibleItems.contains(lastIndexPath)
     }
+
+    private func makeButton(named: String, closure: @escaping VoidClosure) -> InputBarButtonItem {
+        return InputBarButtonItem()
+            .configure {
+                $0.spacing = .fixed(10)
+                $0.image = UIImage(named: named)?.withRenderingMode(.alwaysTemplate)
+                $0.setSize(CGSize(width: 25, height: 25), animated: false)
+                $0.tintColor = UIColor(white: 0.8, alpha: 1)
+            }.onSelected {
+                $0.tintColor = .primaryColor
+            }.onDeselected {
+                $0.tintColor = UIColor(white: 0.8, alpha: 1)
+            }.onTouchUpInside { _ in
+                closure()
+        }
+    }
+
+    func showImagePickerViewController() {
+        let vc = UIImagePickerController()
+        vc.sourceType = .photoLibrary
+        vc.allowsEditing = false
+        vc.delegate = self
+        present(vc, animated: true)
+    }
+
+    func isTimeLabelVisible(at indexPath: IndexPath) -> Bool {
+        return indexPath.section % 3 == 0 && !isPreviousMessageSameSender(at: indexPath)
+    }
+
+    func isPreviousMessageSameSender(at indexPath: IndexPath) -> Bool {
+        guard indexPath.section - 1 >= 0 else { return false }
+        return messages[indexPath.section].user == messages[indexPath.section - 1].user
+    }
+
+    func isNextMessageSameSender(at indexPath: IndexPath) -> Bool {
+        guard indexPath.section + 1 < messages.count else { return false }
+        return messages[indexPath.section].user == messages[indexPath.section + 1].user
+    }
 }
 
 extension ChatViewController: InputBarAccessoryViewDelegate {
@@ -192,12 +325,8 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         messageInputBar.inputTextView.placeholder = "Sending..."
 
         for component in components {
-            if let str = component as? String, let data = str.data(using: .utf8) {
-                let result = try? self.client.sendData(data, isBinary: false)
-                print("[SEND]: " + "<" + str + "> " + (result == true ? "data-channel sent success" : "data-channel sent failure"))
-            } else if let img = component as? UIImage, let data = img.pngData() {
-                let result = try? self.client.sendData(data, isBinary: true)
-                print("[SEND]: <image>" + (result == true ? "data-channel sent success" : "data-channel sent failure"))
+            if let str = component as? String {
+                try? self.client.sendText(str)
             }
         }
         DispatchQueue.main.async {
@@ -255,6 +384,26 @@ extension ChatViewController {
         }) { _ in
             print("continus chat")
         }
+    }
+}
+
+extension ChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let image = info[.originalImage] as? UIImage else { return }
+        insertMessage(MockMessage(custom: "文件: \(image.getSizeIn(.megabyte))", user: system, messageId: UUID().uuidString, date: Date()))
+        try? self.client.sendImage(image)
+
+        self.messageInputBar.sendButton.stopAnimating()
+        self.messageInputBar.inputTextView.placeholder = "Aa"
+        self.insertMessages([image])
+        self.messagesCollectionView.scrollToBottom(animated: true)
+
+        self.dismiss(animated: true, completion: nil)
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
     }
 }
 

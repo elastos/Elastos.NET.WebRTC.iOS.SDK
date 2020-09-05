@@ -24,6 +24,15 @@ class DataManager {
         history[key]?.append(MockMessage(text: message, user: MockUser(senderId: from, displayName: from), messageId: id, date: date))
     }
 
+    func write(image: UIImage, from: String, to: String, id: String = UUID().uuidString, date: Date = Date()) {
+        assert(me.isEmpty == false, "set me user id first")
+        let key: String = (from == me) ? (from + to) : (to + from)
+        if history[key] == nil {
+            history[key] = []
+        }
+        history[key]?.append(MockMessage(image: image, user: MockUser(senderId: from, displayName: from), messageId: id, date: date))
+    }
+
     func read(from: String) -> [MockMessage] {
         assert(me.isEmpty == false, "set me user id first")
         let key: String = me + from

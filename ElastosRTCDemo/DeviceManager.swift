@@ -13,7 +13,6 @@ extension Notification.Name {
 
     static let rtcStateChanged = Notification.Name("webrtc_state_changed")
     static let receiveMessage = Notification.Name("data-channel-receive-message")
-    static let receiveVideoSizeChanged = Notification.Name("remote-video-size-changed")
 
 }
 var transferFrientId = ""
