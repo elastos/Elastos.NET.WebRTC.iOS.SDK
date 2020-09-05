@@ -112,8 +112,8 @@ class MediaCallViewController: UIViewController {
     private lazy var loudSpeakerBtn: UIButton = {
         let view = UIButton(type: .custom)
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.setImage(UIImage(named: "loud-speaker-active"), for: .normal)
-        view.setImage(UIImage(named: "loud-speaker-inactive"), for: .selected)
+        view.setImage(UIImage(named: "loud-speaker-inactive"), for: .normal)
+        view.setImage(UIImage(named: "loud-speaker-active"), for: .selected)
         view.setImage(UIImage(named: "loud-speaker-active"), for: .disabled)
         view.isEnabled = UIDevice.current.userInterfaceIdiom == .phone
         view.isSelected = UIDevice.current.userInterfaceIdiom == .pad
@@ -358,6 +358,12 @@ extension MediaCallViewController {
             self.callState = .connecting
         case .connected:
             self.callState = .connected
+            if UIDevice.current.userInterfaceIdiom == .phone {
+                DispatchQueue.main.async {
+                    self.loudSpeakerBtn.isSelected = false
+                    self.didPressLoudSpeakerControl(self.loudSpeakerBtn)
+                }
+            }
         case .disconnected, .localFailure, .localHangup:
             self.callState = .hangup
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
