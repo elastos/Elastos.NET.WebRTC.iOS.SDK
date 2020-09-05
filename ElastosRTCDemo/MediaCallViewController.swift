@@ -246,7 +246,6 @@ class MediaCallViewController: UIViewController {
     func setupObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(webrtcStateChanged(_:)), name: .rtcStateChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveMessage(_:)), name: .receiveMessage, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(remoteVideoSizeDidChanged(_:)), name: .receiveVideoSizeChanged, object: nil)
     }
 
     func updateToolsStack() {
@@ -380,9 +379,5 @@ extension MediaCallViewController {
                 self.newMessageTipLabel.text = "Have a New Message"
             }
         }
-    }
-
-    @objc func remoteVideoSizeDidChanged(_ notification: NSNotification) {
-//        guard let size = notification.userInfo?["size"] as? CGSize else { return }
     }
 }
