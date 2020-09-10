@@ -10,18 +10,17 @@ Pod::Spec.new do |spec|
 
   spec.name         = "ElastosRTC"
   spec.version      = "0.0.1"
-  spec.summary      = "A short description of ElastosWebRtc."
+  spec.summary      = "Elastos WebRtc"
   spec.description  = "Using the Google WebRTC for iOS."
-  spec.homepage     = "https://github.com/Tomas-Shao/Elastos.NET.WebRTC.Swift.SDK"
+  spec.homepage     = "https://gitlab.com/elastos/Elastos.NET.WebRTC.iOS.SDK"
   spec.license      = "MIT"
-  spec.author       = { "Tomas Shao" => "zeliang.shao@gmail.com" }
-  spec.source       = { :git => "git@github.com:Tomas-Shao/Elastos.NET.WebRTC.Swift.SDK.git", :branch => "develop" }
+  spec.source       = { :git => "git@gitlab.com:elastos/Elastos.NET.WebRTC.iOS.SDK.git", :branch => "master" }
   spec.platform     = :ios, "11.0"
 
   spec.source_files = "ElastosRTC/*.{swift}"
   spec.requires_arc = true
   spec.swift_version = '5.0'
-  spec.dependency "GoogleWebRTC", "1.1.29400"
+  spec.dependency "GoogleWebRTC", "1.1.31999"
   spec.dependency "ElastosCarrierSDK", "5.6.4"
 
 end
