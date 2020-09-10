@@ -1,0 +1,8 @@
+{
+    "options": [
+        "audio",
+        "video"
+    ],
+    "sdp": "v=0\r\no=- 2583953393187837782 2 IN IP4 127.0.0.1....",
+    "type": "offer"
+}

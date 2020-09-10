@@ -1,0 +1,10 @@
+{
+    "candidates": [
+        {
+            "sdp": "candidate:520584137 1 udp 2122260223 10.21.7.37 64501 typ host generation 0 ufrag 6hC6 network-id 1 network-cost 10",
+            "sdpMLineIndex": 0,
+            "sdpMid": "audio"
+        }
+    ],
+    "type": "candidate"
+}
