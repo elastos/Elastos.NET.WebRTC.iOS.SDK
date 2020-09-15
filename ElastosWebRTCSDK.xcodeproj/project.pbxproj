@@ -226,8 +226,8 @@
 		80FAFBB024EF94CA00C36804 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				F9870082248FE1DB005758F3 /* FriendCell.swift */,
 				80FAFBAE24EF94BB00C36804 /* CustomCell.swift */,
+				F9870082248FE1DB005758F3 /* FriendCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -246,11 +246,11 @@
 			isa = PBXGroup;
 			children = (
 				F9A8D0A92486A9C100FFDFD2 /* ElastosWebRTCSDK */,
-				F9A8D0C62486AA1C00FFDFD2 /* WebRTCDemo */,
 				F9A8D0B42486A9C100FFDFD2 /* ElastosWebRTCSDKTests */,
-				F9A8D0A82486A9C100FFDFD2 /* Products */,
-				7F7BE4938ED24D472DBBB343 /* Pods */,
 				F861844123CAA1A4A66D1944 /* Frameworks */,
+				7F7BE4938ED24D472DBBB343 /* Pods */,
+				F9A8D0A82486A9C100FFDFD2 /* Products */,
+				F9A8D0C62486AA1C00FFDFD2 /* WebRTCDemo */,
 			);
 			sourceTree = "<group>";
 		};
@@ -258,8 +258,8 @@
 			isa = PBXGroup;
 			children = (
 				F9A8D0A72486A9C100FFDFD2 /* ElastosWebRTCSDK.framework */,
-				F9A8D0C52486AA1C00FFDFD2 /* WebRTCDemo.app */,
 				F9A8D0B02486A9C100FFDFD2 /* ElastosWebRTCSDKTests.xctest */,
+				F9A8D0C52486AA1C00FFDFD2 /* WebRTCDemo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -429,8 +429,8 @@
 			projectRoot = "";
 			targets = (
 				F9A8D0A62486A9C100FFDFD2 /* ElastosWebRTCSDK */,
-				F9A8D0C42486AA1C00FFDFD2 /* WebRTCDemo */,
 				F9A8D0AF2486A9C100FFDFD2 /* ElastosWebRTCSDKTests */,
+				F9A8D0C42486AA1C00FFDFD2 /* WebRTCDemo */,
 			);
 		};
 /* End PBXProject section */
@@ -457,9 +457,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F9A8D0D12486AA2100FFDFD2 /* Assets.xcassets in Resources */,
 				80659CDB2510A60900ED0FF9 /* LaunchScreen.storyboard in Resources */,
 				80659CDC2510A60900ED0FF9 /* Main.storyboard in Resources */,
-				F9A8D0D12486AA2100FFDFD2 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -556,15 +556,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				74104B6724E8251800EE6A19 /* Utils.swift in Sources */,
-				F9A281812487F5230032A2C0 /* WebRtcClient+Carrier.swift in Sources */,
 				801E489124F8E88100A2ECCF /* LocalVideoView.swift in Sources */,
+				801E488F24F77E4000A2ECCF /* RemoteVideoView.swift in Sources */,
+				74104B6724E8251800EE6A19 /* Utils.swift in Sources */,
+				8095280624FE2E2100F95E0A /* VideoCaptureController.swift in Sources */,
+				F9A281812487F5230032A2C0 /* WebRtcClient+Carrier.swift in Sources */,
 				80BEB5E124AF2BE600FC850F /* WebRtcClient+DataChannel.swift in Sources */,
 				F9A281852487F6830032A2C0 /* WebRtcClient+PeerConnection.swift in Sources */,
 				807706C9248908390066D477 /* WebRtcClient+VideoRender.swift in Sources */,
-				8095280624FE2E2100F95E0A /* VideoCaptureController.swift in Sources */,
 				F9A2817F2487F05A0032A2C0 /* WebRtcClient.swift in Sources */,
-				801E488F24F77E4000A2ECCF /* RemoteVideoView.swift in Sources */,
 				80E6940524BC179D008F1DE2 /* WebRtcModel+Extension.swift in Sources */,
 				F9A2818D248952990032A2C0 /* WebRtcSignal.swift in Sources */,
 			);
@@ -586,10 +586,10 @@
 				F9A8D0C82486AA1C00FFDFD2 /* AppDelegate.swift in Sources */,
 				745CB72E2494668A00E7D308 /* Carrier+Util.swift in Sources */,
 				808D141824BC402C00BA0DCE /* ChatViewController.swift in Sources */,
+				80FAFBAF24EF94BB00C36804 /* CustomCell.swift in Sources */,
 				80E3481524C557FB0009B998 /* DataManager.swift in Sources */,
 				743AC317248D33EA00A04AD0 /* DeviceManager.swift in Sources */,
 				F9870083248FE1DB005758F3 /* FriendCell.swift in Sources */,
-				80FAFBAF24EF94BB00C36804 /* CustomCell.swift in Sources */,
 				80E3481724C558D30009B998 /* MediaCallViewController.swift in Sources */,
 				746250DB24C48C9A00CC97BB /* MyProfileViewController.swift in Sources */,
 				745CB73B249652E500E7D308 /* SettingViewController.swift in Sources */,
