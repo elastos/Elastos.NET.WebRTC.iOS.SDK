@@ -1,95 +1,34 @@
-=======
-Elastos.NET.WebRTC.iOS.SDK
-=========================
+Elastos WebRTC iOS SDK
+=====================
 
-## Protocol
+## Introduction
+Elastos WebRTC is the WebRTC framework over Elastos Carrier network, which for now, supports basic features of Audio/Video communication as well as data communication over DataChannel.
 
+This is the repository of WebRTC iOS SDK over Carrier network. With that, it's available for developers to implement VoIP applications on Android/iOS mobile platforms over Carrier network.
+
+## Build from source
 ### Install Pre-Requirements
-Using cocoapods to manage dependencies of the WebRTC project, it must be installed before compilation.
-
-Run the following commands to install **cocoapods**:
-
+Please be sure you have **cocoapods** installed on your macOS device, otherwise run the following comand to install it:
 ```shell
-gem install cocoapods
+$ gem install cocopods
 ```
 
-### Build
+### Build WebRTC SDK
+```shell
+$ git clone git@github.com:elastos/Elastos.NET.WebRTC.iOS.SDK.git
+$ cd Elastos.NET.WebRTC.iOS.SDK
+$ pod install --repo-update
 ```
-git clone git@github.com:allcomsh/Elastos.NET.WebRTC.Swift.SDK.git
+Then use **"Xcode"** to open the workspace and start the build process.
 
-cd YOUR_LOCAL_PATH/Elastos.NET.WebRTC.Swift.SDK
+## Build Docs
+COMMING SOON.
 
-pod install --repo-update --verbose
+## Contribution
+We welcome contributions to the Elastos WebRTC iOS SDK Project.
 
-open ElastosRTC.xcworkspace
+## Acknowledgments
+A sincere thank you to all teams and projects that we rely on directly or indirectly.
 
-```
-
-### WebRTC Protocol
-
-| type               | sdp      | candidates | reason   | options  |
-|--------------------|----------|------------|----------|----------|
-| offer              | required | -          | -        | required |
-| answer             | required | -          | -        | -        |
-| candidate          | -        | required   | -        | -        |
-| removal-candidates | -        | required   | -        | -        |
-| bye                | -        | -          | required | -        |
-
-### Example
-#### 1. Offer
-
-```json
-{
-	"type":"offer",
-	"sdp":"rtc_session_description_generated_by_webrtc",
-	"options":["audio","video","data"]
-}
-```
-### 2. Answer
-```
-{
-	"type":"answer",
-	"sdp":"rtc_session_description_generated_by_webrtc"
-}
-```
-### 3. Candidate
-
-```
-{
-	"type":"candidate",
-	"candidates": [{
-		"sdp": "candidate:684496083 1 udp 1685855999 112.65.48.165 17465 ...",
-		"sdpMLineIndex": 0,
-		"sdpMid": audio
-	}]
-}
-```
-### 4. Removal-Candidate
-
-```
-{
-	"type":"remove-candidates",
-	"candidates": 
-	[
-		{
-			"sdp": "candidate:684496083 1 udp 1685855999 112.65.48.165 17465 ...",
-			"sdpMLineIndex": 0,
-			"sdpMid": audio
-		}, 
-		{
-			"sdp": "rtc_candiate_desciption",
-			"sdpMLineIndex": 0,
-			"sdpMid": audio
-		}, 
-		...
-	]
-}
-```
-### 5. Bye
-
-```
-{
-	"type":"bye"
-	"reason": "reject"
-}
-```
+## License
+This project is licensed under the terms of the [GPLv3 license]
