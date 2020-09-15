@@ -21,7 +21,7 @@
 */
 
 import XCTest
-@testable import ElastosRTC
+@testable import ElastosWebRTCSDK
 
 class WebRtcSignalTests: XCTestCase {
 

@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>ElastosRTC</string>
+	<string>WebRTCDemo</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -23,9 +23,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>ElastosRTCDemo want to use your camera</string>
+	<string>WebRTCDemo want to use your camera</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>ElastosRTCDemo want to use your Microphone</string>
+	<string>WebRTCDemo want to use your Microphone</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>voip</string>
