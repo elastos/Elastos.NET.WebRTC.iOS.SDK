@@ -21,7 +21,7 @@
 */
 
 import XCTest
-@testable import ElastosRTC
+@testable import ElastosWebRTCSDK
 
 class WebRtcSignalTests: XCTestCase {
 
@@ -31,11 +31,6 @@ class WebRtcSignalTests: XCTestCase {
         XCTAssertEqual(candidate?.sdp, "candidate:520584137 1 udp 2122260223 10.21.7.37 64501 typ host generation 0 ufrag 6hC6 network-id 1 network-cost 10")
         XCTAssertEqual(candidate?.sdpMLineIndex, 0)
         XCTAssertEqual(candidate?.sdpMid, "audio")
-    }
-    //todo: disable decode removal candidates
-    func testDecodeRemovalCandidates() {
-        let candidates = loadData(from: "removal_candidates", decode: RtcSignal.self)?.removeCandidates
-        XCTAssertNotNil(candidates)
     }
 
     func testDecodeOffer() {

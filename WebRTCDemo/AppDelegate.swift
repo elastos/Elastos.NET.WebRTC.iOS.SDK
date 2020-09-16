@@ -23,7 +23,7 @@
 import UIKit
 import AVFoundation
 
-@_exported import ElastosRTC
+@_exported import ElastosWebRTCSDK
 @_exported import ElastosCarrierSDK
 
 @UIApplicationMain

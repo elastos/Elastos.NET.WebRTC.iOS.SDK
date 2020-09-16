@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0FF26A081D939B13D076E755 /* Pods_ElastosWebRTCSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15FCA7BFC5879CBA45120832 /* Pods_ElastosWebRTCSDK.framework */; };
 		74104B6724E8251800EE6A19 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74104B6624E8251800EE6A19 /* Utils.swift */; };
 		743AC317248D33EA00A04AD0 /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743AC316248D33EA00A04AD0 /* DeviceManager.swift */; };
 		745CB72E2494668A00E7D308 /* Carrier+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745CB72D2494668A00E7D308 /* Carrier+Util.swift */; };
@@ -17,6 +18,8 @@
 		80139DEE24CEA3AB005987AD /* UIViewController+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80139DED24CEA3AB005987AD /* UIViewController+Empty.swift */; };
 		801E488F24F77E4000A2ECCF /* RemoteVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801E488E24F77E4000A2ECCF /* RemoteVideoView.swift */; };
 		801E489124F8E88100A2ECCF /* LocalVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801E489024F8E88100A2ECCF /* LocalVideoView.swift */; };
+		80659CDB2510A60900ED0FF9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F9A8D0D22486AA2100FFDFD2 /* LaunchScreen.storyboard */; };
+		80659CDC2510A60900ED0FF9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F9A8D0CD2486AA1C00FFDFD2 /* Main.storyboard */; };
 		807706C9248908390066D477 /* WebRtcClient+VideoRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807706C8248908390066D477 /* WebRtcClient+VideoRender.swift */; };
 		808AE2C224A8A72E002DF9C9 /* WebRtcSignalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808AE2C124A8A72E002DF9C9 /* WebRtcSignalTests.swift */; };
 		808AE2C424A8A8D0002DF9C9 /* XCTestCase+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808AE2C324A8A8D0002DF9C9 /* XCTestCase+Util.swift */; };
@@ -24,8 +27,8 @@
 		808AE2CA24A8C35F002DF9C9 /* mock_added_candidate.json in Resources */ = {isa = PBXBuildFile; fileRef = 808AE2C924A8C35F002DF9C9 /* mock_added_candidate.json */; };
 		808AE2CC24A8C3C3002DF9C9 /* mock_answer.json in Resources */ = {isa = PBXBuildFile; fileRef = 808AE2CB24A8C3C3002DF9C9 /* mock_answer.json */; };
 		808D141824BC402C00BA0DCE /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808D141724BC402C00BA0DCE /* ChatViewController.swift */; };
-		8095280024FE19EC00F95E0A /* ElastosRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A8D0A72486A9C100FFDFD2 /* ElastosRTC.framework */; };
-		8095280124FE19ED00F95E0A /* ElastosRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9A8D0A72486A9C100FFDFD2 /* ElastosRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8095280024FE19EC00F95E0A /* ElastosWebRTCSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A8D0A72486A9C100FFDFD2 /* ElastosWebRTCSDK.framework */; };
+		8095280124FE19ED00F95E0A /* ElastosWebRTCSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9A8D0A72486A9C100FFDFD2 /* ElastosWebRTCSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8095280624FE2E2100F95E0A /* VideoCaptureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8095280524FE2E2100F95E0A /* VideoCaptureController.swift */; };
 		80BEB5E124AF2BE600FC850F /* WebRtcClient+DataChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BEB5E024AF2BE600FC850F /* WebRtcClient+DataChannel.swift */; };
 		80E3481524C557FB0009B998 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3481424C557FB0009B998 /* DataManager.swift */; };
@@ -34,21 +37,18 @@
 		80F2C49524E6A42F00BFF091 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EBBC9324DC2FCD00BD4704 /* Util.swift */; };
 		80FAFBAD24EE551400C36804 /* UIViewController+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FAFBAC24EE551400C36804 /* UIViewController+Preview.swift */; };
 		80FAFBAF24EF94BB00C36804 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FAFBAE24EF94BB00C36804 /* CustomCell.swift */; };
-		83751758AB9C042ECF924374 /* Pods_ElastosRTCTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9433CAE98CBBF62000E449C2 /* Pods_ElastosRTCTests.framework */; };
-		8C3285D5CB4A9871CAD13993 /* Pods_ElastosRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D89F702DD67FA45DCC3E3EF5 /* Pods_ElastosRTC.framework */; };
-		C5FC6EA084D0886BEEC5A48C /* Pods_ElastosRTCDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75885C044B032846CFCCBA1F /* Pods_ElastosRTCDemo.framework */; };
+		A327D9AC74649F09C6B4BA92 /* Pods_ElastosWebRTCSDKTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9F8A1E8783280D141AF72E /* Pods_ElastosWebRTCSDKTests.framework */; };
+		B7913C4A3DEA05E6CE1D7F29 /* Pods_WebRTCDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B97D1167BFA663DAC8FA2475 /* Pods_WebRTCDemo.framework */; };
 		F9870083248FE1DB005758F3 /* FriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9870082248FE1DB005758F3 /* FriendCell.swift */; };
 		F9A2817F2487F05A0032A2C0 /* WebRtcClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A2817E2487F05A0032A2C0 /* WebRtcClient.swift */; };
 		F9A281812487F5230032A2C0 /* WebRtcClient+Carrier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A281802487F5230032A2C0 /* WebRtcClient+Carrier.swift */; };
 		F9A281852487F6830032A2C0 /* WebRtcClient+PeerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A281842487F6830032A2C0 /* WebRtcClient+PeerConnection.swift */; };
 		F9A2818D248952990032A2C0 /* WebRtcSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A2818C248952990032A2C0 /* WebRtcSignal.swift */; };
-		F9A8D0B12486A9C100FFDFD2 /* ElastosRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A8D0A72486A9C100FFDFD2 /* ElastosRTC.framework */; };
+		F9A8D0B12486A9C100FFDFD2 /* ElastosWebRTCSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A8D0A72486A9C100FFDFD2 /* ElastosWebRTCSDK.framework */; };
 		F9A8D0B82486A9C100FFDFD2 /* ElastosRTC.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A8D0AA2486A9C100FFDFD2 /* ElastosRTC.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F9A8D0C82486AA1C00FFDFD2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A8D0C72486AA1C00FFDFD2 /* AppDelegate.swift */; };
 		F9A8D0CC2486AA1C00FFDFD2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A8D0CB2486AA1C00FFDFD2 /* ViewController.swift */; };
-		F9A8D0CF2486AA1C00FFDFD2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F9A8D0CD2486AA1C00FFDFD2 /* Main.storyboard */; };
 		F9A8D0D12486AA2100FFDFD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F9A8D0D02486AA2100FFDFD2 /* Assets.xcassets */; };
-		F9A8D0D42486AA2100FFDFD2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F9A8D0D22486AA2100FFDFD2 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,7 +89,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				8095280124FE19ED00F95E0A /* ElastosRTC.framework in Embed Frameworks */,
+				8095280124FE19ED00F95E0A /* ElastosWebRTCSDK.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -97,16 +97,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		43126D9EA6BBEC3B2A90F90E /* Pods-ElastosRTCTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosRTCTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ElastosRTCTests/Pods-ElastosRTCTests.release.xcconfig"; sourceTree = "<group>"; };
+		15FCA7BFC5879CBA45120832 /* Pods_ElastosWebRTCSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ElastosWebRTCSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4EFA906D58855ECB79F6ED1B /* Pods-ElastosWebRTCSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosWebRTCSDK.debug.xcconfig"; path = "Target Support Files/Pods-ElastosWebRTCSDK/Pods-ElastosWebRTCSDK.debug.xcconfig"; sourceTree = "<group>"; };
+		725E0FC19BAD763ACA3600D6 /* Pods-ElastosWebRTCSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosWebRTCSDKTests.release.xcconfig"; path = "Target Support Files/Pods-ElastosWebRTCSDKTests/Pods-ElastosWebRTCSDKTests.release.xcconfig"; sourceTree = "<group>"; };
 		74104B6624E8251800EE6A19 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		743AC316248D33EA00A04AD0 /* DeviceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
-		7446E9EDE7D97C628741B805 /* Pods-ElastosRTCDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosRTCDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-ElastosRTCDemo/Pods-ElastosRTCDemo.release.xcconfig"; sourceTree = "<group>"; };
 		745CB72D2494668A00E7D308 /* Carrier+Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Carrier+Util.swift"; sourceTree = "<group>"; };
 		745CB73A249652E500E7D308 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		746250DA24C48C9A00CC97BB /* MyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
 		746250DE24C4A65800CC97BB /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
-		749E621FACBE3D5FE0323038 /* Pods-ElastosRTCTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosRTCTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ElastosRTCTests/Pods-ElastosRTCTests.debug.xcconfig"; sourceTree = "<group>"; };
-		75885C044B032846CFCCBA1F /* Pods_ElastosRTCDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ElastosRTCDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		80129E6924ED350A00823F3F /* UIView+Progress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Progress.swift"; sourceTree = "<group>"; };
 		80139DED24CEA3AB005987AD /* UIViewController+Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Empty.swift"; sourceTree = "<group>"; };
 		801E488E24F77E4000A2ECCF /* RemoteVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteVideoView.swift; sourceTree = "<group>"; };
@@ -126,22 +125,23 @@
 		80EBBC9324DC2FCD00BD4704 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		80FAFBAC24EE551400C36804 /* UIViewController+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Preview.swift"; sourceTree = "<group>"; };
 		80FAFBAE24EF94BB00C36804 /* CustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
-		9433CAE98CBBF62000E449C2 /* Pods_ElastosRTCTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ElastosRTCTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D106126C256D19CEF427196A /* Pods-ElastosRTCDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosRTCDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ElastosRTCDemo/Pods-ElastosRTCDemo.debug.xcconfig"; sourceTree = "<group>"; };
-		D89F702DD67FA45DCC3E3EF5 /* Pods_ElastosRTC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ElastosRTC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DA2A2ECC557F86F530E0EAC5 /* Pods-ElastosRTC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosRTC.release.xcconfig"; path = "Pods/Target Support Files/Pods-ElastosRTC/Pods-ElastosRTC.release.xcconfig"; sourceTree = "<group>"; };
-		E083358915BD80DF61BBD546 /* Pods-ElastosRTC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosRTC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ElastosRTC/Pods-ElastosRTC.debug.xcconfig"; sourceTree = "<group>"; };
+		9B7C0E3567F785583DF9F611 /* Pods-WebRTCDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebRTCDemo.release.xcconfig"; path = "Target Support Files/Pods-WebRTCDemo/Pods-WebRTCDemo.release.xcconfig"; sourceTree = "<group>"; };
+		B31DE71E35DFE4BB420F4FF7 /* Pods-WebRTCDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebRTCDemo.debug.xcconfig"; path = "Target Support Files/Pods-WebRTCDemo/Pods-WebRTCDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		B97D1167BFA663DAC8FA2475 /* Pods_WebRTCDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebRTCDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF9F8A1E8783280D141AF72E /* Pods_ElastosWebRTCSDKTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ElastosWebRTCSDKTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C64E378B93B2A96FD415A070 /* Pods-ElastosWebRTCSDKTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosWebRTCSDKTests.debug.xcconfig"; path = "Target Support Files/Pods-ElastosWebRTCSDKTests/Pods-ElastosWebRTCSDKTests.debug.xcconfig"; sourceTree = "<group>"; };
+		EE04019C0BE6358359452C89 /* Pods-ElastosWebRTCSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElastosWebRTCSDK.release.xcconfig"; path = "Target Support Files/Pods-ElastosWebRTCSDK/Pods-ElastosWebRTCSDK.release.xcconfig"; sourceTree = "<group>"; };
 		F9870082248FE1DB005758F3 /* FriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCell.swift; sourceTree = "<group>"; };
 		F9A2817E2487F05A0032A2C0 /* WebRtcClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRtcClient.swift; sourceTree = "<group>"; };
 		F9A281802487F5230032A2C0 /* WebRtcClient+Carrier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebRtcClient+Carrier.swift"; sourceTree = "<group>"; };
 		F9A281842487F6830032A2C0 /* WebRtcClient+PeerConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebRtcClient+PeerConnection.swift"; sourceTree = "<group>"; };
 		F9A2818C248952990032A2C0 /* WebRtcSignal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRtcSignal.swift; sourceTree = "<group>"; };
-		F9A8D0A72486A9C100FFDFD2 /* ElastosRTC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ElastosRTC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9A8D0A72486A9C100FFDFD2 /* ElastosWebRTCSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ElastosWebRTCSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9A8D0AA2486A9C100FFDFD2 /* ElastosRTC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ElastosRTC.h; sourceTree = "<group>"; };
 		F9A8D0AB2486A9C100FFDFD2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F9A8D0B02486A9C100FFDFD2 /* ElastosRTCTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ElastosRTCTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9A8D0B02486A9C100FFDFD2 /* ElastosWebRTCSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ElastosWebRTCSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9A8D0B72486A9C100FFDFD2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F9A8D0C52486AA1C00FFDFD2 /* ElastosRTCDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ElastosRTCDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9A8D0C52486AA1C00FFDFD2 /* WebRTCDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebRTCDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9A8D0C72486AA1C00FFDFD2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F9A8D0CB2486AA1C00FFDFD2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		F9A8D0CE2486AA1C00FFDFD2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -155,7 +155,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C3285D5CB4A9871CAD13993 /* Pods_ElastosRTC.framework in Frameworks */,
+				0FF26A081D939B13D076E755 /* Pods_ElastosWebRTCSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,8 +163,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F9A8D0B12486A9C100FFDFD2 /* ElastosRTC.framework in Frameworks */,
-				83751758AB9C042ECF924374 /* Pods_ElastosRTCTests.framework in Frameworks */,
+				F9A8D0B12486A9C100FFDFD2 /* ElastosWebRTCSDK.framework in Frameworks */,
+				A327D9AC74649F09C6B4BA92 /* Pods_ElastosWebRTCSDKTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -172,37 +172,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8095280024FE19EC00F95E0A /* ElastosRTC.framework in Frameworks */,
-				C5FC6EA084D0886BEEC5A48C /* Pods_ElastosRTCDemo.framework in Frameworks */,
+				8095280024FE19EC00F95E0A /* ElastosWebRTCSDK.framework in Frameworks */,
+				B7913C4A3DEA05E6CE1D7F29 /* Pods_WebRTCDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1080FBEDED7512ABF91355BC /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				E083358915BD80DF61BBD546 /* Pods-ElastosRTC.debug.xcconfig */,
-				DA2A2ECC557F86F530E0EAC5 /* Pods-ElastosRTC.release.xcconfig */,
-				D106126C256D19CEF427196A /* Pods-ElastosRTCDemo.debug.xcconfig */,
-				7446E9EDE7D97C628741B805 /* Pods-ElastosRTCDemo.release.xcconfig */,
-				749E621FACBE3D5FE0323038 /* Pods-ElastosRTCTests.debug.xcconfig */,
-				43126D9EA6BBEC3B2A90F90E /* Pods-ElastosRTCTests.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		195004598616434BB9B055D8 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				D89F702DD67FA45DCC3E3EF5 /* Pods_ElastosRTC.framework */,
-				75885C044B032846CFCCBA1F /* Pods_ElastosRTCDemo.framework */,
-				9433CAE98CBBF62000E449C2 /* Pods_ElastosRTCTests.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		74EA215E248A93B800240BD9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -210,6 +187,19 @@
 				F9A8D0AB2486A9C100FFDFD2 /* Info.plist */,
 			);
 			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		7F7BE4938ED24D472DBBB343 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4EFA906D58855ECB79F6ED1B /* Pods-ElastosWebRTCSDK.debug.xcconfig */,
+				EE04019C0BE6358359452C89 /* Pods-ElastosWebRTCSDK.release.xcconfig */,
+				C64E378B93B2A96FD415A070 /* Pods-ElastosWebRTCSDKTests.debug.xcconfig */,
+				725E0FC19BAD763ACA3600D6 /* Pods-ElastosWebRTCSDKTests.release.xcconfig */,
+				B31DE71E35DFE4BB420F4FF7 /* Pods-WebRTCDemo.debug.xcconfig */,
+				9B7C0E3567F785583DF9F611 /* Pods-WebRTCDemo.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		808AE2CD24A8C50D002DF9C9 /* Mock files */ = {
@@ -236,35 +226,45 @@
 		80FAFBB024EF94CA00C36804 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				F9870082248FE1DB005758F3 /* FriendCell.swift */,
 				80FAFBAE24EF94BB00C36804 /* CustomCell.swift */,
+				F9870082248FE1DB005758F3 /* FriendCell.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		F861844123CAA1A4A66D1944 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				15FCA7BFC5879CBA45120832 /* Pods_ElastosWebRTCSDK.framework */,
+				BF9F8A1E8783280D141AF72E /* Pods_ElastosWebRTCSDKTests.framework */,
+				B97D1167BFA663DAC8FA2475 /* Pods_WebRTCDemo.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		F9A8D09D2486A9C100FFDFD2 = {
 			isa = PBXGroup;
 			children = (
-				F9A8D0A92486A9C100FFDFD2 /* ElastosRTC */,
-				F9A8D0C62486AA1C00FFDFD2 /* ElastosRTCDemo */,
-				F9A8D0B42486A9C100FFDFD2 /* ElastosRTCTests */,
-				195004598616434BB9B055D8 /* Frameworks */,
-				1080FBEDED7512ABF91355BC /* Pods */,
+				F9A8D0A92486A9C100FFDFD2 /* ElastosWebRTCSDK */,
+				F9A8D0B42486A9C100FFDFD2 /* ElastosWebRTCSDKTests */,
+				F861844123CAA1A4A66D1944 /* Frameworks */,
+				7F7BE4938ED24D472DBBB343 /* Pods */,
 				F9A8D0A82486A9C100FFDFD2 /* Products */,
+				F9A8D0C62486AA1C00FFDFD2 /* WebRTCDemo */,
 			);
 			sourceTree = "<group>";
 		};
 		F9A8D0A82486A9C100FFDFD2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F9A8D0A72486A9C100FFDFD2 /* ElastosRTC.framework */,
-				F9A8D0C52486AA1C00FFDFD2 /* ElastosRTCDemo.app */,
-				F9A8D0B02486A9C100FFDFD2 /* ElastosRTCTests.xctest */,
+				F9A8D0A72486A9C100FFDFD2 /* ElastosWebRTCSDK.framework */,
+				F9A8D0B02486A9C100FFDFD2 /* ElastosWebRTCSDKTests.xctest */,
+				F9A8D0C52486AA1C00FFDFD2 /* WebRTCDemo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		F9A8D0A92486A9C100FFDFD2 /* ElastosRTC */ = {
+		F9A8D0A92486A9C100FFDFD2 /* ElastosWebRTCSDK */ = {
 			isa = PBXGroup;
 			children = (
 				801E489024F8E88100A2ECCF /* LocalVideoView.swift */,
@@ -280,10 +280,10 @@
 				80E6940424BC179D008F1DE2 /* WebRtcModel+Extension.swift */,
 				F9A2818C248952990032A2C0 /* WebRtcSignal.swift */,
 			);
-			path = ElastosRTC;
+			path = ElastosWebRTCSDK;
 			sourceTree = "<group>";
 		};
-		F9A8D0B42486A9C100FFDFD2 /* ElastosRTCTests */ = {
+		F9A8D0B42486A9C100FFDFD2 /* ElastosWebRTCSDKTests */ = {
 			isa = PBXGroup;
 			children = (
 				F9A8D0B72486A9C100FFDFD2 /* Info.plist */,
@@ -291,10 +291,10 @@
 				808AE2C124A8A72E002DF9C9 /* WebRtcSignalTests.swift */,
 				808AE2C324A8A8D0002DF9C9 /* XCTestCase+Util.swift */,
 			);
-			path = ElastosRTCTests;
+			path = ElastosWebRTCSDKTests;
 			sourceTree = "<group>";
 		};
-		F9A8D0C62486AA1C00FFDFD2 /* ElastosRTCDemo */ = {
+		F9A8D0C62486AA1C00FFDFD2 /* WebRTCDemo */ = {
 			isa = PBXGroup;
 			children = (
 				F9A8D0C72486AA1C00FFDFD2 /* AppDelegate.swift */,
@@ -314,7 +314,7 @@
 				80EBBC9324DC2FCD00BD4704 /* Util.swift */,
 				F9A8D0CB2486AA1C00FFDFD2 /* ViewController.swift */,
 			);
-			path = ElastosRTCDemo;
+			path = WebRTCDemo;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -331,11 +331,11 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		F9A8D0A62486A9C100FFDFD2 /* ElastosRTC */ = {
+		F9A8D0A62486A9C100FFDFD2 /* ElastosWebRTCSDK */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F9A8D0BB2486A9C100FFDFD2 /* Build configuration list for PBXNativeTarget "ElastosRTC" */;
+			buildConfigurationList = F9A8D0BB2486A9C100FFDFD2 /* Build configuration list for PBXNativeTarget "ElastosWebRTCSDK" */;
 			buildPhases = (
-				1F3EEC6D21540BDA0E96DD19 /* [CP] Check Pods Manifest.lock */,
+				D7EC45B572876DBEFBBAD074 /* [CP] Check Pods Manifest.lock */,
 				F9A8D0A22486A9C100FFDFD2 /* Headers */,
 				F9A8D0A32486A9C100FFDFD2 /* Sources */,
 				F9A8D0A42486A9C100FFDFD2 /* Frameworks */,
@@ -345,16 +345,16 @@
 			);
 			dependencies = (
 			);
-			name = ElastosRTC;
+			name = ElastosWebRTCSDK;
 			productName = ElastosRTC;
-			productReference = F9A8D0A72486A9C100FFDFD2 /* ElastosRTC.framework */;
+			productReference = F9A8D0A72486A9C100FFDFD2 /* ElastosWebRTCSDK.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		F9A8D0AF2486A9C100FFDFD2 /* ElastosRTCTests */ = {
+		F9A8D0AF2486A9C100FFDFD2 /* ElastosWebRTCSDKTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F9A8D0BE2486A9C100FFDFD2 /* Build configuration list for PBXNativeTarget "ElastosRTCTests" */;
+			buildConfigurationList = F9A8D0BE2486A9C100FFDFD2 /* Build configuration list for PBXNativeTarget "ElastosWebRTCSDKTests" */;
 			buildPhases = (
-				8F10D294BE8B630DD5D609F8 /* [CP] Check Pods Manifest.lock */,
+				738CECBC2FDA370DE1CA61A6 /* [CP] Check Pods Manifest.lock */,
 				F9A8D0AC2486A9C100FFDFD2 /* Sources */,
 				F9A8D0AD2486A9C100FFDFD2 /* Frameworks */,
 				F9A8D0AE2486A9C100FFDFD2 /* Resources */,
@@ -365,21 +365,21 @@
 				F9A8D0B32486A9C100FFDFD2 /* PBXTargetDependency */,
 				8037F64524CAB588007AA7F8 /* PBXTargetDependency */,
 			);
-			name = ElastosRTCTests;
+			name = ElastosWebRTCSDKTests;
 			productName = ElastosRTCTests;
-			productReference = F9A8D0B02486A9C100FFDFD2 /* ElastosRTCTests.xctest */;
+			productReference = F9A8D0B02486A9C100FFDFD2 /* ElastosWebRTCSDKTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		F9A8D0C42486AA1C00FFDFD2 /* ElastosRTCDemo */ = {
+		F9A8D0C42486AA1C00FFDFD2 /* WebRTCDemo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F9A8D0E12486AA2100FFDFD2 /* Build configuration list for PBXNativeTarget "ElastosRTCDemo" */;
+			buildConfigurationList = F9A8D0E12486AA2100FFDFD2 /* Build configuration list for PBXNativeTarget "WebRTCDemo" */;
 			buildPhases = (
-				1F9A2A72EED35DD23D4D1AB7 /* [CP] Check Pods Manifest.lock */,
+				7D702EB97C15535481D66DFC /* [CP] Check Pods Manifest.lock */,
 				F9A8D0C12486AA1C00FFDFD2 /* Sources */,
 				F9A8D0C22486AA1C00FFDFD2 /* Frameworks */,
 				F9A8D0C32486AA1C00FFDFD2 /* Resources */,
-				46A9DEA9A25A7650A8559EF4 /* [CP] Embed Pods Frameworks */,
 				8095280424FE19ED00F95E0A /* Embed Frameworks */,
+				1BE8F0E02DB6DD8C3CFBDF1F /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -387,9 +387,9 @@
 				809527FE24FE140500F95E0A /* PBXTargetDependency */,
 				8095280324FE19ED00F95E0A /* PBXTargetDependency */,
 			);
-			name = ElastosRTCDemo;
+			name = WebRTCDemo;
 			productName = ElastosRTCDemo;
-			productReference = F9A8D0C52486AA1C00FFDFD2 /* ElastosRTCDemo.app */;
+			productReference = F9A8D0C52486AA1C00FFDFD2 /* WebRTCDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -415,7 +415,7 @@
 					};
 				};
 			};
-			buildConfigurationList = F9A8D0A12486A9C100FFDFD2 /* Build configuration list for PBXProject "ElastosRTC" */;
+			buildConfigurationList = F9A8D0A12486A9C100FFDFD2 /* Build configuration list for PBXProject "ElastosWebRTCSDK" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -428,9 +428,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F9A8D0A62486A9C100FFDFD2 /* ElastosRTC */,
-				F9A8D0C42486AA1C00FFDFD2 /* ElastosRTCDemo */,
-				F9A8D0AF2486A9C100FFDFD2 /* ElastosRTCTests */,
+				F9A8D0A62486A9C100FFDFD2 /* ElastosWebRTCSDK */,
+				F9A8D0AF2486A9C100FFDFD2 /* ElastosWebRTCSDKTests */,
+				F9A8D0C42486AA1C00FFDFD2 /* WebRTCDemo */,
 			);
 		};
 /* End PBXProject section */
@@ -458,72 +458,32 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9A8D0D12486AA2100FFDFD2 /* Assets.xcassets in Resources */,
-				F9A8D0D42486AA2100FFDFD2 /* LaunchScreen.storyboard in Resources */,
-				F9A8D0CF2486AA1C00FFDFD2 /* Main.storyboard in Resources */,
+				80659CDB2510A60900ED0FF9 /* LaunchScreen.storyboard in Resources */,
+				80659CDC2510A60900ED0FF9 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1F3EEC6D21540BDA0E96DD19 /* [CP] Check Pods Manifest.lock */ = {
+		1BE8F0E02DB6DD8C3CFBDF1F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ElastosRTC-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		1F9A2A72EED35DD23D4D1AB7 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ElastosRTCDemo-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		46A9DEA9A25A7650A8559EF4 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ElastosRTCDemo/Pods-ElastosRTCDemo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-WebRTCDemo/Pods-WebRTCDemo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ElastosRTCDemo/Pods-ElastosRTCDemo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-WebRTCDemo/Pods-WebRTCDemo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ElastosRTCDemo/Pods-ElastosRTCDemo-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WebRTCDemo/Pods-WebRTCDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8F10D294BE8B630DD5D609F8 /* [CP] Check Pods Manifest.lock */ = {
+		738CECBC2FDA370DE1CA61A6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -538,7 +498,51 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ElastosRTCTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ElastosWebRTCSDKTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7D702EB97C15535481D66DFC /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-WebRTCDemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D7EC45B572876DBEFBBAD074 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ElastosWebRTCSDK-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -552,15 +556,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				74104B6724E8251800EE6A19 /* Utils.swift in Sources */,
-				F9A281812487F5230032A2C0 /* WebRtcClient+Carrier.swift in Sources */,
 				801E489124F8E88100A2ECCF /* LocalVideoView.swift in Sources */,
+				801E488F24F77E4000A2ECCF /* RemoteVideoView.swift in Sources */,
+				74104B6724E8251800EE6A19 /* Utils.swift in Sources */,
+				8095280624FE2E2100F95E0A /* VideoCaptureController.swift in Sources */,
+				F9A281812487F5230032A2C0 /* WebRtcClient+Carrier.swift in Sources */,
 				80BEB5E124AF2BE600FC850F /* WebRtcClient+DataChannel.swift in Sources */,
 				F9A281852487F6830032A2C0 /* WebRtcClient+PeerConnection.swift in Sources */,
 				807706C9248908390066D477 /* WebRtcClient+VideoRender.swift in Sources */,
-				8095280624FE2E2100F95E0A /* VideoCaptureController.swift in Sources */,
 				F9A2817F2487F05A0032A2C0 /* WebRtcClient.swift in Sources */,
-				801E488F24F77E4000A2ECCF /* RemoteVideoView.swift in Sources */,
 				80E6940524BC179D008F1DE2 /* WebRtcModel+Extension.swift in Sources */,
 				F9A2818D248952990032A2C0 /* WebRtcSignal.swift in Sources */,
 			);
@@ -582,10 +586,10 @@
 				F9A8D0C82486AA1C00FFDFD2 /* AppDelegate.swift in Sources */,
 				745CB72E2494668A00E7D308 /* Carrier+Util.swift in Sources */,
 				808D141824BC402C00BA0DCE /* ChatViewController.swift in Sources */,
+				80FAFBAF24EF94BB00C36804 /* CustomCell.swift in Sources */,
 				80E3481524C557FB0009B998 /* DataManager.swift in Sources */,
 				743AC317248D33EA00A04AD0 /* DeviceManager.swift in Sources */,
 				F9870083248FE1DB005758F3 /* FriendCell.swift in Sources */,
-				80FAFBAF24EF94BB00C36804 /* CustomCell.swift in Sources */,
 				80E3481724C558D30009B998 /* MediaCallViewController.swift in Sources */,
 				746250DB24C48C9A00CC97BB /* MyProfileViewController.swift in Sources */,
 				745CB73B249652E500E7D308 /* SettingViewController.swift in Sources */,
@@ -603,22 +607,22 @@
 /* Begin PBXTargetDependency section */
 		8037F64524CAB588007AA7F8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = F9A8D0C42486AA1C00FFDFD2 /* ElastosRTCDemo */;
+			target = F9A8D0C42486AA1C00FFDFD2 /* WebRTCDemo */;
 			targetProxy = 8037F64424CAB588007AA7F8 /* PBXContainerItemProxy */;
 		};
 		809527FE24FE140500F95E0A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = F9A8D0A62486A9C100FFDFD2 /* ElastosRTC */;
+			target = F9A8D0A62486A9C100FFDFD2 /* ElastosWebRTCSDK */;
 			targetProxy = 809527FD24FE140500F95E0A /* PBXContainerItemProxy */;
 		};
 		8095280324FE19ED00F95E0A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = F9A8D0A62486A9C100FFDFD2 /* ElastosRTC */;
+			target = F9A8D0A62486A9C100FFDFD2 /* ElastosWebRTCSDK */;
 			targetProxy = 8095280224FE19ED00F95E0A /* PBXContainerItemProxy */;
 		};
 		F9A8D0B32486A9C100FFDFD2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = F9A8D0A62486A9C100FFDFD2 /* ElastosRTC */;
+			target = F9A8D0A62486A9C100FFDFD2 /* ElastosWebRTCSDK */;
 			targetProxy = F9A8D0B22486A9C100FFDFD2 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -694,7 +698,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -751,7 +755,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -765,7 +769,7 @@
 		};
 		F9A8D0BC2486A9C100FFDFD2 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E083358915BD80DF61BBD546 /* Pods-ElastosRTC.debug.xcconfig */;
+			baseConfigurationReference = 4EFA906D58855ECB79F6ED1B /* Pods-ElastosWebRTCSDK.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -776,7 +780,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = "ElastosRTC/Supporting Files/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/ElastosWebRTCSDK/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -795,7 +799,7 @@
 		};
 		F9A8D0BD2486A9C100FFDFD2 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DA2A2ECC557F86F530E0EAC5 /* Pods-ElastosRTC.release.xcconfig */;
+			baseConfigurationReference = EE04019C0BE6358359452C89 /* Pods-ElastosWebRTCSDK.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -806,7 +810,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = "ElastosRTC/Supporting Files/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/ElastosWebRTCSDK/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -824,12 +828,12 @@
 		};
 		F9A8D0BF2486A9C100FFDFD2 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 749E621FACBE3D5FE0323038 /* Pods-ElastosRTCTests.debug.xcconfig */;
+			baseConfigurationReference = C64E378B93B2A96FD415A070 /* Pods-ElastosWebRTCSDKTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = ElastosRTCTests/Info.plist;
+				INFOPLIST_FILE = ElastosWebRTCSDKTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -839,18 +843,18 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ElastosRTCDemo.app/ElastosRTCDemo";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WebRTCDemo.app/WebRTCDemo";
 			};
 			name = Debug;
 		};
 		F9A8D0C02486A9C100FFDFD2 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 43126D9EA6BBEC3B2A90F90E /* Pods-ElastosRTCTests.release.xcconfig */;
+			baseConfigurationReference = 725E0FC19BAD763ACA3600D6 /* Pods-ElastosWebRTCSDKTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = ElastosRTCTests/Info.plist;
+				INFOPLIST_FILE = ElastosWebRTCSDKTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -860,13 +864,13 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ElastosRTCDemo.app/ElastosRTCDemo";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WebRTCDemo.app/WebRTCDemo";
 			};
 			name = Release;
 		};
 		F9A8D0E22486AA2100FFDFD2 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D106126C256D19CEF427196A /* Pods-ElastosRTCDemo.debug.xcconfig */;
+			baseConfigurationReference = B31DE71E35DFE4BB420F4FF7 /* Pods-WebRTCDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -874,14 +878,14 @@
 				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 68SKULU766;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = "ElastosRTCDemo/Supporting Files/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/WebRTCDemo/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.elastos.ElastosRTC;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.elastos.WebRTCDemo;
+				PRODUCT_NAME = WebRTCDemo;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -890,7 +894,7 @@
 		};
 		F9A8D0E32486AA2100FFDFD2 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7446E9EDE7D97C628741B805 /* Pods-ElastosRTCDemo.release.xcconfig */;
+			baseConfigurationReference = 9B7C0E3567F785583DF9F611 /* Pods-WebRTCDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -898,14 +902,14 @@
 				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 68SKULU766;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = "ElastosRTCDemo/Supporting Files/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/WebRTCDemo/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.elastos.ElastosRTC;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.elastos.WebRTCDemo;
+				PRODUCT_NAME = WebRTCDemo;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -915,7 +919,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F9A8D0A12486A9C100FFDFD2 /* Build configuration list for PBXProject "ElastosRTC" */ = {
+		F9A8D0A12486A9C100FFDFD2 /* Build configuration list for PBXProject "ElastosWebRTCSDK" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F9A8D0B92486A9C100FFDFD2 /* Debug */,
@@ -924,7 +928,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F9A8D0BB2486A9C100FFDFD2 /* Build configuration list for PBXNativeTarget "ElastosRTC" */ = {
+		F9A8D0BB2486A9C100FFDFD2 /* Build configuration list for PBXNativeTarget "ElastosWebRTCSDK" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F9A8D0BC2486A9C100FFDFD2 /* Debug */,
@@ -933,7 +937,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F9A8D0BE2486A9C100FFDFD2 /* Build configuration list for PBXNativeTarget "ElastosRTCTests" */ = {
+		F9A8D0BE2486A9C100FFDFD2 /* Build configuration list for PBXNativeTarget "ElastosWebRTCSDKTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F9A8D0BF2486A9C100FFDFD2 /* Debug */,
@@ -942,7 +946,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F9A8D0E12486AA2100FFDFD2 /* Build configuration list for PBXNativeTarget "ElastosRTCDemo" */ = {
+		F9A8D0E12486AA2100FFDFD2 /* Build configuration list for PBXNativeTarget "WebRTCDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F9A8D0E22486AA2100FFDFD2 /* Debug */,

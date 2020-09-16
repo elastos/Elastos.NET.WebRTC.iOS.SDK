@@ -3,21 +3,24 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '11.0'
 use_frameworks!
 
-# Debug Mode
-target 'ElastosRTC' do
-  pod "GoogleWebRTC"
-  pod "ElastosCarrierSDK"
+def common_pods
+  pod "ElastosCarrierSDK", '5.6.4'
+  pod "GoogleWebRTC", '1.1.31999'
+end
 
-  target 'ElastosRTCDemo' do
+# Debug Mode
+target 'ElastosWebRTCSDK' do
+  common_pods
+
+  target 'WebRTCDemo' do
     pod 'EFQRCode', '5.1.6'
     pod 'QRCodeReader.swift', '10.1.0'
     pod 'MessageKit', '3.1.0'
-    pod "ElastosCarrierSDK"
-    pod "GoogleWebRTC"
+    common_pods
     inherit! :search_paths
   end
 
-  target 'ElastosRTCTests' do
+  target 'ElastosWebRTCSDKTests' do
     inherit! :search_paths
   end
 end
