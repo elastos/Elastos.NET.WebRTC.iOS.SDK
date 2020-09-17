@@ -17,16 +17,14 @@ Pod::Spec.new do |spec|
 
   spec.license      = { :type => 'GPLv3', :file => './LICENSE' }
 
-  spec.author             = { "weili" => "weili@130mail.com" }
+  spec.author       = { "weili" => "weili@130mail.com" }
 
   spec.platform     = :ios
   spec.platform     = :ios, "11.0"
 
-  # spec.source       = { :git => "git@github.com:elastos/Elastos.NET.WebRTC.iOS.SDK.git", :tag => "#{spec.version}" }
-  spec.source       = { :git => "git@github.com:elastos/Elastos.NET.WebRTC.iOS.SDK.git", :branch => "master" }
-
-
+  spec.source       = { :git => "git@github.com:elastos/Elastos.NET.WebRTC.iOS.SDK.git", :tag => "#{spec.version}" }
   spec.source_files = "ElastosWebRTCSDK/*.{swift}"
+
   spec.requires_arc = true
   spec.swift_version = '5.0'
 
