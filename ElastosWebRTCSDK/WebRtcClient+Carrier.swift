@@ -126,7 +126,7 @@ extension WebRtcClient {
         drainMessageQueueIfReady()
     }
 
-    /// registeer carrier callback
+    /// register carrier callback
     func registerCarrierCallback() {
         do {
             try self.carrier.registerExtension { [weak self] (carrier, friendId, message) in
