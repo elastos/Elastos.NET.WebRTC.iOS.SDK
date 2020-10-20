@@ -22,7 +22,10 @@ $ pod install --repo-update
 Then use **"Xcode"** to open the workspace and start the build process.
 
 ## Build Docs
-COMMING SOON.
+Run following script command to generate swift APIs documdent with appledoc tool:
+```shell
+$ ./docs.sh
+```
 
 ## Contribution
 We welcome contributions to the Elastos WebRTC iOS SDK Project.
