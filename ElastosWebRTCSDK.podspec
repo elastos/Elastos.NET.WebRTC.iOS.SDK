@@ -9,7 +9,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "ElastosWebRTCSDK"
-  spec.version      = "1.0.0"
+  spec.version      = "1.0.1"
 
   spec.summary      = "Elastos WebRTC iOS SDK"
   spec.description  = "Elastos WebRTC iOS SDK Framework Distribution."
@@ -27,8 +27,9 @@ Pod::Spec.new do |spec|
 
   spec.requires_arc = true
   spec.swift_version = '5.0'
+  spec.pod_target_xcconfig = { 'ENABLE_BITCODE' => 'NO' }
 
   spec.dependency "GoogleWebRTC", "1.1.31999"
-  spec.dependency "ElastosCarrierSDK", "5.6.4"
+  spec.dependency "ElastosCarrierSDK", "5.6.5"
 
 end

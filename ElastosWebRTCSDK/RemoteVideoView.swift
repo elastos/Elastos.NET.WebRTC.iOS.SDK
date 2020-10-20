@@ -23,6 +23,7 @@
 import UIKit
 import MetalKit
 
+/// The full screen remote video
 public class RemoteVideoView: UIView {
 
     #if arch(arm64)
@@ -66,12 +67,16 @@ public class RemoteVideoView: UIView {
 
 extension RemoteVideoView: RTCVideoRenderer {
 
+    /// The size of the frame
+    /// - Parameter size: size
     public func setSize(_ size: CGSize) {
         #if arch(arm64)
         self.metalRenderer?.setSize(size)
         #endif
     }
 
+    /// The frame to be displayed
+    /// - Parameter frame: the video frame
     public func renderFrame(_ frame: RTCVideoFrame?) {
         #if arch(arm64)
         self.metalRenderer?.renderFrame(frame)

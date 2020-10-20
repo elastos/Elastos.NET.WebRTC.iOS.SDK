@@ -22,6 +22,8 @@
 
 extension WebRtcClient {
 
+    /// Send Webrtc signal messsage by CarrierSDK
+    /// - Parameter signal: RtcSignal Instance
     func send(signal: RtcSignal) {
         do {
             let data = try JSONEncoder().encode(signal)
@@ -32,23 +34,33 @@ extension WebRtcClient {
         }
     }
 
+    /// Send Webrtc candidate message by CarrierSDK
+    /// - Parameter candidate: RTCIceCandidate instance
     func send(candidate: RTCIceCandidate) {
         let signal = RtcSignal(type: .candidate, candidates: [candidate.to()])
         messageQueue.append(signal)
         drainMessageQueueIfReady()
     }
 
+    /// Send the removal candidates by CarrierSdk
+    /// - Parameter candidates: the array of RTCIceCandidate
     func send(removal candidates: [RTCIceCandidate]) {
         let signal = RtcSignal(type: .removeCandiate, candidates: candidates.map({ $0.to() }))
         messageQueue.append(signal)
         drainMessageQueueIfReady()
     }
 
+    /// Send RTCSessionDescription by CarrierSdk
+    /// - Parameters:
+    ///   - desc: the instance of RTCSessionDescription
+    ///   - options: media options
     func send(desc: RTCSessionDescription, options: MediaOptions? = nil) {
         let signal = desc.to(options: options)
         send(signal: signal)
     }
 
+    /// Send json string by Carrier Sdk
+    /// - Parameter json: JSON string
     func send(json: String) {
         guard let friendId = self.friendId else { return assertionFailure("friendId is null") }
         do {
@@ -62,6 +74,10 @@ extension WebRtcClient {
         }
     }
 
+    /// receive message from carrierSDK
+    /// - Parameters:
+    ///   - from: the user  that send message
+    ///   - data: the message content
     func receive(from: String, data: String) {
         do {
             let message = try JSONDecoder().decode(RtcSignal.self, from: data.data(using: .utf8)!)
@@ -110,6 +126,7 @@ extension WebRtcClient {
         drainMessageQueueIfReady()
     }
 
+    /// registeer carrier callback
     func registerCarrierCallback() {
         do {
             try self.carrier.registerExtension { [weak self] (carrier, friendId, message) in

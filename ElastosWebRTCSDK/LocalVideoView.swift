@@ -22,6 +22,7 @@
 
 import UIKit
 
+/// The Local Video custom View
 public class LocalVideoView: UIView {
     private let localVideoCapturePreview = RTCCameraPreviewView()
 
@@ -56,8 +57,8 @@ public class LocalVideoView: UIView {
         }
     }
 
-    @objc
-    func updateLocalVideoOrientation() {
+    /// update local video orientation by the device
+    @objc func updateLocalVideoOrientation() {
         defer { localVideoCapturePreview.frame = bounds }
 
         // iPad supports rotating this view controller directly, so we don't need to do anything here.
