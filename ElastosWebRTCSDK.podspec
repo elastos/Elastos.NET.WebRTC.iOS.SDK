@@ -30,6 +30,6 @@ Pod::Spec.new do |spec|
   spec.pod_target_xcconfig = { 'ENABLE_BITCODE' => 'NO' }
 
   spec.dependency "GoogleWebRTC", "1.1.31999"
-  spec.dependency "ElastosCarrierSDK", "5.6.5"
+  spec.dependency "ElastosCarrierSDK", "6.0.1"
 
 end
