@@ -774,7 +774,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20201223095801;
+				CURRENT_PROJECT_VERSION = 20210103132553;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 68SKULU766;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -789,7 +789,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = org.elastos.ElastosRTC.framework;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -807,7 +807,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20201223095801;
+				CURRENT_PROJECT_VERSION = 20210103132553;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 68SKULU766;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -822,7 +822,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = org.elastos.ElastosRTC.framework;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
