@@ -375,6 +375,7 @@
 			buildConfigurationList = F9A8D0E12486AA2100FFDFD2 /* Build configuration list for PBXNativeTarget "WebRTCDemo" */;
 			buildPhases = (
 				7D702EB97C15535481D66DFC /* [CP] Check Pods Manifest.lock */,
+				11EE56798AB548E148E31307 /* [CP] Prepare Artifacts */,
 				F9A8D0C12486AA1C00FFDFD2 /* Sources */,
 				F9A8D0C22486AA1C00FFDFD2 /* Frameworks */,
 				F9A8D0C32486AA1C00FFDFD2 /* Resources */,
@@ -466,6 +467,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		11EE56798AB548E148E31307 /* [CP] Prepare Artifacts */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WebRTCDemo/Pods-WebRTCDemo-artifacts-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Prepare Artifacts";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WebRTCDemo/Pods-WebRTCDemo-artifacts-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WebRTCDemo/Pods-WebRTCDemo-artifacts.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		1BE8F0E02DB6DD8C3CFBDF1F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -774,13 +792,14 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20210103132553;
+				CURRENT_PROJECT_VERSION = 20210531102749;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 68SKULU766;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 x86_64";
 				INFOPLIST_FILE = "$(SRCROOT)/ElastosWebRTCSDK/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -789,7 +808,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = org.elastos.ElastosRTC.framework;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -807,13 +826,14 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20210103132553;
+				CURRENT_PROJECT_VERSION = 20210531102749;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 68SKULU766;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 x86_64";
 				INFOPLIST_FILE = "$(SRCROOT)/ElastosWebRTCSDK/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -822,7 +842,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = org.elastos.ElastosRTC.framework;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
