@@ -4,7 +4,7 @@ platform :ios, '11.0'
 use_frameworks!
 
 def common_pods
-  pod "ElastosCarrierSDK", '6.0.2'
+  pod "ElastosCarrierSDK", '6.0.3'
   pod "GoogleWebRTC", '1.1.31999'
 end
 
