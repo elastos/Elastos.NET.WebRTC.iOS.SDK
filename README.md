@@ -2,13 +2,13 @@ Elastos WebRTC iOS SDK
 =====================
 
 ## Introduction
-Elastos WebRTC is the WebRTC framework over Elastos Carrier network, which for now, supports basic features of Audio/Video communication as well as data communication over DataChannel.
+Elastos WebRTC is the WebRTC framework over Elastos Carrier network, which supports basic features of Audio/Video communication and data communication over DataChannel.
 
-This is the repository of WebRTC iOS SDK over Carrier network. With that, it's available for developers to implement VoIP applications on Android/iOS mobile platforms over Carrier network.
+This is the repository of WebRTC iOS SDK over the Carrier network. With that, it's available for developers to implement VoIP applications on Android/iOS mobile platforms over the Carrier network.
 
 ## Build from source
 ### Install Pre-Requirements
-Please be sure you have **cocoapods** installed on your macOS device, otherwise run the following comand to install it:
+Please be sure you have **cocoapods** installed on your macOS device. Otherwise run the following comand to install it:
 ```shell
 $ gem install cocopods
 ```
@@ -22,7 +22,7 @@ $ pod install --repo-update
 Then use **"Xcode"** to open the workspace and start the build process.
 
 ## Build Docs
-Run following script command to generate swift APIs documdent with appledoc tool:
+Run the following script to generate swift APIs documents with the appledoc tool:
 ```shell
 $ ./docs.sh
 ```
