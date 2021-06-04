@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0FF26A081D939B13D076E755 /* Pods_ElastosWebRTCSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15FCA7BFC5879CBA45120832 /* Pods_ElastosWebRTCSDK.framework */; };
+		11DF12B52664862F0076A400 /* ElastosWebRTCSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A8D0A72486A9C100FFDFD2 /* ElastosWebRTCSDK.framework */; };
+		11DF12B62664862F0076A400 /* ElastosWebRTCSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9A8D0A72486A9C100FFDFD2 /* ElastosWebRTCSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		74104B6724E8251800EE6A19 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74104B6624E8251800EE6A19 /* Utils.swift */; };
 		743AC317248D33EA00A04AD0 /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743AC316248D33EA00A04AD0 /* DeviceManager.swift */; };
 		745CB72E2494668A00E7D308 /* Carrier+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745CB72D2494668A00E7D308 /* Carrier+Util.swift */; };
@@ -27,8 +29,6 @@
 		808AE2CA24A8C35F002DF9C9 /* mock_added_candidate.json in Resources */ = {isa = PBXBuildFile; fileRef = 808AE2C924A8C35F002DF9C9 /* mock_added_candidate.json */; };
 		808AE2CC24A8C3C3002DF9C9 /* mock_answer.json in Resources */ = {isa = PBXBuildFile; fileRef = 808AE2CB24A8C3C3002DF9C9 /* mock_answer.json */; };
 		808D141824BC402C00BA0DCE /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808D141724BC402C00BA0DCE /* ChatViewController.swift */; };
-		8095280024FE19EC00F95E0A /* ElastosWebRTCSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A8D0A72486A9C100FFDFD2 /* ElastosWebRTCSDK.framework */; };
-		8095280124FE19ED00F95E0A /* ElastosWebRTCSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9A8D0A72486A9C100FFDFD2 /* ElastosWebRTCSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8095280624FE2E2100F95E0A /* VideoCaptureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8095280524FE2E2100F95E0A /* VideoCaptureController.swift */; };
 		80BEB5E124AF2BE600FC850F /* WebRtcClient+DataChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BEB5E024AF2BE600FC850F /* WebRtcClient+DataChannel.swift */; };
 		80E3481524C557FB0009B998 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3481424C557FB0009B998 /* DataManager.swift */; };
@@ -52,19 +52,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		11DF12B72664862F0076A400 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F9A8D09E2486A9C100FFDFD2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F9A8D0A62486A9C100FFDFD2;
+			remoteInfo = ElastosWebRTCSDK;
+		};
 		8037F64424CAB588007AA7F8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F9A8D09E2486A9C100FFDFD2 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = F9A8D0C42486AA1C00FFDFD2;
 			remoteInfo = ElastosRTCDemo;
-		};
-		809527FD24FE140500F95E0A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F9A8D09E2486A9C100FFDFD2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = F9A8D0A62486A9C100FFDFD2;
-			remoteInfo = ElastosRTC;
 		};
 		8095280224FE19ED00F95E0A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -83,13 +83,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		8095280424FE19ED00F95E0A /* Embed Frameworks */ = {
+		11DF12B92664862F0076A400 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				8095280124FE19ED00F95E0A /* ElastosWebRTCSDK.framework in Embed Frameworks */,
+				11DF12B62664862F0076A400 /* ElastosWebRTCSDK.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -172,7 +172,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8095280024FE19EC00F95E0A /* ElastosWebRTCSDK.framework in Frameworks */,
+				11DF12B52664862F0076A400 /* ElastosWebRTCSDK.framework in Frameworks */,
 				B7913C4A3DEA05E6CE1D7F29 /* Pods_WebRTCDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -379,14 +379,14 @@
 				F9A8D0C12486AA1C00FFDFD2 /* Sources */,
 				F9A8D0C22486AA1C00FFDFD2 /* Frameworks */,
 				F9A8D0C32486AA1C00FFDFD2 /* Resources */,
-				8095280424FE19ED00F95E0A /* Embed Frameworks */,
 				1BE8F0E02DB6DD8C3CFBDF1F /* [CP] Embed Pods Frameworks */,
+				11DF12B92664862F0076A400 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				809527FE24FE140500F95E0A /* PBXTargetDependency */,
 				8095280324FE19ED00F95E0A /* PBXTargetDependency */,
+				11DF12B82664862F0076A400 /* PBXTargetDependency */,
 			);
 			name = WebRTCDemo;
 			productName = ElastosRTCDemo;
@@ -623,15 +623,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		11DF12B82664862F0076A400 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F9A8D0A62486A9C100FFDFD2 /* ElastosWebRTCSDK */;
+			targetProxy = 11DF12B72664862F0076A400 /* PBXContainerItemProxy */;
+		};
 		8037F64524CAB588007AA7F8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F9A8D0C42486AA1C00FFDFD2 /* WebRTCDemo */;
 			targetProxy = 8037F64424CAB588007AA7F8 /* PBXContainerItemProxy */;
-		};
-		809527FE24FE140500F95E0A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = F9A8D0A62486A9C100FFDFD2 /* ElastosWebRTCSDK */;
-			targetProxy = 809527FD24FE140500F95E0A /* PBXContainerItemProxy */;
 		};
 		8095280324FE19ED00F95E0A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -789,10 +789,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4EFA906D58855ECB79F6ED1B /* Pods-ElastosWebRTCSDK.debug.xcconfig */;
 			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20210531102749;
+				CURRENT_PROJECT_VERSION = 20210604094247;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 68SKULU766;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -823,10 +824,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EE04019C0BE6358359452C89 /* Pods-ElastosWebRTCSDK.release.xcconfig */;
 			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20210531102749;
+				CURRENT_PROJECT_VERSION = 20210604094247;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 68SKULU766;
 				DYLIB_COMPATIBILITY_VERSION = 1;
